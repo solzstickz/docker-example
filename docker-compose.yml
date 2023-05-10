@@ -19,6 +19,24 @@ services:
   #     DB_NAME: db_mysql
   #   networks:
   #     - mynetwork
+
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    restart: always
+    ports:
+      - "9999:80"
+    volumes:
+      - ./src/:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    links:
+      - backend
+    depends_on:
+      - backend
+    networks:
+      mysqlnetwork:
+        ipv4_address: 192.168.99.9
+
   backend:
     container_name: backend_nodejs
     build: ./backend/
@@ -30,24 +48,24 @@ services:
       - ./backend/:/app_backend
     working_dir: /app_backend
     depends_on:
+      - mysql
+      - redis-server
+    links:
+      - mysql
       - redis-server
     environment:
       - NODE_ENV= development
     command: npm run start
-
-    links:
-      - redis-server
-      - mysql
     networks:
       mysqlnetwork:
-        ipv4_address: 192.168.65.7
+        ipv4_address: 192.168.99.7
 
   mysql:
     restart: always
     image: mysql:5.7
     container_name: mysql
     ports:
-      - "5555:3306"
+      - "4444:3306"
     volumes:
       - ./database:/docker-entrypoint-initdb.d/
     # mem_limit: 512m
@@ -56,30 +74,10 @@ services:
       - MYSQL_DATABASE=app_db
       - MYSQL_USER=skz
       - MYSQL_PASSWORD=skzz
-      - MYSQL_ROOT_PASSWORD=my-secret-pw
+      - MYSQL_ROOT_PASSWORD=Skzqqwwee44$$
     networks:
       mysqlnetwork:
-        ipv4_address: 192.168.65.5
-
-  mysql-admin:
-    restart: always
-    image: phpmyadmin/phpmyadmin
-    container_name: mysql-admin
-    ports:
-      - "4444:80"
-    mem_limit: 512m
-    depends_on:
-      - mysql
-    environment:
-      - PMA_HOST=192.168.65.5
-      - PMA_PORT=3306
-      - PMA_USER=skz
-      - PMA_PASSWORD=skzz
-      - PMA_ROOT_PASSWORD=my-secret-pw
-      - PMA_ARBITRARY=1
-      - PMA_DATABASE=app_db
-    networks:
-      mysqlnetwork:
+        ipv4_address: 192.168.99.4
 
   redis-server:
     restart: always
@@ -95,24 +93,34 @@ services:
     mem_limit: 96m
     networks:
       mysqlnetwork:
-        ipv4_address: 192.168.65.3
-
-  nginx:
-    container_name: nginx
-    image: nginx:latest
+        ipv4_address: 192.168.99.3
+  mysql-admin:
     restart: always
+    image: phpmyadmin/phpmyadmin
+    container_name: mysql-admin
     ports:
-      - "2222:2222"
-    volumes:
-      - ./src/:/var/www/html
-      # - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - "2222:80"
+    mem_limit: 512m
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    environment:
+      - PMA_HOST=192.168.99.4
+      - PMA_PORT=3306
+      - PMA_USER=skz
+      - PMA_PASSWORD=skzz
+      - PMA_ROOT_PASSWORD=Skzqqwwee44$$
+      - PMA_ARBITRARY=1
+      - PMA_DATABASE=app_db
     networks:
       mysqlnetwork:
-        ipv4_address: 192.168.65.2
 networks:
   mysqlnetwork:
     driver: bridge
     ipam:
       config:
-        - subnet: 192.168.65.0/24
-          gateway: 192.168.65.1
+        - subnet: 192.168.99.0/24
+          gateway: 192.168.99.1
+#docker exec -it mysql bash
+#mysql -u root -p
