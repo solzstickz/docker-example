@@ -63,6 +63,7 @@ services:
   mysql:
     restart: always
     image: mysql:5.7
+    platform: linux/amd64
     container_name: mysql
     ports:
       - "4444:3306"
