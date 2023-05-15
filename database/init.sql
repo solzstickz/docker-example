@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: May 13, 2023 at 03:31 AM
+-- Generation Time: May 13, 2023 at 09:52 AM
 -- Server version: 5.7.42
 -- PHP Version: 8.1.17
 
@@ -53,6 +53,7 @@ INSERT INTO `pages` (`pages_id`, `pages_slug`, `pages_view`, `pages_last_update`
 
 CREATE TABLE `posts` (
   `posts_id` int(100) NOT NULL,
+  `posts_ep` int(100) NOT NULL,
   `pages_id` int(100) NOT NULL,
   `posts_detail` json NOT NULL,
   `posts_views` int(100) NOT NULL
@@ -62,8 +63,13 @@ CREATE TABLE `posts` (
 -- Dumping data for table `posts`
 --
 
-INSERT INTO `posts` (`posts_id`, `pages_id`, `posts_detail`, `posts_views`) VALUES
-(1, 1, '{}', 1);
+INSERT INTO `posts` (`posts_id`, `posts_ep`, `pages_id`, `posts_detail`, `posts_views`) VALUES
+(1, 0, 1, '{\"image\": [{\"alt\": \"survival-9-8-65-00001\", \"url\": \"https://img.soul-manga.com/r/survival-9-8-65-00001.jpg\"}, {\"alt\": \"survival-9-8-65-00002\", \"url\": \"https://img.soul-manga.com/r/survival-9-8-65-00002.jpg\"}, {\"alt\": \"survival-9-8-65-00003\", \"url\": \"https://img.soul-manga.com/r/survival-9-8-65-00003.jpg\"}, {\"alt\": \"survival-9-8-65-00004\", \"url\": \"https://img.soul-manga.com/r/survival-9-8-65-00004.jpg\"}, {\"alt\": \"survival-9-8-65-00005\", \"url\": \"https://img.soul-manga.com/r/survival-9-8-65-00005.jpg\"}, {\"alt\": \"survival-9-8-65-00006\", \"url\": \"https://img.soul-manga.com/r/survival-9-8-65-00006.jpg\"}]}', 1),
+(2, 1, 1, '{\"image\": [{\"alt\": \"survival-9-8-65-00008\", \"url\": \"https://img.soul-manga.com/r/survival-9-8-65-00008.jpg\"}, {\"alt\": \"survival-9-8-65-00009\", \"url\": \"https://img.soul-manga.com/r/survival-9-8-65-00009.jpg\"}, {\"alt\": \"survival-9-8-65-000010\", \"url\": \"https://img.soul-manga.com/r/survival-9-8-65-00010.jpg\"}, {\"alt\": \"survival-9-8-65-000011\", \"url\": \"https://img.soul-manga.com/r/survival-9-8-65-00011.jpg\"}, {\"alt\": \"survival-9-8-65-000012\", \"url\": \"https://img.soul-manga.com/r/survival-9-8-65-00012.jpg\"}, {\"alt\": \"survival-9-8-65-000013\", \"url\": \"https://img.soul-manga.com/r/survival-9-8-65-00013.jpg\"}, {\"alt\": \"survival-9-8-65-000014\", \"url\": \"https://img.soul-manga.com/r/survival-9-8-65-00014.jpg\"}, {\"alt\": \"survival-9-8-65-000015\", \"url\": \"https://img.soul-manga.com/r/survival-9-8-65-00015.jpg\"}, {\"alt\": \"survival-9-8-65-000016\", \"url\": \"https://img.soul-manga.com/r/survival-9-8-65-00016.jpg\"}, {\"alt\": \"survival-9-8-65-000017\", \"url\": \"https://img.soul-manga.com/r/survival-9-8-65-00017.jpg\"}]}', 1),
+(3, 0, 2, '{\"image\": [{\"alt\": \"Wang Pai Shen Yi 0 1\", \"url\": \"https://1.soul-manga.com/img/2021/10/20/Wang-Pai-Shen-Yi-0-1.jpg\"}, {\"alt\": \"Wang Pai Shen Yi 0 2\", \"url\": \"https://1.soul-manga.com/img/2021/10/20/Wang-Pai-Shen-Yi-0-2.jpg\"}, {\"alt\": \"Wang Pai Shen Yi 0 3\", \"url\": \"https://1.soul-manga.com/img/2021/10/20/Wang-Pai-Shen-Yi-0-3.jpg\"}, {\"alt\": \"Wang Pai Shen Yi 0 4\", \"url\": \"https://1.soul-manga.com/img/2021/10/20/Wang-Pai-Shen-Yi-0-4.jpg\"}, {\"alt\": \"Wang Pai Shen Yi 0 5\", \"url\": \"https://1.soul-manga.com/img/2021/10/20/Wang-Pai-Shen-Yi-0-5.jpg\"}, {\"alt\": \"Wang Pai Shen Yi 0 6\", \"url\": \"https://1.soul-manga.com/img/2021/10/20/Wang-Pai-Shen-Yi-0-6.jpg\"}, {\"alt\": \"Wang Pai Shen Yi 0 1\", \"url\": \"https://1.soul-manga.com/img/2021/10/20/Wang-Pai-Shen-Yi-0-7.jpg\"}, {\"alt\": \"Wang Pai Shen Yi 0 2\", \"url\": \"https://1.soul-manga.com/img/2021/10/20/Wang-Pai-Shen-Yi-0-8.jpg\"}, {\"alt\": \"Wang Pai Shen Yi 0 3\", \"url\": \"https://1.soul-manga.com/img/2021/10/20/Wang-Pai-Shen-Yi-0-9.jpg\"}, {\"alt\": \"Wang Pai Shen Yi 0 4\", \"url\": \"https://1.soul-manga.com/4/img/2021/10/20/Wang-Pai-Shen-Yi-0-10.jpg\"}, {\"alt\": \"Wang Pai Shen Yi 0 4\", \"url\": \"https://1.soul-manga.com/4/img/2021/10/20/Wang-Pai-Shen-Yi-0-11.jpg\"}, {\"alt\": \"Wang Pai Shen Yi 0 14\", \"url\": \"https://1.soul-manga.com/4/img/2021/10/20/Wang-Pai-Shen-Yi-0-12.jpg\"}, {\"alt\": \"Wang Pai Shen Yi 0 15\", \"url\": \"https://1.soul-manga.com/4/img/2021/10/20/Wang-Pai-Shen-Yi-0-13.jpg\"}, {\"alt\": \"Wang Pai Shen Yi 0 14\", \"url\": \"https://1.soul-manga.com/4/img/2021/10/20/Wang-Pai-Shen-Yi-0-14.jpg\"}, {\"alt\": \"Wang Pai Shen Yi 0 15\", \"url\": \"https://1.soul-manga.com/4/img/2021/10/20/Wang-Pai-Shen-Yi-0-15.jpg\"}]}', 1),
+(4, 1, 2, '{\"image\": [{\"alt\": \"Wang Pai Shen Yi 0 1\", \"url\": \"https://1.soul-manga.com/img/2021/10/20/Wang-Pai-Shen-Yi-1-1.jpg\"}, {\"alt\": \"Wang Pai Shen Yi 0 2\", \"url\": \"https://1.soul-manga.com/img/2021/10/20/Wang-Pai-Shen-Yi-1-2.jpg\"}, {\"alt\": \"Wang Pai Shen Yi 0 3\", \"url\": \"https://1.soul-manga.com/img/2021/10/20/Wang-Pai-Shen-Yi-1-3.jpg\"}]}', 1),
+(5, 1, 3, '{\"image\": [{\"alt\": \"The-Greatest-in-the-World-1-01.jpg\", \"url\": \"https://7.soul-manga.com/images/The-Greatest-in-the-World-1-01.jpg\"}, {\"alt\": \"The-Greatest-in-the-World-1-02.jpg\", \"url\": \"https://7.soul-manga.com/images/The-Greatest-in-the-World-1-02.jpg\"}, {\"alt\": \"The-Greatest-in-the-World-1-03.jpg\", \"url\": \"https://7.soul-manga.com/images/The-Greatest-in-the-World-1-03.jpg\"}]}', 1),
+(6, 2, 3, '{\"image\": [{\"alt\": \"The-Greatest-in-the-World-2-01.jpg\", \"url\": \"https://7.soul-manga.com/images/The-Greatest-in-the-World-2-01.jpg\"}, {\"alt\": \"The-Greatest-in-the-World-2-02.jpg\", \"url\": \"https://7.soul-manga.com/images/The-Greatest-in-the-World-2-02.jpg\"}, {\"alt\": \"The-Greatest-in-the-World-2-03.jpg\", \"url\": \"https://7.soul-manga.com/images/The-Greatest-in-the-World-2-03.jpg\"}]}', 1);
 
 --
 -- Indexes for dumped tables
@@ -95,7 +101,7 @@ ALTER TABLE `pages`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `posts_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `posts_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

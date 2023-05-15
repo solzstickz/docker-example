@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const redisclient = require("./config/redis");
 const pool = require("./config/mysql");
 const token = require("./middleware/token");
-
+const _ = require("lodash");
 
 app.use(
   cors({
