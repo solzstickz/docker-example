@@ -3,6 +3,10 @@ const router = express.Router();
 const redisclient = require("../config/redis");
 const pool = require("../config/mysql");
 const _ = require("lodash");
+const multer = require("multer");
+const crypto = require("crypto");
+const uploads = require("../middleware/uploads");
+
 //! domain.com/pages/
 router.post("/", async (req, res) => {
   let redis_res = await redisclient.get("pages:res");
@@ -112,5 +116,16 @@ router.post("/full/:slug", async (req, res) => {
     );
   }
 });
+
+router.post(
+  "/uploads/images",
+  uploads.single("uploaded_file"),
+  async (req, res) => {
+    console.log(req.file);
+    console.log(req.body);
+    let path_images = req.file.path;
+    res.status(200).json(path_images);
+  }
+);
 
 module.exports = router;
