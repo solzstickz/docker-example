@@ -107,8 +107,6 @@ services:
       - mysql
     environment:
       - PMA_HOST=mysql
-      - PMA_USER=skz
-      - PMA_PASSWORD=skzz
       - PMA_ROOT_PASSWORD=skzz-pw
       - PMA_ARBITRARY=1
       - PMA_DATABASE=app_db

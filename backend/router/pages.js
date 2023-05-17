@@ -121,8 +121,6 @@ router.post(
   "/uploads/images",
   uploads.single("uploaded_file"),
   async (req, res) => {
-    console.log(req.file);
-    console.log(req.body);
     let path_images = req.file.path;
     res.status(200).json(path_images);
   }
