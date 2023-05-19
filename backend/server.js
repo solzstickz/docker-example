@@ -21,20 +21,64 @@ require("dotenv").config();
 //! Routes
 const pages = require("./router/pages");
 const posts = require("./router/posts");
+const tags = require("./router/tags");
 const auth = require("./middleware/auth");
 
 //! middleware - token.authenticateToken
 app.use("/uploads", express.static("uploads"));
-app.use("/pages", token.authenticateToken, pages);
-app.use("/posts", token.authenticateToken, posts);
+app.use("/pages", pages);
+app.use("/posts", posts);
+app.use("/tags", tags);
 app.use("/auth", auth);
 
 //! setting up the express app
 
 //! Routes index
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.post("/poppular", async (req, res) => {
+  let redis_res = await redisclient.get("pages:res");
+
+  if (redis_res) {
+    res.status(200).json(JSON.parse(redis_res));
+  } else {
+    pool.query("SELECT * FROM `pages`;", async (err, result) => {
+      try {
+        if (err) {
+          console.log(err);
+        } else {
+          await redisclient.set("pages:res", JSON.stringify(result), "EX", 60);
+          let data = await redisclient.get("pages:res");
+          res.status(200).json(JSON.parse(data));
+        }
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
+      }
+    });
+  }
+});
+app.post("/last_updated", async (req, res) => {
+  // let redis_res = await redisclient.get(`/last_updated`);
+  // if (redis_res) {
+  //   res.status(200).json(JSON.parse(redis_res));
+  // } else {
+
+  // }
+  pool.query(
+    "SELECT pages.*,posts.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id where posts_ep>pages.pages_last_ep-1 ORDER BY pages.pages_id ASC;",
+    async (err, result) => {
+      try {
+        if (err) {
+          console.log(err);
+        } else {
+          res.json(result);
+        }
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
+      }
+    }
+  );
 });
 
 //! Server Running
