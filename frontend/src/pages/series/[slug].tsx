@@ -27,44 +27,46 @@ export default function page({ ...props }: any) {
           ></div>
         </div>
 
-        <div className="pages_detail relative w-full bottom-[100px] container h-100 mx-auto flex  md:col z-10 flex-col-reverse md:flex-row-reverse px-5 md:px-0">
-          <div className="pages_deltail_ep w-full md:w-4/5">
+        <div className="pages_detail relative w-full bottom-[100px] container h-100 mx-auto flex  md:col z-10 flex-col-reverse md:flex-row-reverse px-5 md:px-0 md:max-w-[1080px]">
+          <div className="pages_deltail_ep w-full md:w-9/12">
             <div className="title">
-              <h1 className="text-3xl md:text-7xl text-color_white font-bold my-5 md:my-0">
+              <h1 className="text-3xl md:text-5xl text-color_white font-bold my-5 md:my-0">
                 {props.res_page.pages_detail.title}
               </h1>
             </div>
-            <div className="tags mt-[50px]">
-              <div className="tags_title my-5">
-                <h2 className="text-3xl dark:text-color_gray font-bold">
-                  tags:
+
+            <div className="pages_content md:mx-10 mt-[80px]">
+              <div className="story my-10 text-left dark:text-color_gray text-color_dark_gray text-2xl">
+                <h2 className="text-3xl ">
+                  เรื่องย่อ {props.res_page.pages_detail.info.EN} แปลไทย{" "}
                 </h2>
+                <p>
+                  อ่านมังงะ {props.res_page.pages_detail.info.EN} {""}
+                  {props.res_page.pages_detail.info.TH}{" "}
+                  {props.res_page.pages_detail.simple}
+                </p>
               </div>
-              {props.res_page.pages_tags
-                .split(",")
-                .map((tags: string, i: number) => {
-                  return (
-                    <Link
-                      key={i}
-                      href={`/tags/${tags}`}
-                      className="bg-header_bg_menu py-[8px] px-[15px] m-2 rounded-md mx-2 dark:text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300"
-                    >
-                      {tags}
-                    </Link>
-                  );
-                })}
-            </div>
-            <div className="pages_content md:mx-10">
-              <div className="story my-10 text-left text-color_gray text-2xl">
-                <p>เรื่องย่อ</p>
-                <p>{props.res_page.pages_detail.info.EN} แปลไทย</p>
-                <p>{props.res_page.pages_detail.simple}</p>
+              <div className="tags">
+                <div className="tags_title my-5"></div>
+                {props.res_page.pages_tags
+                  .split(",")
+                  .map((tags: string, i: number) => {
+                    return (
+                      <Link
+                        key={i}
+                        href={`/tags/${tags}`}
+                        className="dark:bg-header_bg_menu bg-color_white  py-[8px] px-[15px] m-2 rounded-md mx-2 dark:text-color_white text-color_dark_gray hover:bg-site_color hover:text-color_white ease-out duration-300"
+                      >
+                        {tags}
+                      </Link>
+                    );
+                  })}
               </div>
               <div className="back_homepage w-auto text-site_color md:gap-2 my-3 grid grid-cols-1">
                 <span className="">
                   <Link href="/">หน้าแรก</Link>
                   &nbsp;|&nbsp;
-                  <Link href={`/pages/${props.res_page.pages_slug}`}>
+                  <Link href={`/series/${props.res_page.pages_slug}`}>
                     อ่าน {props.res_page.pages_detail.info.EN} แปลไทย
                   </Link>
                 </span>
@@ -79,13 +81,13 @@ export default function page({ ...props }: any) {
                   />
                 </div>
                 <div className="ep_title text-3xl font-bold my-3">
-                  <h2 className="dark:text-color_white">
+                  <h3 className="dark:text-color_white">
                     <span className="text-site_color px-2">ลำดับตอน</span>ล่าสุด
-                  </h2>
+                  </h3>
                 </div>
                 <div className="ep_list">
                   <ul
-                    className="overflow-y-scroll list-none max-h-[500px] scroll-smooth"
+                    className="overflow-y-scroll list-none max-h-[500px] scroll-smooth "
                     id="ep_list"
                   >
                     {props.res_ep.map((item: any, index: number) => {
@@ -118,13 +120,11 @@ export default function page({ ...props }: any) {
                       return (
                         <li
                           key={index}
-                          className="bg-header_bg_dark m-2 p-2 rounded-md hover:bg-site_color hover:text-color_white"
+                          className="dark:bg-header_bg_dark dark:text-color_gray  bg-color_white m-2 p-2 rounded-md dark:hover:bg-site_color dark:hover:text-color_white hover:bg-site_color hover:text-color_white shadow-md"
                         >
                           <Link href={`/${item.posts_slug}`}>
-                            <div
-                              className={`ep_container  flex gap-5 text-color_gray hover:text-color_white`}
-                            >
-                              <div className="ep_icon text-2xl font-bold flex justify-center items-center bg-pages_bg_bookopen p-4 rounded-md">
+                            <div className={`ep_container  flex gap-5 `}>
+                              <div className="ep_icon text-2xl font-bold flex justify-center items-center dark:bg-pages_bg_bookopen bg-[#e6e6e6]   hover:bg-[#ba1f2d]  p-4 rounded-md">
                                 <FaBookOpen className="text-md" />
                               </div>
                               <div className="ep_text">
@@ -151,58 +151,61 @@ export default function page({ ...props }: any) {
             </div>
           </div>
 
-          <div className="pages_deltail_info w-full md:w-1/5 flex justify-center md:justify-start flex-col">
-            <div className="thumb mx-auto w-[250px] h-[300px] relative">
+          <div className="pages_deltail_info w-full md:w-3/12 flex justify-center md:justify-start flex-col">
+            <div className="thumb mx-auto w-[250px] h-[350px] relative">
               <Image
                 src={`${props.res_page.pages_detail.thumbnail}`}
                 fill={true}
-                className="rounded-md box-shadow-2xl object-contain"
+                className="object-contain rounded-[15px] shadow-md"
                 alt="test"
               />
             </div>
             <div className="status w-full flex my-2 h-[50px]">
-              <div className="type w-full  bg-pages_status_type flex items-center justify-center rounded-l-full text-center text-color_white text-2xl p-3">
+              <div className="type w-full  bg-pages_status_type flex items-center justify-center rounded-l-full text-center text-color_white text-2xl p-3 shadow-md">
                 {props.res_page.pages_detail.info.type}
               </div>
-              <div className="status_showing bg-pages_status_showing flex items-center justify-center w-full rounded-r-full text-center text-color_white text-2xl">
+              <div className="status_showing bg-pages_status_showing flex items-center justify-center w-full rounded-r-full text-center text-color_white text-2xl shadow-md">
                 {props.res_page.pages_detail.info.status_showing}
               </div>
             </div>
-            <div className="star w-full h-[50px] bg-pages_bg_star flex justify-center items-center rounded-full my-2">
+            <div className="star w-full h-[50px] dark:bg-pages_bg_star bg-color_white flex justify-center items-center rounded-full my-2 shadow-md">
               <div className="icon relative">
                 <FaStar className="text-pages_star text-[20px] absolute right-6 top-[3px]" />
-                <span className="text-[20px] leading-2 text-color_white font-bold">
+                <span className="text-[20px] leading-2 dark:text-color_white text-color_dark_gray font-bold">
                   {props.res_page.pages_detail.info.star}
                 </span>
               </div>
             </div>
-            <div className="bookmark w-full h-[50px] bg-site_color flex justify-center items-center rounded-full my-2">
+            <div className="bookmark w-full h-[50px] bg-site_color flex justify-center items-center rounded-full my-2 shadow-md">
               <div className="icon relative">
                 <FaBookOpen className="absolute top-1 right-20 text-color_white " />
                 <p className="text-color_white">อ่านย้อนหลัง</p>
               </div>
             </div>
             <div className="follow text-center my-2">
-              <p className="text-color_gray">
+              <p className="dark:text-color_gray text-color_dark_gray">
                 มีผู้ติดตามจำนวน {props.res_page.pages_detail.info.follow}
               </p>
             </div>
-            <div className="sub w-full rounded-md bg-header_bg_dark p-5 ">
+            <div className="sub w-full rounded-md dark:bg-header_bg_dark bg-color_white p-5 shadow-md">
               <ul>
                 <li>
-                  <p className="font-bold text-color_gray text-2xl">
-                    English: <span> {props.res_page.pages_detail.info.EN}</span>
+                  <p className="font-bold text-color_dark_gray text-2xl">
+                    English
                   </p>
+                  <span> {props.res_page.pages_detail.info.EN}</span>
                 </li>
                 <li>
-                  <p className="font-bold text-color_gray text-2xl">
-                    ภาษาไทย: <span> {props.res_page.pages_detail.info.TH}</span>
+                  <p className="font-bold text-color_dark_gray text-2xl">
+                    Thai
                   </p>
+                  <span> {props.res_page.pages_detail.info.TH}</span>
                 </li>
                 <li>
-                  <p className="font-bold text-color_gray text-2xl">
-                    ตอนที่: <span> {props.res_page.pages_detail.last_ep}</span>
+                  <p className="font-bold text-color_dark_gray text-2xl">
+                    Total Charpter
                   </p>
+                  <span> {props.res_ep[0].posts_ep}</span>
                 </li>
               </ul>
             </div>
@@ -220,6 +223,6 @@ export async function getServerSideProps(context: any) {
   let res_data = await res.data;
   let res_page = await res_data[0];
   let res_ep = await res_data[1];
-  console.log(res_page);
+  console.log(res_ep);
   return { props: { res_page, res_ep } };
 }

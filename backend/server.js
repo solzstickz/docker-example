@@ -23,12 +23,15 @@ const pages = require("./router/pages");
 const posts = require("./router/posts");
 const tags = require("./router/tags");
 const auth = require("./middleware/auth");
+const search = require("./router/search");
 
 //! middleware - token.authenticateToken
 app.use("/uploads", express.static("uploads"));
 app.use("/pages", pages);
 app.use("/posts", posts);
 app.use("/tags", tags);
+app.use("/search", search);
+
 app.use("/auth", auth);
 
 //! setting up the express app
@@ -62,16 +65,24 @@ app.post("/last_updated", async (req, res) => {
   // if (redis_res) {
   //   res.status(200).json(JSON.parse(redis_res));
   // } else {
-
-  // }
   pool.query(
-    "SELECT pages.*,posts.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id where posts_ep>pages.pages_last_ep-1 ORDER BY pages.pages_id ASC;",
+    "SELECT pages.*,posts.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id where posts_ep>pages.pages_last_ep-1 ORDER BY pages.pages_last_update ASC;",
     async (err, result) => {
       try {
         if (err) {
           console.log(err);
         } else {
-          res.json(result);
+          if (result.length === 0) {
+            res.status(404).json({ message: "Not Found" });
+          }
+          await redisclient.set(
+            `/last_updated`,
+            JSON.stringify(result),
+            "EX",
+            60
+          );
+          let data = await redisclient.get(`/last_updated`);
+          res.status(200).json(JSON.parse(data));
         }
       } catch (err) {
         console.log(err);
@@ -79,6 +90,7 @@ app.post("/last_updated", async (req, res) => {
       }
     }
   );
+  // }
 });
 
 //! Server Running

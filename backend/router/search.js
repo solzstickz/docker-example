@@ -47,7 +47,7 @@ router.post("/:slug", async (req, res) => {
   //   res.status(200).json(JSON.parse(redis_res));
   // } else {
   pool.query(
-    `SELECT pages.*,posts.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id where posts_ep>pages.pages_last_ep-1 && pages_tags LIKE '%${req.params.slug}%' ORDER BY pages.pages_id ASC;`,
+    `SELECT pages.*,posts.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id where posts_ep>pages.pages_last_ep-1 && pages_detail LIKE '%${req.params.slug}%' ORDER BY pages.pages_id ASC;`,
     async (err, result) => {
       try {
         if (err) {

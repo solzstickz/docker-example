@@ -16,13 +16,13 @@ export default function post({ ...props }) {
   return (
     <>
       <Layer>
-        <div className="container mx-auto">
+        <div className="container mx-auto md:max-w-[700px]">
           <div className="content w-full flex justify-center flex-col text-center">
             <div className="title my-3">
-              <h2 className="dark:text-color_white text-5xl font-bold">
+              <h1 className="dark:text-color_white text-5xl font-bold">
                 {props.post.pages_detail.info.EN} ตอนที่
                 {props.post.posts_ep}
-              </h2>
+              </h1>
             </div>
             <div className="desc my-3">
               <p className="dark:text-color_gray">
