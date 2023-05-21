@@ -3,8 +3,6 @@ import Link from "next/link";
 import moment from "moment";
 import Image from "next/image";
 export default function Poster({ ...props }) {
-  console.log(props.pages_detail.info.type);
-
   return (
     <>
       <div className="update_new-item mx-auto flex flex-col relative max-w-[250px] hover:scale-110 transition-all ease-out delay-100 bg-color_white hover:bg-color_white  dark:text-text_color text-color_dark_gray hover:text-site_color shadow-2xl rounded-tl-md rounded-tr-md">
