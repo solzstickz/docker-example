@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tailwindui/react": "^0.1.1",
     "@types/node": "20.2.1",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
@@ -17,6 +18,7 @@
     "next": "13.4.3",
     "nextjs-progressbar": "^0.0.16",
     "react": "18.2.0",
+    "react-data-table-component": "^7.5.3",
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",
     "typescript": "5.0.4"

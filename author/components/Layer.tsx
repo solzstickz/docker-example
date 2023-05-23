@@ -9,12 +9,25 @@ import {
   FaBars,
   FaRegMoon,
   FaBell,
+  FaBookmark,
+  FaChevronDown,
 } from "react-icons/fa";
+import { Transition } from "@tailwindui/react";
+import { useRouter } from "next/router";
+
+interface comps_state {
+  path: string;
+  nav__anime: boolean;
+}
 
 export default function Layer({ children }: any) {
+  const router = useRouter();
   const [themes, setThemes] = useState("dark");
   const [nav_status, Setnav_status] = useState(false);
-
+  const [comps_state, setComps_state] = useState<comps_state>({
+    path: "e923b164-6dd4-4704-b82f-5dccdaf8245c",
+    nav__anime: false,
+  });
   const change_theme = () => {
     if (themes === "dark") {
       setThemes("light");
@@ -66,13 +79,17 @@ export default function Layer({ children }: any) {
             </Link>
             <ul className="mt-6">
               <li className="relative px-6 py-3">
-                <span
-                  className="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
-                  aria-hidden="true"
-                ></span>
+                {router.pathname.search("dashboard") &&
+                comps_state.nav__anime === false ? (
+                  <span className="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"></span>
+                ) : null}
                 <Link
-                  className="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                  href="index.html"
+                  className={`${
+                    comps_state.nav__anime
+                      ? " transition-colors duration-150 hover:text-gray-800 "
+                      : " dark:hover:text-gray-200 dark:text-gray-100 text-gray-800"
+                  } inline-flex items-center w-full text-sm font-semibold `}
+                  href={`dashboard`}
                 >
                   <FaHome className="h-5 w-5" />
                   <span className="ml-4">Dashboard</span>
@@ -80,14 +97,90 @@ export default function Layer({ children }: any) {
               </li>
             </ul>
             <ul>
-              <li className="relative px-6 py-3">
+              {/* <li className="relative px-6 py-3">
                 <Link
                   className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                  href="tables.html"
+                  href="/"
                 >
-                  <FaRegFolder className="w-5 h-5" />
-                  <span className="ml-4">Tables</span>
+                  <FaBookmark className="w-5 h-5" />
+                  <span className="ml-4">Manga</span>
                 </Link>
+              </li> */}
+              <li
+                className="relative px-6 py-3"
+                onClick={() => {
+                  setComps_state({
+                    ...comps_state,
+                    nav__anime: !comps_state.nav__anime,
+                  });
+                }}
+              >
+                <button className="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                  {comps_state.nav__anime ? (
+                    <span
+                      className="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
+                      aria-hidden="true"
+                    ></span>
+                  ) : null}
+                  <span
+                    className={`${
+                      comps_state.nav__anime
+                        ? "text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                        : ""
+                    } inline-flex items-center`}
+                  >
+                    <FaBookmark className="w-5 h-5" />
+                    <span className="ml-4">Anime</span>
+                  </span>
+                  <FaChevronDown
+                    className={`${
+                      comps_state.nav__anime ? "rotate-90 text-purple-600" : ""
+                    } w-5 h-5`}
+                  />
+                </button>
+
+                {comps_state.nav__anime ? (
+                  <Transition
+                    show={comps_state.nav__anime}
+                    enter="transition-all ease-in-out duration-300"
+                    enterFrom="opacity-25 max-h-0"
+                    enterTo="opacity-100 max-h-xl"
+                    leave="transition-all ease-in-out duration-300"
+                    leaveFrom=" opacity-100 max-h-xl"
+                    leaveTo="opacity-0 max-h-0"
+                  >
+                    <ul
+                      className={`p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900`}
+                    >
+                      <li
+                        className={`${
+                          router.pathname.search("pages") &&
+                          comps_state.nav__anime
+                            ? ""
+                            : "dark:text-gray-100"
+                        } px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200`}
+                      >
+                        <Link className="w-full" href={`pages`}>
+                          pages
+                        </Link>
+                      </li>
+                      <li
+                        className={`px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200`}
+                      >
+                        <Link className="w-full" href={`posts`}>
+                          post
+                        </Link>
+                      </li>
+                      <li
+                        className={`px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200`}
+                      >
+                        <Link className="w-full" href={`tags`}>
+                          tags
+                        </Link>
+                      </li>
+                    </ul>
+                  </Transition>
+                ) : null}
               </li>
             </ul>
             <div className="px-6 my-6">
@@ -138,26 +231,15 @@ export default function Layer({ children }: any) {
                 </li>
                 {/* <!-- Notifications menu --> */}
                 <li className="relative">
-                  <button
-                    className="relative align-middle rounded-md focus:outline-none focus:shadow-outline-purple"
-                    aria-label="Notifications"
-                    aria-haspopup="true"
-                  >
+                  <button className="relative align-middle rounded-md focus:outline-none focus:shadow-outline-purple">
                     <FaBell className="w-5 h-5" />
                     {/* <!-- Notification badge --> */}
-                    <span
-                      aria-hidden="true"
-                      className="absolute top-0 right-0 inline-block w-3 h-3 transform translate-x-1 -translate-y-1 bg-red-600 border-2 border-white rounded-full dark:border-gray-800"
-                    ></span>
+                    <span className="absolute top-0 right-0 inline-block w-3 h-3 transform translate-x-1 -translate-y-1 bg-red-600 border-2 border-white rounded-full dark:border-gray-800"></span>
                   </button>
                 </li>
                 {/* <!-- Profile menu --> */}
                 <li className="relative">
-                  <button
-                    className="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"
-                    aria-label="Account"
-                    aria-haspopup="true"
-                  >
+                  <button className="align-middle rounded-full focus:shadow-outline-purple focus:outline-none">
                     {/* <img className="object-cover w-8 h-8 rounded-full" src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=200&amp;fit=max&amp;s=aa3a807e1bbdfd4364d1f449eaa96d82" alt="" aria-hidden="true"> */}
                   </button>
                 </li>
