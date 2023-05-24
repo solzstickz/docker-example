@@ -30,6 +30,7 @@ router.post("/", async (req, res) => {
     });
   }
 });
+
 router.post("/sitemap", async (req, res) => {
   let redis_res = await redisclient.get("pages:res");
 
@@ -57,6 +58,7 @@ router.post("/sitemap", async (req, res) => {
   }
 });
 
+//! domain.com/pages/:slug
 router.post("/:slug", async (req, res) => {
   let redis_res = await redisclient.get(`pages:full:${req.params.slug}`);
   if (redis_res) {
@@ -126,5 +128,7 @@ router.post(
     res.status(200).json(path_images);
   }
 );
+
+  
 
 module.exports = router;
