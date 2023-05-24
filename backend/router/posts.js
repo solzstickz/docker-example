@@ -26,24 +26,28 @@ router.post("/", async (req, res) => {
 });
 
 router.post("/:slug", async (req, res) => {
-  let redis_res = await redisclient.get(`posts:${req.params.slug}`);
+  let redis_res = await redisclient.get(`post/:slug:${req.params.slug}`);
   if (redis_res) {
     res.status(200).json(JSON.parse(redis_res));
   } else {
     pool.query(
-      `SELECT * FROM posts WHERE posts_slug = '${req.params.slug}';`,
+      `SELECT * FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id WHERE posts_slug = ? ORDER BY posts_ep DESC;`,
+      [req.params.slug],
       async (err, result) => {
         try {
           if (err) {
             console.log("posts/:slug" + err);
           } else {
+            if (result.length === 0) {
+              res.status(404).json({ message: "Page Url Not Found !" });
+            }
             await redisclient.set(
-              `posts:${req.params.slug}`,
+              `post/:slug:${req.params.slug}`,
               JSON.stringify(result),
               "EX",
               60
             );
-            let data = await redisclient.get(`posts:${req.params.slug}`);
+            let data = await redisclient.get(`post/:slug:${req.params.slug}`);
             res.status(200).json(JSON.parse(data));
           }
         } catch (err) {
