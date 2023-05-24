@@ -7,6 +7,7 @@ import DataTable, {
 import axios from "axios";
 import { useEffect } from "react";
 import moment from "moment";
+import Link from "next/link";
 type pages = {
   pages_id: number;
   pages_slug: string;
@@ -59,6 +60,9 @@ const columns = [
   {
     name: "pages_slug",
     selector: (row: any) => row.pages_slug,
+    cell: (row: any, index: number) => (
+      <Link href={`pages/edit/${row.pages_slug}`}>{row.pages_slug}</Link>
+    ),
     sortable: true,
   },
   {
@@ -68,8 +72,23 @@ const columns = [
     sortable: true,
   },
   {
-    name: "pages_detail",
-    selector: (row: any) => row.pages_detail.title,
+    name: "View",
+    selector: (row: any) => row.pages_view,
+    sortable: true,
+  },
+  {
+    name: "Follow",
+    selector: (row: any) => row.pages_detail.info.follow,
+    sortable: true,
+  },
+  {
+    name: "type",
+    selector: (row: any) => row.pages_detail.info.type,
+    sortable: true,
+  },
+  {
+    name: "status_showing",
+    selector: (row: any) => row.pages_status_showing,
     sortable: true,
   },
   {
@@ -195,7 +214,6 @@ export const Table_pages = ({ data_table }: any) => {
 export async function getServerSideProps(context: any) {
   let res = await axios.post(`http://localhost:7777/pages/`);
   let pages = res.data;
-  console.log(`ssr` + pages);
   return {
     props: {
       pages,
