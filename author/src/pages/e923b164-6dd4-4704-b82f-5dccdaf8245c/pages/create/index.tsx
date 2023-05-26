@@ -6,11 +6,14 @@ import { useState } from "react";
 import moment from "moment";
 import Select from "react-select";
 import { FaUpload } from "react-icons/fa";
+import config from "../../../../../config/config";
+import Image from "next/image";
 
-export default function edit_pages({ ...props }) {
+export default function create_pages({ ...props }) {
+  const [uploas_page_thumbnail, setuploas_page_thumbnail] = useState<File>();
   const [create_pages, set_create_pages] = useState({
     pages_slug: "",
-    page_view: 0,
+    pages_view: 0,
     pages_last_update: moment().format(),
     pages_status_showing: "",
     pages_tags: "",
@@ -32,14 +35,87 @@ export default function edit_pages({ ...props }) {
     },
   });
 
-  const handleUpload = async () => {};
-  const handleSubmid = () => {
-    console.log(create_pages);
+  const handleUpload = async () => {
+    if (!uploas_page_thumbnail) {
+      return;
+    }
+    const formData = new FormData();
+    formData.append("uploads_pages_thumbnail", uploas_page_thumbnail);
+    axios
+      .post(`${config.API_URL}/pages/uploads/images`, formData)
+      .then((res) => {
+        console.log(res.data);
+        set_create_pages({
+          ...create_pages,
+          pages_detail: {
+            ...create_pages.pages_detail,
+            thumbnail: `http://localhost:7777/${res.data}`,
+          },
+        });
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const handleSubmid = async () => {
+    let tags_uppercase = create_pages.pages_tags.toUpperCase();
+    set_create_pages({
+      ...create_pages,
+      pages_tags: tags_uppercase,
+    });
+
+    if (
+      create_pages.pages_detail.title.length < 50 ||
+      create_pages.pages_detail.title.length > 60
+    ) {
+      alert("กรุณากรอก Title ให้ถูกต้อง");
+    } else if (
+      create_pages.pages_detail.description.length < 145 ||
+      create_pages.pages_detail.description.length > 160
+    ) {
+      alert("กรุณากรอก Description ให้ถูกต้อง");
+    } else if (create_pages.pages_slug === "") {
+      alert("กรุณากรอก Slug ให้ถูกต้อง");
+    } else if (create_pages.pages_detail.thumbnail === "") {
+      alert("กรุณาอัพโหลดรูปภาพ");
+    } else {
+      axios
+        .post(`${config.API_URL}/pages/create/page`, create_pages)
+        .then((res) => {
+          console.log(res.data);
+          if (res.status === 200) {
+            alert("สร้างหน้าเรียบร้อย");
+            set_create_pages({
+              pages_slug: "",
+              pages_view: 0,
+              pages_last_update: moment().format(),
+              pages_status_showing: "",
+              pages_tags: "",
+              pages_detail: {
+                title: "",
+                description: "",
+                simple: "",
+                last_ep: 0,
+                thumbnail: "",
+                resolution: "",
+                info: {
+                  EN: "",
+                  TH: "",
+                  star: "",
+                  type: "",
+                  follow: 0,
+                  publish: moment().format(),
+                },
+              },
+            });
+          } else {
+            alert("สร้างหน้าไม่สำเร็จ");
+          }
+        });
+    }
   };
   return (
     <>
       <Layer>
-        <h1>{`${props.edit_pages.pages_slug}`}</h1>
         <div className="container px-6 mx-auto grid">
           <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
             Create Pages Amime :D
@@ -136,23 +212,37 @@ export default function edit_pages({ ...props }) {
                 type="file"
                 onChange={(e) => {
                   if (e.target.files) {
-                    set_create_pages({
-                      ...create_pages,
-                      pages_detail: {
-                        ...create_pages.pages_detail,
-                        thumbnail: e.target.files[0].name,
-                      },
-                    });
+                    setuploas_page_thumbnail(e.target.files[0]);
                   }
+                  console.log(uploas_page_thumbnail);
                 }}
               />
-
+              <span className="text-sm"></span>
               <button
                 className="w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
                 onClick={handleUpload}
               >
                 Upload
               </button>
+              <div className="preview_imges">
+                {create_pages.pages_detail.thumbnail}
+                {create_pages.pages_detail.thumbnail ? (
+                  <Image
+                    src={create_pages.pages_detail.thumbnail}
+                    width={200}
+                    height={200}
+                    className="mx-auto my-5"
+                    alt=""
+                  />
+                ) : null}
+                {/* <Image
+                  src={create_pages.pages_detail.thumbnail}
+                  width={200}
+                  height={200}
+                  className="mx-auto my-5"
+                  alt=""
+                /> */}
+              </div>
             </div>
           </div>
 
@@ -353,16 +443,4 @@ export default function edit_pages({ ...props }) {
       </Layer>
     </>
   );
-}
-
-export async function getServerSideProps(context: any) {
-  let res = await axios.post(
-    `${process.env.API_END_POINT}/pages/${context.params.slug}`
-  );
-  let edit_pages = res.data[0];
-  return {
-    props: {
-      edit_pages,
-    },
-  };
 }

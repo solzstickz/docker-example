@@ -8,6 +8,8 @@ import axios from "axios";
 import { useEffect } from "react";
 import moment from "moment";
 import Link from "next/link";
+import config from "../../../../config/config";
+import { useRouter } from "next/router";
 type pages = {
   pages_id: number;
   pages_slug: string;
@@ -20,11 +22,29 @@ type pages = {
 };
 
 export default function pages({ ...props }) {
+  const router = useRouter();
   return (
     <>
       <Layer>
-        <h1>welcome to pages</h1>
-        <Table_pages data_table={props.pages} />
+        <div className="create_pages">
+          <div className="px-6 my-6 flex justify-end">
+            <button
+              className="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+              onClick={() => {
+                router.push(`pages/create`);
+              }}
+            >
+              Create Pages
+              <span className="ml-2" aria-hidden="true">
+                +
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <div className="table_pages mt-[50px]">
+          <Table_pages data_table={props.pages} />
+        </div>
       </Layer>
     </>
   );
