@@ -124,8 +124,12 @@ router.post(
   "/uploads/images",
   uploads.single("uploaded_file"),
   async (req, res) => {
-    let path_images = req.file.path;
-    res.status(200).json(path_images);
+    if(req.file === "undefined"){
+      res.status(500).json({ message: "Status Upload Error" });
+    }else{
+      let path_images = req.file.path;
+      res.status(200).json(path_images);
+    } 
   }
 );
 
@@ -137,12 +141,12 @@ router.post("/create/page", async (req, res) => {
       try {
         if (err) {
           console.log(err);
-            res.status(500).json({ message: "Status Insert Error" });
+            res.status(500).json({ message: "Status Mysql Insert Error" });
         } else {
           if (result.insertId > 0){
             res.status(200).json({ message : "Status Insert Success"});
           }else{
-            res.status(500).json({ message: "Status Insert Error" });
+            res.status(201).json({ message: "Status Insert Error" });
           }
         }
       } catch (err) {
