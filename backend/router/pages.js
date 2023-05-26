@@ -122,8 +122,9 @@ router.post("/:slug", async (req, res) => {
 
 router.post(
   "/uploads/images",
-  uploads.single("uploaded_file"),
+  uploads.single("uploads_pages_thumbnail"),
   async (req, res) => {
+    console.log(req.file);
     let path_images = req.file.path;
     res.status(200).json(path_images);
   }
@@ -132,50 +133,52 @@ router.post(
 //! domain.com/pages/create/page
 router.post("/create/page", async (req, res) => {
   let reqbody = await req.body;
-  reqbody.pages_detail = await JSON.stringify(reqbody.pages_detail) 
-    pool.query(`INSERT INTO pages set ?`,[reqbody], async (err, result) => {
-      try {
-        if (err) {
-          console.log(err);
-            res.status(500).json({ message: "Status Insert Error" });
-        } else {
-          if (result.insertId > 0){
-            res.status(200).json({ message : "Status Insert Success"});
-          }else{
-            res.status(500).json({ message: "Status Insert Error" });
-          }
-        }
-      } catch (err) {
+  reqbody.pages_detail = await JSON.stringify(reqbody.pages_detail);
+  pool.query(`INSERT INTO pages set ?`, [reqbody], async (err, result) => {
+    try {
+      if (err) {
         console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
+        res.status(500).json({ message: "Status Insert Error" });
+      } else {
+        if (result.insertId > 0) {
+          res.status(200).json({ message: "Status Insert Success" });
+        } else {
+          res.status(500).json({ message: "Status Insert Error" });
+        }
       }
-    });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  });
 });
 
 //! domain.com/pages/delete/page
 router.post("/delete/page", async (req, res) => {
   let reqbody = await req.body;
-  var data_value  = await reqbody.map(head => head.pages_id)
-    pool.query(`DELETE FROM pages where pages_id in (?)`,[data_value], async (err, result) => {
+  var data_value = await reqbody.map((head) => head.pages_id);
+  pool.query(
+    `DELETE FROM pages where pages_id in (?)`,
+    [data_value],
+    async (err, result) => {
       try {
         if (err) {
           console.log(err);
           res.status(500).json({ message: "Status Delete Error" });
         } else {
           console.log(result);
-          if (result.affectedRows > 0){
-            res.status(200).json({ message : "Status Delete Success"});
-          }else {
-            res.status(200).json({ message : "Status Delete Not Found"});
+          if (result.affectedRows > 0) {
+            res.status(200).json({ message: "Status Delete Success" });
+          } else {
+            res.status(200).json({ message: "Status Delete Not Found" });
           }
         }
       } catch (err) {
         console.log(err);
         res.status(500).json({ message: "Internal Server Error" });
       }
-    });
+    }
+  );
 });
-
-  
 
 module.exports = router;

@@ -9,7 +9,11 @@ import {
 } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
+import axios_client from "../../../config/axios_client";
+import { useRouter } from "next/router";
+import config from "../../../config/config";
 export default function login() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [req, setReq] = useState({
     username: "",
@@ -19,9 +23,26 @@ export default function login() {
     showPassword === true ? setShowPassword(false) : setShowPassword(true);
   };
   const handleSubmit = () => {
-    console.log(req);
+    axios_client
+      .post(
+        "/auth/create_token",
+        JSON.stringify({
+          username: `${req.username}`,
+          password: `${req.password}`,
+        })
+      )
+      .then((res) => {
+        if (res.data.token) {
+          localStorage.setItem("access_token", res.data.token);
+          router.push(`/${config.ADMIN_PATH}/dashboard`);
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          alert("Username or Password is wrong");
+        }
+      });
   };
-
   useEffect(() => {
     if (
       localStorage.theme === "dark" ||
