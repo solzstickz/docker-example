@@ -1,11 +1,7 @@
 import axios from "axios";
-
-const axios_client = axios.create({
-  baseURL: `http://localhost:7777`,
-  timeout: 1000,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
-export default axios_client;
+import { setWithExpiry, getWithExpiry } from "../lib/localstorage";
+axios.defaults.baseURL = "http://localhost:7777";
+axios.defaults.headers.common = {
+  Authorization: `bearer ${getWithExpiry("access_token")}`,
+};
+export default axios;

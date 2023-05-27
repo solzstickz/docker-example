@@ -12,6 +12,8 @@ import Image from "next/image";
 import axios_client from "../../../config/axios_client";
 import { useRouter } from "next/router";
 import config from "../../../config/config";
+import { setWithExpiry } from "../../../lib/localstorage";
+import axios from "axios";
 export default function login() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
@@ -23,26 +25,33 @@ export default function login() {
     showPassword === true ? setShowPassword(false) : setShowPassword(true);
   };
   const handleSubmit = () => {
-    axios_client
+    axios
       .post(
-        "/auth/create_token",
+        `${config.API_URL}/auth/create_token`,
         JSON.stringify({
           username: `${req.username}`,
           password: `${req.password}`,
-        })
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       )
       .then((res) => {
         if (res.data.token) {
-          localStorage.setItem("access_token", res.data.token);
+          setWithExpiry("access_token", res.data.token, 60000);
           router.push(`/${config.ADMIN_PATH}/dashboard`);
         }
       })
       .catch((err) => {
         if (err) {
           alert("Username or Password is wrong");
+          console.log(err);
         }
       });
   };
+
   useEffect(() => {
     if (
       localStorage.theme === "dark" ||

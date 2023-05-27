@@ -10,6 +10,8 @@ import moment from "moment";
 import Link from "next/link";
 import config from "../../../../config/config";
 import { useRouter } from "next/router";
+import { setWithExpiry, getWithExpiry } from "../../../../lib/localstorage";
+import axios_client from "../../../../config/axios_client";
 type pages = {
   pages_id: number;
   pages_slug: string;
@@ -23,6 +25,18 @@ type pages = {
 
 export default function pages({ ...props }) {
   const router = useRouter();
+  const [pages, setPages] = React.useState<pages[]>([]);
+
+  useEffect(() => {
+    axios_client
+      .post(`/pages/`)
+      .then((res) => {
+        setPages(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <>
       <Layer>
@@ -43,7 +57,7 @@ export default function pages({ ...props }) {
         </div>
 
         <div className="table_pages mt-[50px]">
-          <Table_pages data_table={props.pages} />
+          <Table_pages data_table={pages} />
         </div>
       </Layer>
     </>
@@ -162,7 +176,6 @@ export const Table_pages = ({ data_table }: any) => {
   const [filterText, setFilterText] = React.useState("");
   const [resetPaginationToggle, setResetPaginationToggle] =
     React.useState(false);
-  const [pages, setPages] = React.useState([]);
   const filteredItems = data_table.filter(
     (item: any) =>
       item.pages_slug &&
@@ -231,12 +244,21 @@ export const Table_pages = ({ data_table }: any) => {
   );
 };
 
-export async function getServerSideProps(context: any) {
-  let res = await axios.post(`http://localhost:7777/pages/`);
-  let pages = res.data;
-  return {
-    props: {
-      pages,
-    },
-  };
-}
+// export async function getServerSideProps(context: any, Cookies: any) {
+//   let res = await axios.post(
+//     `http://localhost:7777/pages/`,
+//     {},
+//     {
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${Cookies.token}`,
+//       },
+//     }
+//   );
+//   let pages = res.data;
+//   return {
+//     props: {
+//       pages,
+//     },
+//   };
+// }
