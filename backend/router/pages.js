@@ -69,7 +69,6 @@ router.post("/:slug", async (req, res) => {
       `SELECT * FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id WHERE pages.pages_slug = ? ORDER BY posts_ep DESC;`,
       [req.params.slug],
       async (err, result) => {
-        console.log(result);
         try {
           if (err) {
             console.log("pages/:slug" + err);
@@ -89,6 +88,7 @@ router.post("/:slug", async (req, res) => {
                 pages_status_showing: first_pages.pages_status_showing,
                 pages_tags: first_pages.pages_tags,
                 pages_detail: first_pages.pages_detail,
+                pages_last_ep: first_pages.pages_last_ep
               });
 
               _.forEach(result, (value, key) => {
@@ -101,7 +101,7 @@ router.post("/:slug", async (req, res) => {
                   posts_view: value.posts_view,
                 });
               });
-              pages.push(posts);s
+              pages.push(posts);
               await redisclient.set(
                 `pages:full:${req.params.slug}`,
                 JSON.stringify(pages),
@@ -144,7 +144,7 @@ router.post("/create/page", async (req, res) => {
     pool.query(`INSERT INTO pages set ?`,[reqbody], async (err, result) => {
       try {
         if (err) {
-          console.log(err);
+          console.log("Status Mysql Insert Error",err);
             res.status(500).json({ message: "Status Mysql Insert Error" });
         } else {
           if (result.insertId > 0){
@@ -167,7 +167,7 @@ router.post("/delete/page", async (req, res) => {
     pool.query(`DELETE FROM pages where pages_id in (?)`,[data_value], async (err, result) => {
       try {
         if (err) {
-          console.log(err);
+          console.log("Status Delete Error",err);
           res.status(500).json({ message: "Status Delete Error" });
         } else {
           console.log(result);
