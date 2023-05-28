@@ -101,7 +101,7 @@ router.post("/:slug", async (req, res) => {
                   posts_view: value.posts_view,
                 });
               });
-              pages.push(posts);s
+              pages.push(posts);
               await redisclient.set(
                 `pages:full:${req.params.slug}`,
                 JSON.stringify(pages),
