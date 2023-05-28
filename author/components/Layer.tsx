@@ -21,6 +21,7 @@ interface comps_state {
 }
 
 import { setWithExpiry, getWithExpiry } from "../lib/localstorage";
+import axios_cliclient from "../config/axios_client";
 export default function Layer({ children }: any) {
   const router = useRouter();
   const [themes, setThemes] = useState("dark");
@@ -102,7 +103,7 @@ export default function Layer({ children }: any) {
                       ? " transition-colors duration-150 hover:text-gray-800 "
                       : " dark:hover:text-gray-200 dark:text-gray-100 text-gray-800"
                   } inline-flex items-center w-full text-sm font-semibold `}
-                  href={`dashboard`}
+                  href={`/${config.ADMIN_PATH}/dashboard/`}
                 >
                   <FaHome className="h-5 w-5" />
                   <span className="ml-4">Dashboard</span>
@@ -173,7 +174,10 @@ export default function Layer({ children }: any) {
                             : "dark:text-gray-100"
                         } px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200`}
                       >
-                        <Link className="w-full" href={`pages`}>
+                        <Link
+                          className="w-full"
+                          href={`/${config.ADMIN_PATH}/pages/`}
+                        >
                           pages
                         </Link>
                       </li>
