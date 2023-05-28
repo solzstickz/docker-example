@@ -14,7 +14,6 @@ export default function create_pages({ ...props }) {
   const [create_pages, set_create_pages] = useState({
     pages_slug: "",
     pages_view: 0,
-    pages_last_update: moment().format(),
     pages_status_showing: "",
     pages_tags: "",
     pages_detail: {
@@ -29,7 +28,6 @@ export default function create_pages({ ...props }) {
         star: "",
         type: "",
         follow: 0,
-        publish: moment().format(),
       },
     },
   });
@@ -86,7 +84,6 @@ export default function create_pages({ ...props }) {
             set_create_pages({
               pages_slug: "",
               pages_view: 0,
-              pages_last_update: moment().format(),
               pages_status_showing: "",
               pages_tags: "",
               pages_detail: {
@@ -101,7 +98,6 @@ export default function create_pages({ ...props }) {
                   star: "",
                   type: "",
                   follow: 0,
-                  publish: moment().format(),
                 },
               },
             });
