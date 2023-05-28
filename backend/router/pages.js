@@ -77,7 +77,7 @@ router.post("/:slug", async (req, res) => {
 
 router.post(
   "/uploads/images",
-  uploads.single("uploaded_file"),
+  uploads.single("uploads_pages_thumbnail"),
   async (req, res) => {
     if(req.file === "undefined"){
       res.status(500).json({ message: "Status Upload Error" });
