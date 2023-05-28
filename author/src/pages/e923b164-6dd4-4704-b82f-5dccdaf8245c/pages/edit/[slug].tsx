@@ -16,7 +16,6 @@ export default function edit_pages({ ...props }) {
     pages_id: "",
     pages_slug: "",
     page_view: 0,
-    pages_last_update: moment().format(),
     pages_status_showing: "",
     pages_tags: "",
     pages_detail: {
@@ -32,7 +31,7 @@ export default function edit_pages({ ...props }) {
         star: "",
         type: "",
         follow: 0,
-        publish: moment().format(),
+        publish: "",
       },
     },
   });
