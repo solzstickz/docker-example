@@ -88,6 +88,7 @@ router.post("/:slug", async (req, res) => {
                 pages_status_showing: first_pages.pages_status_showing,
                 pages_tags: first_pages.pages_tags,
                 pages_detail: first_pages.pages_detail,
+                pages_last_ep: first_pages.pages_last_ep
               });
 
               _.forEach(result, (value, key) => {
