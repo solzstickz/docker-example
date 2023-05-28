@@ -10,26 +10,18 @@ const moment = require('moment');
 
 //! domain.com/pages/
 router.post("/", async (req, res) => {
-  let redis_res = await redisclient.get("pages:res");
-
-  if (redis_res) {
-    res.status(200).json(JSON.parse(redis_res));
-  } else {
     pool.query("SELECT * FROM `pages`;", async (err, result) => {
       try {
         if (err) {
           console.log(err);
         } else {
-          await redisclient.set("pages:res", JSON.stringify(result), "EX", 60);
-          let data = await redisclient.get("pages:res");
-          res.status(200).json(JSON.parse(data));
+          res.status(200).json(result);
         }
       } catch (err) {
         console.log(err);
         res.status(500).json({ message: "Internal Server Error" });
       }
     });
-  }
 });
 
 
