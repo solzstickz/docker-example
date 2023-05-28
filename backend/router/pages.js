@@ -32,39 +32,9 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.post("/sitemap", async (req, res) => {
-  let redis_res = await redisclient.get("pages:res");
-
-  if (redis_res) {
-    res.status(200).json(JSON.parse(redis_res));
-  } else {
-    pool.query("SELECT * FROM `pages`;", async (err, result) => {
-      try {
-        if (err) {
-          console.log(err);
-        } else {
-          // push result.length to result
-          let total_pages = result.length;
-          let total = { posts_total: { total_pages } };
-          value = result.push(total);
-          await redisclient.set("pages:res", JSON.stringify(result), "EX", 60);
-          let data = await redisclient.get("pages:res");
-          res.status(200).json(JSON.parse(data));
-        }
-      } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
-      }
-    });
-  }
-});
 
 //! domain.com/pages/:slug
 router.post("/:slug", async (req, res) => {
-  let redis_res = await redisclient.get(`pages:full:${req.params.slug}`);
-  // if (redis_res) {
-  //   res.status(200).json(JSON.parse(redis_res));
-  // } else {
     pool.query(
       `SELECT * FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id WHERE pages.pages_slug = ? ORDER BY posts_ep DESC;`,
       [req.params.slug],
@@ -102,14 +72,7 @@ router.post("/:slug", async (req, res) => {
                 });
               });
               pages.push(posts);
-              await redisclient.set(
-                `pages:full:${req.params.slug}`,
-                JSON.stringify(pages),
-                "EX",
-                60
-              );
-              let data = await redisclient.get(`pages:full:${req.params.slug}`);
-              res.status(200).json(JSON.parse(data));
+              res.status(200).json(pages);
             }
           }
         } catch (err) {
@@ -118,7 +81,6 @@ router.post("/:slug", async (req, res) => {
         }
       }
     );
-  // }
 });
 
 router.post(
