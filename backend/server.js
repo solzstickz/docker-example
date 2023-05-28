@@ -27,7 +27,7 @@ const search = require("./router/search");
 
 //! middleware - token.authenticateToken
 app.use("/uploads", express.static("uploads"));
-app.use("/pages", pages);
+app.use("/pages", token.authenticateToken, pages);
 app.use("/posts", posts);
 app.use("/tags", tags);
 app.use("/search", search);

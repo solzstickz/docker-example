@@ -14,12 +14,13 @@ import {
 } from "react-icons/fa";
 import { Transition } from "@tailwindui/react";
 import { useRouter } from "next/router";
-
+import config from "../config/config";
 interface comps_state {
   path: string;
   nav__anime: boolean;
 }
 
+import { setWithExpiry, getWithExpiry } from "../lib/localstorage";
 export default function Layer({ children }: any) {
   const router = useRouter();
   const [themes, setThemes] = useState("dark");
@@ -28,6 +29,18 @@ export default function Layer({ children }: any) {
     path: "e923b164-6dd4-4704-b82f-5dccdaf8245c",
     nav__anime: false,
   });
+
+  const Check_token = () => {
+    if (getWithExpiry("access_token")) {
+      console.log("Access_token", getWithExpiry("access_token"));
+    } else {
+      router.push(`/${config.ADMIN_PATH}`);
+    }
+  };
+  useEffect(() => {
+    Check_token();
+  }, []);
+
   const change_theme = () => {
     if (themes === "dark") {
       setThemes("light");
@@ -184,7 +197,17 @@ export default function Layer({ children }: any) {
               </li>
             </ul>
             <div className="px-6 my-6">
-              <button className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+              <button
+                className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+                onClick={() => {
+                  localStorage.removeItem("access_token");
+                  router.push(`/${config.ADMIN_PATH}`);
+                  console.log(
+                    "Clear Token ",
+                    localStorage.getItem("access_token")
+                  );
+                }}
+              >
                 Create account
                 <span className="ml-2" aria-hidden="true">
                   +

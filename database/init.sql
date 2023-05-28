@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: May 19, 2023 at 08:51 AM
+-- Generation Time: May 24, 2023 at 11:02 AM
 -- Server version: 5.7.42
 -- PHP Version: 8.1.17
 
@@ -30,11 +30,11 @@ SET time_zone = "+00:00";
 CREATE TABLE `pages` (
   `pages_id` int(10) NOT NULL,
   `pages_slug` varchar(1000) NOT NULL,
-  `pages_view` int(100) NOT NULL,
+  `pages_view` int(100) NOT NULL DEFAULT '0',
   `pages_last_update` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-  `pages_status_showing` varchar(100) NOT NULL,
-  `pages_tags` varchar(100) NOT NULL,
-  `pages_last_ep` int(100) NOT NULL,
+  `pages_status_showing` varchar(100) NOT NULL DEFAULT '0',
+  `pages_tags` varchar(100) DEFAULT NULL,
+  `pages_last_ep` int(100) NOT NULL DEFAULT '0',
   `pages_detail` json NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -103,7 +103,7 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT for table `pages`
 --
 ALTER TABLE `pages`
-  MODIFY `pages_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `pages_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `posts`

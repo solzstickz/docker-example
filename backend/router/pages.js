@@ -124,8 +124,12 @@ router.post(
   "/uploads/images",
   uploads.single("uploaded_file"),
   async (req, res) => {
-    let path_images = req.file.path;
-    res.status(200).json(path_images);
+    if(req.file === "undefined"){
+      res.status(500).json({ message: "Status Upload Error" });
+    }else{
+      let path_images = req.file.path;
+      res.status(200).json(path_images);
+    } 
   }
 );
 
@@ -137,12 +141,12 @@ router.post("/create/page", async (req, res) => {
       try {
         if (err) {
           console.log(err);
-            res.status(500).json({ message: "Status Insert Error" });
+            res.status(500).json({ message: "Status Mysql Insert Error" });
         } else {
           if (result.insertId > 0){
             res.status(200).json({ message : "Status Insert Success"});
           }else{
-            res.status(500).json({ message: "Status Insert Error" });
+            res.status(201).json({ message: "Status Insert Error" });
           }
         }
       } catch (err) {
@@ -167,6 +171,31 @@ router.post("/delete/page", async (req, res) => {
             res.status(200).json({ message : "Status Delete Success"});
           }else {
             res.status(200).json({ message : "Status Delete Not Found"});
+          }
+        }
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
+      }
+    });
+});
+
+//! domain.com/pages/create/page
+router.post("/edit/page/", async (req, res) => {
+  let reqbody = await req.body;
+  const pages_id = await reqbody.pages_id;
+  delete reqbody.pages_id;
+  reqbody.pages_detail = await JSON.stringify(reqbody.pages_detail) 
+    pool.query(`UPDATE pages set ? WHERE pages_id = ?`,[reqbody,pages_id], async (err, result) => {
+      try {
+        if (err) {
+            console.log(`Status Mysql Insert Error` + err);
+            res.status(500).json({ message: "Status Mysql Insert Error" });
+        } else {
+          if (result.changedRows > 0){
+            res.status(200).json({ message : "Status Update Success"});
+          }else{
+            res.status(201).json({ message: "Status Update Error Data Dupicate Please Try Again" });
           }
         }
       } catch (err) {
