@@ -6,6 +6,7 @@ const _ = require("lodash");
 const multer = require("multer");
 const crypto = require("crypto");
 const uploads = require("../middleware/uploads");
+const moment = require('moment');
 
 //! domain.com/pages/
 router.post("/", async (req, res) => {
@@ -100,7 +101,7 @@ router.post("/:slug", async (req, res) => {
                   posts_view: value.posts_view,
                 });
               });
-              pages.push(posts);
+              pages.push(posts);s
               await redisclient.set(
                 `pages:full:${req.params.slug}`,
                 JSON.stringify(pages),
@@ -136,6 +137,9 @@ router.post(
 //! domain.com/pages/create/page
 router.post("/create/page", async (req, res) => {
   let reqbody = await req.body;
+  const formatdatetime = "YYYY-MM-DD HH:mm:ss"
+  reqbody.pages_last_update = moment().format(formatdatetime);
+  reqbody.pages_detail.info.publish = moment().format(formatdatetime);
   reqbody.pages_detail = await JSON.stringify(reqbody.pages_detail) 
     pool.query(`INSERT INTO pages set ?`,[reqbody], async (err, result) => {
       try {
@@ -184,7 +188,9 @@ router.post("/delete/page", async (req, res) => {
 router.post("/edit/page/", async (req, res) => {
   let reqbody = await req.body;
   const pages_id = await reqbody.pages_id;
+  const formatdatetime = "YYYY-MM-DD HH:mm:ss"
   delete reqbody.pages_id;
+  reqbody.pages_last_update = moment().format(formatdatetime);
   reqbody.pages_detail = await JSON.stringify(reqbody.pages_detail) 
     pool.query(`UPDATE pages set ? WHERE pages_id = ?`,[reqbody,pages_id], async (err, result) => {
       try {
