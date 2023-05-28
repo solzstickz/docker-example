@@ -1,5 +1,6 @@
 import React from "react";
 import Layer from "../../../components/Layer";
+import axios_client from "../../../config/axios_client";
 export default function Dashboard() {
   return (
     <>

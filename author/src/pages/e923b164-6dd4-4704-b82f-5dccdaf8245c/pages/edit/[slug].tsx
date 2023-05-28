@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layer from "../../../../../components/Layer";
 import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
 import moment from "moment";
 import Select from "react-select";
-import { FaUpload } from "react-icons/fa";
-
+import axios_client from "../../../../../config/axios_client";
+import { useRouter } from "next/router";
+import Image from "next/image";
+import pages from "..";
 export default function edit_pages({ ...props }) {
+  const router = useRouter();
+  const [uploas_page_thumbnail, setuploas_page_thumbnail] = useState<File>();
   const [create_pages, set_create_pages] = useState({
+    pages_id: "",
     pages_slug: "",
     page_view: 0,
     pages_last_update: moment().format(),
@@ -32,14 +37,66 @@ export default function edit_pages({ ...props }) {
     },
   });
 
-  const handleUpload = async () => {};
+  // export async function getServerSideProps(context: any) {
+  //   let res = await axios.post(
+  //     `${process.env.API_END_POINT}/pages/${context.params.slug}`
+  //   );
+  //   let edit_pages = res.data[0];
+  //   return {
+  //     props: {
+  //       edit_pages,
+  //     },
+  //   };
+  // }
+
+  useEffect(() => {
+    axios_client
+      .post(`/pages/${router.query.slug}`)
+      .then((res) => {
+        console.log(res.data[0]);
+        set_create_pages(res.data[0]);
+      })
+      .catch((err) => {
+        console.log(`pages:edit:slug` + err);
+      });
+  }, []);
+
+  const handleUpload = async () => {
+    if (!uploas_page_thumbnail) {
+      return;
+    }
+    const formData = new FormData();
+    formData.append("uploads_pages_thumbnail", uploas_page_thumbnail);
+    axios_client
+      .post(`/pages/uploads/images`, formData)
+      .then((res) => {
+        set_create_pages({
+          ...create_pages,
+          pages_detail: {
+            ...create_pages.pages_detail,
+            thumbnail: res.data,
+          },
+        });
+        //! not sure edit thumbnail pls recheck !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      })
+      .catch((err) => {
+        console.log(`pages:uploads_edit:slug` + err);
+      });
+  };
+
   const handleSubmid = () => {
-    console.log(create_pages);
+    axios_client
+      .post(`/pages/edit/page/`, create_pages)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(`pages:edit:slug` + err);
+      });
   };
   return (
     <>
       <Layer>
-        <h1>{`${props.edit_pages.pages_slug}`}</h1>
         <div className="container px-6 mx-auto grid">
           <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
             Create Pages Amime :D
@@ -71,6 +128,8 @@ export default function edit_pages({ ...props }) {
                   : "border-red-600 border-2"
               } block w-full mt-1 text-sm  dark:text-gray-300 dark:bg-gray-700  focus:outline-none focus:shadow-outline-red form-input`}
               type="text"
+              value={create_pages.pages_detail.title}
+              name="title"
               onChange={(e) => {
                 set_create_pages({
                   ...create_pages,
@@ -97,6 +156,8 @@ export default function edit_pages({ ...props }) {
                   : "border-red-600 border-2"
               } block w-full mt-1 text-sm  dark:text-gray-300 dark:bg-gray-700  focus:outline-none focus:shadow-outline-red form-input`}
               type="text"
+              value={create_pages.pages_detail.description}
+              name="description"
               onChange={(e) => {
                 set_create_pages({
                   ...create_pages,
@@ -115,6 +176,9 @@ export default function edit_pages({ ...props }) {
             <input
               className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
               required
+              value={create_pages.pages_slug}
+              name="slug"
+              type="text"
               onChange={(e) => {
                 set_create_pages({
                   ...create_pages,
@@ -134,15 +198,10 @@ export default function edit_pages({ ...props }) {
               <input
                 className="block w-full mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 p-3"
                 type="file"
+                name="thumbnail"
                 onChange={(e) => {
                   if (e.target.files) {
-                    set_create_pages({
-                      ...create_pages,
-                      pages_detail: {
-                        ...create_pages.pages_detail,
-                        thumbnail: e.target.files[0].name,
-                      },
-                    });
+                    setuploas_page_thumbnail(e.target.files[0]);
                   }
                 }}
               />
@@ -150,9 +209,29 @@ export default function edit_pages({ ...props }) {
               <button
                 className="w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
                 onClick={handleUpload}
+                name="upload_thumbnail"
               >
                 Upload
               </button>
+              <div className="preview_imges">
+                {create_pages.pages_detail.thumbnail}
+                {create_pages.pages_detail.thumbnail ? (
+                  <Image
+                    src={create_pages.pages_detail.thumbnail}
+                    width={200}
+                    height={200}
+                    className="mx-auto my-5"
+                    alt=""
+                  />
+                ) : null}
+                {/* <Image
+                  src={create_pages.pages_detail.thumbnail}
+                  width={200}
+                  height={200}
+                  className="mx-auto my-5"
+                  alt=""
+                /> */}
+              </div>
             </div>
           </div>
 
@@ -171,6 +250,8 @@ export default function edit_pages({ ...props }) {
               <textarea
                 className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-textarea focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                 rows={3}
+                value={create_pages.pages_detail.simple}
+                name="simple"
                 onChange={(e) => {
                   set_create_pages({
                     ...create_pages,
@@ -189,13 +270,14 @@ export default function edit_pages({ ...props }) {
 
               <select
                 className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                name="status_showing"
+                value={create_pages.pages_status_showing}
                 onChange={(e) => {
                   set_create_pages({
                     ...create_pages,
                     pages_status_showing: e.target.value,
                   });
                 }}
-                value={create_pages.pages_status_showing}
               >
                 <option value={""}></option>
                 <option value={"อาทิตย์"}>อาทิตย์</option>
@@ -216,6 +298,9 @@ export default function edit_pages({ ...props }) {
               <input
                 className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                 required
+                value={create_pages.pages_tags}
+                name="tags"
+                type="text"
                 onChange={(e) => {
                   set_create_pages({
                     ...create_pages,
@@ -232,6 +317,9 @@ export default function edit_pages({ ...props }) {
               <input
                 className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                 required
+                value={create_pages.pages_detail.info.EN}
+                name="EN"
+                type="text"
                 onChange={(e) => {
                   set_create_pages({
                     ...create_pages,
@@ -252,6 +340,9 @@ export default function edit_pages({ ...props }) {
               </span>
               <input
                 className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                value={create_pages.pages_detail.info.TH}
+                name="TH"
+                type="text"
                 onChange={(e) => {
                   set_create_pages({
                     ...create_pages,
@@ -274,6 +365,8 @@ export default function edit_pages({ ...props }) {
                 className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                 type="number"
                 required
+                name="star"
+                value={create_pages.pages_detail.info.star}
                 onChange={(e) => {
                   set_create_pages({
                     ...create_pages,
@@ -295,6 +388,8 @@ export default function edit_pages({ ...props }) {
               </span>
               <select
                 className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                name="type"
+                value={create_pages.pages_detail.info.type}
                 onChange={(e) => {
                   set_create_pages({
                     ...create_pages,
@@ -307,7 +402,6 @@ export default function edit_pages({ ...props }) {
                     },
                   });
                 }}
-                value={create_pages.pages_detail.info.type}
               >
                 <option value={""}></option>
                 <option value={"Manga"}>Manga</option>
@@ -316,36 +410,12 @@ export default function edit_pages({ ...props }) {
               </select>
             </div>
             <div className="mt-4">
-              {" "}
-              <span className="text-gray-700 dark:text-gray-400 mt-4 text-sm">
-                resolution | Example : 4K
-              </span>
-              <select
-                className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                onChange={(e) => {
-                  set_create_pages({
-                    ...create_pages,
-                    pages_detail: {
-                      ...create_pages.pages_detail,
-                      resolution: e.target.value,
-                    },
-                  });
-                }}
-                value={create_pages.pages_detail.resolution}
-              >
-                <option value={""}></option>
-                <option value={"8K"}>8K</option>
-                <option value={"4K"}>4K</option>
-                <option value={"1080p"}>1080p</option>
-                <option value={"720p"}>720p</option>
-                <option value={"480p"}>480p</option>
-              </select>
               <button
-                className="w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green my-3"
+                className="w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-orange-600 border border-transparent rounded-lg active:bg-orange-600 hover:bg-orange-700 focus:outline-none focus:shadow-outline-green my-3"
                 type="button"
                 onClick={handleSubmid}
               >
-                Submit
+                Edit Submit
               </button>
             </div>
           </div>
@@ -353,16 +423,4 @@ export default function edit_pages({ ...props }) {
       </Layer>
     </>
   );
-}
-
-export async function getServerSideProps(context: any) {
-  let res = await axios.post(
-    `${process.env.API_END_POINT}/pages/${context.params.slug}`
-  );
-  let edit_pages = res.data[0];
-  return {
-    props: {
-      edit_pages,
-    },
-  };
 }

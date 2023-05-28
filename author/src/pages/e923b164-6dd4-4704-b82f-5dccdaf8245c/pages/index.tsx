@@ -34,7 +34,7 @@ export default function pages({ ...props }) {
         setPages(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(`pages:edit:index` + err);
       });
   }, []);
   return (

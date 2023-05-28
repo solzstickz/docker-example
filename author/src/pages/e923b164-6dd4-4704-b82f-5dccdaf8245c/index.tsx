@@ -40,7 +40,8 @@ export default function login() {
       )
       .then((res) => {
         if (res.data.token) {
-          setWithExpiry("access_token", res.data.token, 60000);
+          //! 1 sec = 1000ms , 6000ms = 1 min , 600000ms = 10 min , 3600000ms = 1 hour , 86400000ms = 1 day
+          setWithExpiry("access_token", res.data.token, 3600000);
           router.push(`/${config.ADMIN_PATH}/dashboard`);
         }
       })
