@@ -62,9 +62,9 @@ router.post("/sitemap", async (req, res) => {
 //! domain.com/pages/:slug
 router.post("/:slug", async (req, res) => {
   let redis_res = await redisclient.get(`pages:full:${req.params.slug}`);
-  if (redis_res) {
-    res.status(200).json(JSON.parse(redis_res));
-  } else {
+  // if (redis_res) {
+  //   res.status(200).json(JSON.parse(redis_res));
+  // } else {
     pool.query(
       `SELECT * FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id WHERE pages.pages_slug = ? ORDER BY posts_ep DESC;`,
       [req.params.slug],
@@ -118,7 +118,7 @@ router.post("/:slug", async (req, res) => {
         }
       }
     );
-  }
+  // }
 });
 
 router.post(
