@@ -23,7 +23,6 @@ export default function create_pages({ ...props }) {
       simple: "",
       last_ep: 0,
       thumbnail: "",
-      resolution: "",
       info: {
         EN: "",
         TH: "",
@@ -96,7 +95,6 @@ export default function create_pages({ ...props }) {
                 simple: "",
                 last_ep: 0,
                 thumbnail: "",
-                resolution: "",
                 info: {
                   EN: "",
                   TH: "",
@@ -406,30 +404,6 @@ export default function create_pages({ ...props }) {
               </select>
             </div>
             <div className="mt-4">
-              {" "}
-              <span className="text-gray-700 dark:text-gray-400 mt-4 text-sm">
-                resolution | Example : 4K
-              </span>
-              <select
-                className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                onChange={(e) => {
-                  set_create_pages({
-                    ...create_pages,
-                    pages_detail: {
-                      ...create_pages.pages_detail,
-                      resolution: e.target.value,
-                    },
-                  });
-                }}
-                value={create_pages.pages_detail.resolution}
-              >
-                <option value={""}></option>
-                <option value={"8K"}>8K</option>
-                <option value={"4K"}>4K</option>
-                <option value={"1080p"}>1080p</option>
-                <option value={"720p"}>720p</option>
-                <option value={"480p"}>480p</option>
-              </select>
               <button
                 className="w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green my-3"
                 type="button"
