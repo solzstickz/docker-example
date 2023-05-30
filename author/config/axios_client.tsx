@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getWithExpiry } from "../lib/localstorage";
-axios.defaults.baseURL = "http://localhost:7777";
+import config from "./config";
+axios.defaults.baseURL = config.API_URL;
 axios.defaults.headers.common = {
   Authorization: `bearer ${getWithExpiry("access_token")}`,
 };

@@ -8,8 +8,10 @@ import Select from "react-select";
 import { FaUpload } from "react-icons/fa";
 import config from "../../../../../config/config";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 export default function create_pages({ ...props }) {
+  const router = useRouter();
   const [uploas_page_thumbnail, setuploas_page_thumbnail] = useState<File>();
   const [create_pages, set_create_pages] = useState({
     pages_slug: "",
@@ -20,7 +22,6 @@ export default function create_pages({ ...props }) {
       title: "",
       description: "",
       simple: "",
-      last_ep: 0,
       thumbnail: "",
       info: {
         EN: "",
@@ -46,7 +47,7 @@ export default function create_pages({ ...props }) {
           ...create_pages,
           pages_detail: {
             ...create_pages.pages_detail,
-            thumbnail: `http://localhost:7777/${res.data}`,
+            thumbnail: `${config.API_URL}/${res.data}`,
           },
         });
       })
@@ -90,7 +91,6 @@ export default function create_pages({ ...props }) {
                 title: "",
                 description: "",
                 simple: "",
-                last_ep: 0,
                 thumbnail: "",
                 info: {
                   EN: "",
@@ -101,6 +101,7 @@ export default function create_pages({ ...props }) {
                 },
               },
             });
+            router.push(`${config.API_URL}/pages/`);
           } else {
             alert("สร้างหน้าไม่สำเร็จ");
           }
@@ -208,7 +209,6 @@ export default function create_pages({ ...props }) {
                   if (e.target.files) {
                     setuploas_page_thumbnail(e.target.files[0]);
                   }
-                  console.log(uploas_page_thumbnail);
                 }}
               />
               <span className="text-sm"></span>
