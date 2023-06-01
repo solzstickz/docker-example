@@ -4,24 +4,34 @@ const redisclient = require("../config/redis");
 const pool = require("../config/mysql");
 
 router.post("/", async (req, res) => {
-  let redis_res = await redisclient.get("posts:res");
-  if (redis_res) {
-    res.status(200).json(JSON.parse(redis_res));
-  } else {
-    pool.query("SELECT * FROM `posts`;", async (err, result) => {
-      try {
-        if (err) {
+  try {
+    let redis_res = await redisclient.get("posts:res");
+    if (redis_res) {
+      res.status(200).json(JSON.parse(redis_res));
+    } else {
+      pool.query("SELECT * FROM `posts`;", async (err, result) => {
+        try {
+          if (err) {
+            console.log(err);
+          } else {
+            await redisclient.set(
+              "posts:res",
+              JSON.stringify(result),
+              "EX",
+              60
+            );
+            let data = await redisclient.get("posts:res");
+            res.status(200).json(JSON.parse(data));
+          }
+        } catch (err) {
           console.log(err);
-        } else {
-          await redisclient.set("posts:res", JSON.stringify(result), "EX", 60);
-          let data = await redisclient.get("posts:res");
-          res.status(200).json(JSON.parse(data));
+          res.status(500).json({ message: "Internal Server Error" });
         }
-      } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
-      }
-    });
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 

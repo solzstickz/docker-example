@@ -24,6 +24,7 @@ const posts = require("./router/posts");
 const tags = require("./router/tags");
 const auth = require("./middleware/auth");
 const search = require("./router/search");
+const public = require("./router/public");
 
 //! middleware - token.authenticateToken
 app.use("/uploads", express.static("uploads"));
@@ -31,6 +32,7 @@ app.use("/pages", token.authenticateToken, pages);
 app.use("/posts", posts);
 app.use("/tags", tags);
 app.use("/search", search);
+app.use("/public", public);
 
 app.use("/auth", auth);
 

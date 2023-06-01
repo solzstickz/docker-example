@@ -11,6 +11,7 @@ const config = {
   user: process.env.USER_MYSQL,
   password: process.env.PASSWORD_MYSQL,
   database: process.env.DATABASE_MYSQL,
+
   waitForConnections: true,
   connectionLimit: 10,
   maxIdle: 10, // max idle connections, the default value is the same as `connectionLimit`
