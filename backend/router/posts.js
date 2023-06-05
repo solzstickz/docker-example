@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const redisclient = require("../config/redis");
 const pool = require("../config/mysql");
+const uploads = require("../middleware/uploads");
 
 router.post("/", async (req, res) => {
   try {
@@ -33,6 +34,13 @@ router.post("/", async (req, res) => {
     console.log(err);
     res.status(500).json({ message: "Internal Server Error" });
   }
+});
+
+app.post('/uploads',uploads, function (req, res, next) {
+  console.log('File uploaded successfully.');
+  console.log(req.files[0].key);
+  const path = `uploads/${req.files[0].key}`
+  res.json({url:`${path}`});
 });
 
 router.post("/:slug", async (req, res) => {

@@ -7,7 +7,6 @@ const pool = require("./config/mysql");
 const token = require("./middleware/token");
 const _ = require("lodash");
 const port = process.env.SERVER_PORT;
-const uploads = require("./middleware/uploads");
 
 app.use(
   cors({
@@ -45,12 +44,6 @@ app.get("/", (req, res) => {
 
 
 
-app.post('/uploads',uploads, function (req, res, next) {
-    console.log('File uploaded successfully.');
-    console.log(req.files[0].key);
-    const path = `uploads/${req.files[0].key}`
-    res.json({url:`${path}`});
-});
 
 
 

@@ -75,6 +75,13 @@ router.post("/:slug", async (req, res) => {
     );
 });
 
+app.post('/uploads',uploads, function (req, res, next) {
+  console.log('File uploaded successfully.');
+  console.log(req.files[0].key);
+  const path = `uploads/${req.files[0].key}`
+  res.json({url:`${path}`});
+});
+
 // router.post(
 //   "/uploads/images",
 //   uploads.single("uploads_pages_thumbnail"),
