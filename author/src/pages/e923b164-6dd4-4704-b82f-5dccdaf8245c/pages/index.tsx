@@ -13,16 +13,23 @@ import { useRouter } from "next/router";
 import { setWithExpiry, getWithExpiry } from "../../../../lib/localstorage";
 import axios_client from "../../../../config/axios_client";
 import { FaEdit } from "react-icons/fa";
-import { json } from "stream/consumers";
 type pages = {
   pages_id: number;
   pages_slug: string;
   pages_view: number;
-  pages_last_update: string;
+  pages_last_update: Date;
   pages_status_showing: string;
-  pages_tags: string;
   pages_last_ep: number;
-  pages_detail: [];
+  pages_en: string;
+  pages_th: string;
+  pages_star: number;
+  pages_type: string;
+  pages_follow: number;
+  pages_publish: Date;
+  pages_title: string;
+  pages_simple: string;
+  pages_thumbnail: string;
+  pages_description: string;
 };
 
 export default function pages({ ...props }) {
@@ -33,9 +40,14 @@ export default function pages({ ...props }) {
     axios_client
       .post(`/pages/`)
       .then((res) => {
-        setPages(res.data);
+        if (res.status) {
+          setPages(res.data);
+        }
       })
       .catch((err) => {
+        if (err) {
+          router.push(`/${config.ADMIN_PATH}/`);
+        }
         console.log(`pages:edit:index` + err);
       });
   }, []);
@@ -122,12 +134,12 @@ const columns = [
   },
   {
     name: "Follow",
-    selector: (row: any) => row.pages_detail.info.follow,
+    selector: (row: any) => row.pages_follow,
     sortable: true,
   },
   {
     name: "type",
-    selector: (row: any) => row.pages_detail.info.type,
+    selector: (row: any) => row.pages_type,
     sortable: true,
   },
   {
@@ -148,19 +160,6 @@ const columns = [
     ignoreRowClick: true,
     allowOverflow: true,
     button: true,
-  },
-];
-
-const data = [
-  {
-    id: 1,
-    title: "Beetlejuice",
-    year: "1988",
-  },
-  {
-    id: 2,
-    title: "Ghostbusters",
-    year: "1984",
   },
 ];
 
@@ -185,18 +184,19 @@ const FilterComponent = ({ filterText, onFilter, onClear }: any) => {
 
 export const Table_pages = ({ data_table }: any) => {
   const [pending, setPending] = React.useState(true);
-  const [rows, setRows] = React.useState([]);
+  useEffect(() => {
+    setPending(false);
+  }, [data_table]);
+
   const [filterText, setFilterText] = React.useState("");
   const [resetPaginationToggle, setResetPaginationToggle] =
     React.useState(false);
-
-  const [selectedRows, setSelectedRows] = React.useState(false);
-  const router = useRouter();
   const filteredItems = data_table.filter(
     (item: any) =>
       item.pages_slug &&
-      item.pages_detail.title.toLowerCase().includes(filterText.toLowerCase())
+      item.pages_title.toLowerCase().includes(filterText.toLowerCase())
   );
+  const [selectedRows, setSelectedRows] = React.useState([]);
 
   const subHeaderComponentMemo = React.useMemo(() => {
     const handleClear = () => {
@@ -225,8 +225,9 @@ export const Table_pages = ({ data_table }: any) => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const handleChange = ({ selectedRows }) => {
+  const handleChange = ({ selectedRows }: any) => {
     setSelectedRows(selectedRows);
+    console.log("selectedRows:", selectedRows);
   };
 
   const contextActions = React.useMemo(() => {
@@ -251,7 +252,8 @@ export const Table_pages = ({ data_table }: any) => {
           .then((res) => {
             if (res.status === 200) {
               alert(`${res.data.message}`);
-              window.location.reload();
+              // window.location.reload();
+              console.log(delete_id);
             }
             if (res.status === 201) {
               alert(`${res.data.message}`);
@@ -274,7 +276,7 @@ export const Table_pages = ({ data_table }: any) => {
         Delete
       </button>
     );
-  }, [data, selectedRows]);
+  }, [selectedRows]);
 
   const ExpandedComponent: React.FC<ExpanderComponentProps<pages>> = ({
     data,

@@ -19,21 +19,17 @@ export default function edit_pages({ ...props }) {
     pages_view: 0,
     pages_status_showing: "",
     pages_tags: "",
-    pages_last_ep: 0,
-    pages_detail: {
-      title: "",
-      description: "",
-      simple: "",
-      thumbnail: "",
-      info: {
-        EN: "",
-        TH: "",
-        star: "",
-        type: "",
-        follow: 0,
-        publish: "",
-      },
-    },
+    pages_last_ep: "",
+    pages_title: "",
+    pages_description: "",
+    pages_simple: "",
+    pages_thumbnail: "",
+    pages_en: "",
+    pages_th: "",
+    pages_star: "",
+    pages_type: "",
+    pages_follow: 0,
+    pages_publish: "",
   });
 
   // export async function getServerSideProps(context: any) {
@@ -71,10 +67,7 @@ export default function edit_pages({ ...props }) {
       .then((res) => {
         set_create_pages({
           ...create_pages,
-          pages_detail: {
-            ...create_pages.pages_detail,
-            thumbnail: `${config.API_URL}/${res.data}`,
-          },
+          pages_thumbnail: `${config.API_URL}/${res.data}`,
         });
         //! not sure edit thumbnail pls recheck !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       })
@@ -122,27 +115,23 @@ export default function edit_pages({ ...props }) {
 
             <span className="text-xs">
               {" "}
-              {create_pages.pages_detail.title.length}/60
+              {create_pages.pages_title.length}/60
             </span>
             <input
               className={`${
-                create_pages.pages_detail.title.length >= 50 &&
-                create_pages.pages_detail.title.length <= 60
+                create_pages.pages_title.length >= 50 &&
+                create_pages.pages_title.length <= 60
                   ? "border-green-600 border-2"
                   : "border-red-600 border-2"
               } block w-full mt-1 text-sm  dark:text-gray-300 dark:bg-gray-700  focus:outline-none focus:shadow-outline-red form-input`}
               type="text"
-              value={create_pages.pages_detail.title || ""}
+              value={create_pages.pages_title || ""}
               name="title"
               onChange={(e) => {
                 set_create_pages({
                   ...create_pages,
-                  pages_detail: {
-                    ...create_pages.pages_detail,
-                    title: e.target.value,
-                  },
+                  pages_title: e.target.value,
                 });
-                console.log(create_pages.pages_detail.title);
               }}
               required
             />
@@ -151,25 +140,22 @@ export default function edit_pages({ ...props }) {
             </span>
             <span className="text-xs">
               {" "}
-              {create_pages.pages_detail.description.length}/160
+              {create_pages.pages_description.length}/160
             </span>
             <input
               className={`${
-                create_pages.pages_detail.description.length >= 145 &&
-                create_pages.pages_detail.description.length <= 160
+                create_pages.pages_description.length >= 145 &&
+                create_pages.pages_description.length <= 160
                   ? "border-green-600 border-2"
                   : "border-red-600 border-2"
               } block w-full mt-1 text-sm  dark:text-gray-300 dark:bg-gray-700  focus:outline-none focus:shadow-outline-red form-input`}
               type="text"
-              value={create_pages.pages_detail.description || ""}
+              value={create_pages.pages_description || ""}
               name="description"
               onChange={(e) => {
                 set_create_pages({
                   ...create_pages,
-                  pages_detail: {
-                    ...create_pages.pages_detail,
-                    description: e.target.value,
-                  },
+                  pages_description: e.target.value,
                 });
               }}
               required
@@ -236,10 +222,10 @@ export default function edit_pages({ ...props }) {
                 Upload
               </button>
               <div className="preview_imges">
-                {create_pages.pages_detail.thumbnail}
-                {create_pages.pages_detail.thumbnail ? (
+                {create_pages.pages_thumbnail}
+                {create_pages.pages_thumbnail ? (
                   <Image
-                    src={create_pages.pages_detail.thumbnail}
+                    src={create_pages.pages_thumbnail}
                     width={200}
                     height={200}
                     className="mx-auto my-5"
@@ -272,15 +258,12 @@ export default function edit_pages({ ...props }) {
               <textarea
                 className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-textarea focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                 rows={3}
-                value={create_pages.pages_detail.simple || ""}
+                value={create_pages.pages_simple || ""}
                 name="simple"
                 onChange={(e) => {
                   set_create_pages({
                     ...create_pages,
-                    pages_detail: {
-                      ...create_pages.pages_detail,
-                      simple: e.target.value,
-                    },
+                    pages_simple: e.target.value,
                   });
                 }}
               />
@@ -339,7 +322,7 @@ export default function edit_pages({ ...props }) {
               <input
                 className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                 required
-                value={create_pages.pages_detail.info.EN || ""}
+                value={create_pages.pages_EN || ""}
                 name="EN"
                 type="text"
                 onChange={(e) => {
@@ -362,19 +345,13 @@ export default function edit_pages({ ...props }) {
               </span>
               <input
                 className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                value={create_pages.pages_detail.info.TH || ""}
+                value={create_pages.pages_TH || ""}
                 name="TH"
                 type="text"
                 onChange={(e) => {
                   set_create_pages({
                     ...create_pages,
-                    pages_detail: {
-                      ...create_pages.pages_detail,
-                      info: {
-                        ...create_pages.pages_detail.info,
-                        TH: e.target.value,
-                      },
-                    },
+                    pages_TH: e.target.value,
                   });
                 }}
               />
@@ -388,17 +365,11 @@ export default function edit_pages({ ...props }) {
                 type="number"
                 required
                 name="star"
-                value={create_pages.pages_detail.info.star || ""}
+                value={create_pages.pages_star || ""}
                 onChange={(e) => {
                   set_create_pages({
                     ...create_pages,
-                    pages_detail: {
-                      ...create_pages.pages_detail,
-                      info: {
-                        ...create_pages.pages_detail.info,
-                        star: e.target.value,
-                      },
-                    },
+                    pages_star: e.target.value,
                   });
                 }}
               />
@@ -411,17 +382,11 @@ export default function edit_pages({ ...props }) {
               <select
                 className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                 name="type"
-                value={create_pages.pages_detail.info.type || ""}
+                value={create_pages.pages_type || ""}
                 onChange={(e) => {
                   set_create_pages({
                     ...create_pages,
-                    pages_detail: {
-                      ...create_pages.pages_detail,
-                      info: {
-                        ...create_pages.pages_detail.info,
-                        type: e.target.value,
-                      },
-                    },
+                    pages_type: e.target.value,
                   });
                 }}
               >

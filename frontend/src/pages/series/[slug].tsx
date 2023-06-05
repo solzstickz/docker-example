@@ -218,7 +218,13 @@ export default function page({ ...props }: any) {
 
 export async function getServerSideProps(context: any) {
   let res = await axios.post(
-    `${process.env.API_END_POINT}pages/${context.query.slug}`
+    `${process.env.API_END_POINT}/pages/${context.query.slug}`,
+    "",
+    {
+      headers: {
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlN1cGVydXNlciIsImlhdCI6MTY4NTcwMDQwMywiZXhwIjoxNjg1NzAyMjAzfQ.EhEo_IXj0m_uaYwn7iSdz9eD6XbP-IcpJMM7airITs0`,
+      },
+    }
   );
   let res_data = await res.data;
   let res_page = await res_data[0];

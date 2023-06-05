@@ -100,10 +100,18 @@ export default function Home({ ...props }) {
   );
 }
 export async function getServerSideProps(context: any) {
-  let res = await axios.post(`${process.env.API_END_POINT}pages/`);
-  let res_lastep = await axios.post(`${process.env.API_END_POINT}last_updated`);
+  let res = await axios.get(`${process.env.API_END_POINT}/public/pages`);
+  let res_lastep = await axios.post(
+    `${process.env.API_END_POINT}/last_updated`,
+    {
+      header: {
+        Authorization: `bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlN1cGVydXNlciIsImlhdCI6MTY4NTY5NjY3OSwiZXhwIjoxNjg1Njk4NDc5fQ.RuZvr1H_Do6WwSB59YsdRbm821R_6nFR291kk1HZzGo`,
+      },
+    }
+  );
   let pages_lastep = await res_lastep.data;
   let pages = await res.data;
+  console.log(pages_lastep, pages);
 
   return { props: { pages, pages_lastep } };
 }

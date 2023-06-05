@@ -40,7 +40,13 @@ export default function search_slug({ ...props }) {
 export async function getServerSideProps(context: any) {
   let keyword = context.params.slug;
   let res = await axios.post(
-    `${process.env.API_END_POINT}search/${context.params.slug}`
+    `${process.env.API_END_POINT}/search/${context.params.slug}`,
+    "",
+    {
+      headers: {
+        Authorization: `bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlN1cGVydXNlciIsImlhdCI6MTY4NTY5NjY3OSwiZXhwIjoxNjg1Njk4NDc5fQ.RuZvr1H_Do6WwSB59YsdRbm821R_6nFR291kk1HZzGo`,
+      },
+    }
   );
   let search = await res.data;
 

@@ -39,6 +39,9 @@ app.use("/auth", auth);
 //! setting up the express app
 
 //! Routes index
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Welcome to Sv1" });
+});
 
 app.post("/poppular", async (req, res) => {
   let redis_res = await redisclient.get("pages:res");
