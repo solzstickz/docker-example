@@ -7,6 +7,7 @@ const pool = require("./config/mysql");
 const token = require("./middleware/token");
 const _ = require("lodash");
 const port = process.env.SERVER_PORT;
+const uploads = require("./middleware/uploads");
 
 app.use(
   cors({
@@ -15,7 +16,6 @@ app.use(
 );
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 require("dotenv").config();
 
 //! Routes
@@ -42,6 +42,17 @@ app.use("/auth", auth);
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Welcome to Sv1" });
 });
+
+
+
+app.post('/uploads',uploads, function (req, res, next) {
+    console.log('File uploaded successfully.');
+    console.log(req.files[0].key);
+    const path = `uploads/${req.files[0].key}`
+    res.json({url:`${path}`});
+});
+
+
 
 app.post("/poppular", async (req, res) => {
   let redis_res = await redisclient.get("pages:res");

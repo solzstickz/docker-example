@@ -75,18 +75,18 @@ router.post("/:slug", async (req, res) => {
     );
 });
 
-router.post(
-  "/uploads/images",
-  uploads.single("uploads_pages_thumbnail"),
-  async (req, res) => {
-    if(req.file === "undefined"){
-      res.status(500).json({ message: "Status Upload Error" });
-    }else{
-      let path_images = req.file.path;
-      res.status(200).json(path_images);
-    } 
-  }
-);
+// router.post(
+//   "/uploads/images",
+//   uploads.single("uploads_pages_thumbnail"),
+//   async (req, res) => {
+//     if(req.file === "undefined"){
+//       res.status(500).json({ message: "Status Upload Error" });
+//     }else{
+//       let path_images = req.file.path;
+//       res.status(200).json(path_images);
+//     } 
+//   }
+// );
 
 //! domain.com/pages/create/page
 router.post("/create/page", async (req, res) => {
