@@ -8,6 +8,7 @@ const nextConfig = {
       "backend.skz.app",
       "18.138.255.117",
       "load.skz.app",
+      "sv1.skz.app",
     ],
   },
 };

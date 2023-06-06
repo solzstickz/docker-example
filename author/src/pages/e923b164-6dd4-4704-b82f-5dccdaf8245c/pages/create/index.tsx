@@ -9,28 +9,49 @@ import { FaUpload } from "react-icons/fa";
 import config from "../../../../../config/config";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import axios_client from "../../../../../config/axios_client";
+import Search_tags from "../../../../../components/Search_tags";
+
+interface Tag {
+  tags_id: number;
+  tags_slug: string;
+  tags_name: string;
+}
+interface CreatePages {
+  pages_slug: string;
+  pages_view: number;
+  pages_status_showing: string;
+  pages_last_ep: number;
+  pages_en: string;
+  pages_th: string;
+  pages_star: number;
+  pages_type: string;
+  pages_follow: number;
+  pages_title: string;
+  pages_simple: string;
+  pages_thumbnail: string;
+  pages_description: string;
+  pages_tags: Tag[];
+}
 
 export default function create_pages({ ...props }) {
   const router = useRouter();
   const [uploas_page_thumbnail, setuploas_page_thumbnail] = useState<File>();
-  const [create_pages, set_create_pages] = useState({
+  const [create_pages, set_create_pages] = useState<CreatePages>({
     pages_slug: "",
     pages_view: 0,
     pages_status_showing: "",
-    pages_tags: "",
-    pages_detail: {
-      title: "",
-      description: "",
-      simple: "",
-      thumbnail: "",
-      info: {
-        EN: "",
-        TH: "",
-        star: "",
-        type: "",
-        follow: 0,
-      },
-    },
+    pages_last_ep: 0,
+    pages_en: "",
+    pages_th: "",
+    pages_star: 0,
+    pages_type: "",
+    pages_follow: 0,
+    pages_title: "",
+    pages_simple: "",
+    pages_thumbnail: "",
+    pages_description: "",
+    pages_tags: [],
   });
 
   const handleUpload = async () => {
@@ -39,41 +60,39 @@ export default function create_pages({ ...props }) {
     }
     const formData = new FormData();
     formData.append("uploads_pages_thumbnail", uploas_page_thumbnail);
-    axios
-      .post(`${config.API_URL}/pages/uploads/images`, formData)
+    axios_client
+      .post(`/pages/uploads/pages`, formData)
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data.url);
         set_create_pages({
           ...create_pages,
-          pages_detail: {
-            ...create_pages.pages_detail,
-            thumbnail: `${config.API_URL}/${res.data}`,
-          },
+          pages_thumbnail: res.data.url,
         });
       })
       .catch((err) => console.error(err));
   };
-
-  const handleSubmid = async () => {
-    let tags_uppercase = create_pages.pages_tags.toUpperCase();
+  const handleSelectedTagsChange = (tag: Tag[]) => {
     set_create_pages({
       ...create_pages,
-      pages_tags: tags_uppercase,
+      pages_tags: tag,
     });
 
+    console.log(create_pages.pages_tags);
+  };
+  const handleSubmid = async () => {
     if (
-      create_pages.pages_detail.title.length < 50 ||
-      create_pages.pages_detail.title.length > 60
+      create_pages.pages_title.length < 50 ||
+      create_pages.pages_title.length > 60
     ) {
       alert("กรุณากรอก Title ให้ถูกต้อง");
     } else if (
-      create_pages.pages_detail.description.length < 145 ||
-      create_pages.pages_detail.description.length > 160
+      create_pages.pages_description.length < 145 ||
+      create_pages.pages_description.length > 160
     ) {
       alert("กรุณากรอก Description ให้ถูกต้อง");
     } else if (create_pages.pages_slug === "") {
       alert("กรุณากรอก Slug ให้ถูกต้อง");
-    } else if (create_pages.pages_detail.thumbnail === "") {
+    } else if (create_pages.pages_thumbnail === "") {
       alert("กรุณาอัพโหลดรูปภาพ");
     } else {
       axios
@@ -86,20 +105,17 @@ export default function create_pages({ ...props }) {
               pages_slug: "",
               pages_view: 0,
               pages_status_showing: "",
-              pages_tags: "",
-              pages_detail: {
-                title: "",
-                description: "",
-                simple: "",
-                thumbnail: "",
-                info: {
-                  EN: "",
-                  TH: "",
-                  star: "",
-                  type: "",
-                  follow: 0,
-                },
-              },
+              pages_last_ep: 0,
+              pages_en: "",
+              pages_th: "",
+              pages_star: 0,
+              pages_type: "",
+              pages_follow: 0,
+              pages_title: "",
+              pages_simple: "",
+              pages_thumbnail: "",
+              pages_description: "",
+              pages_tags: [],
             });
             router.push(`${config.API_URL}/pages/`);
           } else {
@@ -132,12 +148,12 @@ export default function create_pages({ ...props }) {
 
             <span className="text-xs">
               {" "}
-              {create_pages.pages_detail.title.length}/60
+              {create_pages.pages_title.length}/60
             </span>
             <input
               className={`${
-                create_pages.pages_detail.title.length >= 50 &&
-                create_pages.pages_detail.title.length <= 60
+                create_pages.pages_title.length >= 50 &&
+                create_pages.pages_title.length <= 60
                   ? "border-green-600 border-2"
                   : "border-red-600 border-2"
               } block w-full mt-1 text-sm  dark:text-gray-300 dark:bg-gray-700  focus:outline-none focus:shadow-outline-red form-input`}
@@ -145,10 +161,7 @@ export default function create_pages({ ...props }) {
               onChange={(e) => {
                 set_create_pages({
                   ...create_pages,
-                  pages_detail: {
-                    ...create_pages.pages_detail,
-                    title: e.target.value,
-                  },
+                  pages_title: e.target.value,
                 });
               }}
               required
@@ -158,12 +171,12 @@ export default function create_pages({ ...props }) {
             </span>
             <span className="text-xs">
               {" "}
-              {create_pages.pages_detail.description.length}/160
+              {create_pages.pages_description.length}/160
             </span>
             <input
               className={`${
-                create_pages.pages_detail.description.length >= 145 &&
-                create_pages.pages_detail.description.length <= 160
+                create_pages.pages_description.length >= 145 &&
+                create_pages.pages_description.length <= 160
                   ? "border-green-600 border-2"
                   : "border-red-600 border-2"
               } block w-full mt-1 text-sm  dark:text-gray-300 dark:bg-gray-700  focus:outline-none focus:shadow-outline-red form-input`}
@@ -171,10 +184,7 @@ export default function create_pages({ ...props }) {
               onChange={(e) => {
                 set_create_pages({
                   ...create_pages,
-                  pages_detail: {
-                    ...create_pages.pages_detail,
-                    description: e.target.value,
-                  },
+                  pages_description: e.target.value,
                 });
               }}
               required
@@ -219,10 +229,10 @@ export default function create_pages({ ...props }) {
                 Upload
               </button>
               <div className="preview_imges">
-                {create_pages.pages_detail.thumbnail}
-                {create_pages.pages_detail.thumbnail ? (
+                {create_pages.pages_thumbnail}
+                {create_pages.pages_thumbnail ? (
                   <Image
-                    src={create_pages.pages_detail.thumbnail}
+                    src={`https://sv1.skz.app/${create_pages.pages_thumbnail}`}
                     width={200}
                     height={200}
                     className="mx-auto my-5"
@@ -258,10 +268,7 @@ export default function create_pages({ ...props }) {
                 onChange={(e) => {
                   set_create_pages({
                     ...create_pages,
-                    pages_detail: {
-                      ...create_pages.pages_detail,
-                      simple: e.target.value,
-                    },
+                    pages_simple: e.target.value,
                   });
                 }}
               />
@@ -297,16 +304,18 @@ export default function create_pages({ ...props }) {
                 Pages_tags | Example : ACTION,ADVENTURE,COMEDY
                 (ใส่ตัวใหญ่ทั้งหมดเท่านั้น)
               </span>
-              <input
+              {/* <input
                 className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                 required
-                onChange={(e) => {
-                  set_create_pages({
-                    ...create_pages,
-                    pages_tags: e.target.value,
-                  });
+              /> */}
+              <Search_tags onSelectedTagsChange={handleSelectedTagsChange} />
+              <button
+                onClick={() => {
+                  console.log(create_pages.pages_tags);
                 }}
-              />
+              >
+                State
+              </button>
             </div>
 
             <div className="mt-4">
@@ -319,13 +328,7 @@ export default function create_pages({ ...props }) {
                 onChange={(e) => {
                   set_create_pages({
                     ...create_pages,
-                    pages_detail: {
-                      ...create_pages.pages_detail,
-                      info: {
-                        ...create_pages.pages_detail.info,
-                        EN: e.target.value,
-                      },
-                    },
+                    pages_en: e.target.value,
                   });
                 }}
               />
@@ -339,13 +342,7 @@ export default function create_pages({ ...props }) {
                 onChange={(e) => {
                   set_create_pages({
                     ...create_pages,
-                    pages_detail: {
-                      ...create_pages.pages_detail,
-                      info: {
-                        ...create_pages.pages_detail.info,
-                        TH: e.target.value,
-                      },
-                    },
+                    pages_th: e.target.value,
                   });
                 }}
               />
@@ -358,16 +355,10 @@ export default function create_pages({ ...props }) {
                 className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                 type="number"
                 required
-                onChange={(e) => {
+                onChange={(e: any) => {
                   set_create_pages({
                     ...create_pages,
-                    pages_detail: {
-                      ...create_pages.pages_detail,
-                      info: {
-                        ...create_pages.pages_detail.info,
-                        star: e.target.value,
-                      },
-                    },
+                    pages_star: e.target.value,
                   });
                 }}
               />
@@ -382,16 +373,10 @@ export default function create_pages({ ...props }) {
                 onChange={(e) => {
                   set_create_pages({
                     ...create_pages,
-                    pages_detail: {
-                      ...create_pages.pages_detail,
-                      info: {
-                        ...create_pages.pages_detail.info,
-                        type: e.target.value,
-                      },
-                    },
+                    pages_type: e.target.value,
                   });
                 }}
-                value={create_pages.pages_detail.info.type}
+                value={create_pages.pages_type}
               >
                 <option value={""}></option>
                 <option value={"Manga"}>Manga</option>
