@@ -116,13 +116,13 @@ router.post("/create/page", async (req, res) => {
                 return {"tags_id": tags.tags_id,"pages_id" : result.insertId}
               })
             })
-            pool.query(`INSERT INTO pages_tags set ?`,[new_tags], async (err, result) => {
+            pool.query(`INSERT INTO pages_tags set ?`,[new_tags], async (err, result_pages_tags) => {
               try {
                 if (err) {
                   console.log("Status Mysql Insert Error",err);
                   res.status(500).json({ message: "Status Mysql Insert Pages_tags Error" });
                 }else{
-                  if (result.insertId > 0){
+                  if (result_pages_tags.insertId > 0){
                     res.status(200).json({ message : "Status Insert Success"});
                   }else{
                     res.status(201).json({ message: "Status Insert Pages_tags Error" });
