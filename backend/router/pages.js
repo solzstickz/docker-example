@@ -100,6 +100,7 @@ router.post('/uploads/pages',uploads, function (req, res, next) {
 router.post("/create/page", async (req, res) => {
   let reqbody_tags = await req.body.pages_tags;
   let reqbody_pages = await req.body;
+  console.log(reqbody_pages);
   delete reqbody_pages.pages_tags;
   const formatdatetime = "YYYY-MM-DD HH:mm:ss"
   reqbody_pages.pages_last_update = moment().format(formatdatetime);
@@ -111,12 +112,12 @@ router.post("/create/page", async (req, res) => {
         } else {
           if (result.insertId > 0){
             let new_tags = reqbody_tags.map((tags) => {
-              console.log(tags.tags_id);
-              let new_tags = reqbody_tags.map((tags) => {
-                return {"tags_id": tags.tags_id,"pages_id" : result.insertId}
-              })
+             return  {"tags_id":tags.tags_id,"pages_id":result.insertId}
             })
-            pool.query(`INSERT INTO pages_tags set ?`,[new_tags], async (err, result_pages_tags) => {
+            //  new_tags = JSON.stringify(new_tags);
+            console.log(new_tags);
+            const values = new_tags.map((item) => [item.tags_id, item.pages_id]);
+            pool.query(`INSERT INTO pages_tags (tags_id,pages_id) values ?`,[values], async (err, result_pages_tags) => {
               try {
                 if (err) {
                   console.log("Status Mysql Insert Error",err);
