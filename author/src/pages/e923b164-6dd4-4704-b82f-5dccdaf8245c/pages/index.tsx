@@ -12,7 +12,7 @@ import config from "../../../../config/config";
 import { useRouter } from "next/router";
 import { setWithExpiry, getWithExpiry } from "../../../../lib/localstorage";
 import axios_client from "../../../../config/axios_client";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaRecycle, FaTrash } from "react-icons/fa";
 type pages = {
   pages_id: number;
   pages_slug: string;
@@ -104,6 +104,29 @@ createTheme(
   "dark"
 );
 
+const handdleDelete = (id: number) => {
+  window.confirm(`Are you sure you want to delete:\r ${id}?`);
+  let delete_id = [{ pages_id: id }];
+  axios_client
+    .post(`/pages/delete/page`, delete_id)
+    .then((res) => {
+      if (res.status === 200) {
+        alert(`${res.data.message}`);
+        window.location.reload();
+        console.log(delete_id);
+      }
+      if (res.status === 201) {
+        alert(`${res.data.message}`);
+      }
+      if (res.status === 400) {
+        alert(`${res.data.message}`);
+      }
+    })
+    .catch((err) => {
+      console.log(`pages:edit:index` + err);
+    });
+};
+
 const columns = [
   {
     name: "pages_id",
@@ -156,6 +179,21 @@ const columns = [
           <FaEdit className="w-3 h-3 " />
         </button>
       </Link>
+    ),
+    ignoreRowClick: true,
+    allowOverflow: true,
+    button: true,
+  },
+  {
+    name: "Delete",
+    selector: (row: any) => row.pages_slug,
+    cell: (row: any) => (
+      <button
+        className="text-red-500 bg-orange-100 rounded-md dark:text-red-100 dark:bg-red-500 p-2"
+        onClick={() => handdleDelete(row.pages_id)}
+      >
+        <FaTrash className="w-3 h-3 " />
+      </button>
     ),
     ignoreRowClick: true,
     allowOverflow: true,
@@ -225,59 +263,6 @@ export const Table_pages = ({ data_table }: any) => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const handleChange = ({ selectedRows }: any) => {
-    setSelectedRows(selectedRows);
-    console.log("selectedRows:", selectedRows);
-  };
-
-  const contextActions = React.useMemo(() => {
-    const handleDelete = () => {
-      if (
-        window.confirm(
-          `Are you sure you want to delete:\r ${selectedRows?.map(
-            (r: any) => r.pages_id
-          )}?`
-        )
-      ) {
-        // [{ pages_id: 36 }, { pages_id: 23 }];
-        let delete_id: any = [];
-        const delete_pages_id = selectedRows?.map((r: any) => {
-          delete_id.push({
-            pages_id: r.pages_id,
-          });
-        });
-        console.log(delete_id);
-        axios_client
-          .post(`/pages/delete/page`, delete_id)
-          .then((res) => {
-            if (res.status === 200) {
-              alert(`${res.data.message}`);
-              // window.location.reload();
-              console.log(delete_id);
-            }
-            if (res.status === 201) {
-              alert(`${res.data.message}`);
-            }
-            if (res.status === 400) {
-              alert(`${res.data.message}`);
-            }
-          })
-          .catch((err) => {
-            console.log(`pages:edit:index` + err);
-          });
-      }
-    };
-    return (
-      <button
-        key="delete"
-        className="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red my-3"
-        onClick={handleDelete}
-      >
-        Delete
-      </button>
-    );
-  }, [selectedRows]);
-
   const ExpandedComponent: React.FC<ExpanderComponentProps<pages>> = ({
     data,
   }) => {
@@ -287,16 +272,6 @@ export const Table_pages = ({ data_table }: any) => {
   return (
     <>
       <div className="table_pages grid ">
-        <div className="px-6 my-6 flex justify-end">
-          <button
-            className="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red my-3"
-            onClick={() => {}}
-          >
-            Delete Pages
-            <span className="ml-2">-</span>
-          </button>
-        </div>
-
         <DataTable
           title="Movie List"
           columns={columns}
@@ -309,9 +284,6 @@ export const Table_pages = ({ data_table }: any) => {
           persistTableHead
           theme="solarized"
           expandableRowsComponent={ExpandedComponent}
-          selectableRows
-          onSelectedRowsChange={handleChange}
-          contextActions={contextActions}
         />
       </div>
     </>
