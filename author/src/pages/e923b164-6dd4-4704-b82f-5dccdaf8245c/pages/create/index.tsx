@@ -95,8 +95,8 @@ export default function create_pages({ ...props }) {
     } else if (create_pages.pages_thumbnail === "") {
       alert("กรุณาอัพโหลดรูปภาพ");
     } else {
-      axios
-        .post(`${config.API_URL}/pages/create/page`, create_pages)
+      axios_client
+        .post(`/pages/create/page`, create_pages)
         .then((res) => {
           console.log(res.data);
           if (res.status === 200) {
@@ -117,11 +117,12 @@ export default function create_pages({ ...props }) {
               pages_description: "",
               pages_tags: [],
             });
-            router.push(`${config.API_URL}/pages/`);
+            router.push(`/${config.ADMIN_PATH}/pages/`);
           } else {
             alert("สร้างหน้าไม่สำเร็จ");
           }
-        });
+        })
+        .catch((err) => console.error(err));
     }
   };
   return (
