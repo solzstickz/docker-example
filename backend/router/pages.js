@@ -156,7 +156,6 @@ router.post("/delete/page", async (req, res) => {
           res.status(500).json({ message: "Status Delete pages_tags Error" });
         } else {
           console.log(result);
-          if (result.affectedRows > 0){
             pool.query(`DELETE FROM pages where pages_id in (?)`,[data_value], async (err, result_pages) => {
               try {
                 if (err) {
@@ -174,9 +173,6 @@ router.post("/delete/page", async (req, res) => {
                 res.status(500).json({ message: "Internal Server Pages Error" });
               }
             });
-          }else {
-            res.status(201).json({ message : "Status Delete pages_tags Not Found"});
-          }
         }
       } catch (err) {
         console.log(err);
