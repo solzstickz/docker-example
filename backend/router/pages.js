@@ -149,22 +149,38 @@ router.post("/create/page", async (req, res) => {
 router.post("/delete/page", async (req, res) => {
   let reqbody = await req.body;
   var data_value  = await reqbody.map(head => head.pages_id)
-    pool.query(`DELETE FROM pages where pages_id in (?)`,[data_value], async (err, result) => {
+    pool.query(`DELETE FROM pages_tags where pages_id in (?)`,[data_value], async (err, result) => {
       try {
         if (err) {
-          console.log("Status Delete Error",err);
-          res.status(500).json({ message: "Status Delete Error" });
+          console.log("Status Delete pages_tags Error",err);
+          res.status(500).json({ message: "Status Delete pages_tags Error" });
         } else {
           console.log(result);
           if (result.affectedRows > 0){
-            res.status(200).json({ message : "Status Delete Success"});
+            pool.query(`DELETE FROM pages where pages_id in (?)`,[data_value], async (err, result_pages) => {
+              try {
+                if (err) {
+                  console.log("Status Delete pages Error",err);
+                  res.status(500).json({ message: "Status Delete pages Error" });
+                } else {
+                  if (result_pages.affectedRows > 0){
+                    res.status(200).json({ message : "Status Delete Pages Success"});
+                  }else {
+                    res.status(201).json({ message : "Status Delete Pages Not Found"});
+                  }
+                }
+              } catch (err) {
+                console.log(err);
+                res.status(500).json({ message: "Internal Server Pages Error" });
+              }
+            });
           }else {
-            res.status(200).json({ message : "Status Delete Not Found"});
+            res.status(201).json({ message : "Status Delete pages_tags Not Found"});
           }
         }
       } catch (err) {
         console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
+        res.status(500).json({ message: "Internal Server pages_tags Error" });
       }
     });
 });
