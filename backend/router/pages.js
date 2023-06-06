@@ -28,7 +28,7 @@ router.post("/", async (req, res) => {
 //! domain.com/pages/:slug
 router.post("/:slug", async (req, res) => {
     pool.query(
-      `SELECT GROUP_CONCAT(tags.tags_name SEPARATOR ',') as tags_name_all,GROUP_CONCAT(tags.tags_id SEPARATOR ',') as tags_id_all,pages.* FROM pages INNER JOIN pages_tags ON pages_tags.pages_id=pages.pages_id INNER JOIN tags ON tags.tags_id=pages_tags.tags_id WHERE pages.pages_slug = ? GROUP BY pages.pages_id;`,
+      `SELECT GROUP_CONCAT(tags.tags_name SEPARATOR ',') as tags_name_all,GROUP_CONCAT(tags.tags_id SEPARATOR ',') as tags_id_all,pages.* FROM pages INNER JOIN pages_tags ON pages_tags.pages_id=pages.pages_id INNER JOIN tags ON tags.tags_id=pages_tags.tags_id WHERE pages.pages_slug = ? GROUP BY pages.pages_id ORDER BY tags.tags_name ASC;`,
       [req.params.slug],
       async (err, result) => {
         try {
@@ -38,7 +38,22 @@ router.post("/:slug", async (req, res) => {
             if (result.length === 0) {
               res.status(404).json({ message: "Page Url Not Found !" });
             } else {
-              res.status(200).json(result);
+              let data = result
+              let tags_name = result[0].tags_name_all.split(",");
+              let tags_id = result[0].tags_id_all.split(",");
+              let pages_tags= [];
+              for(i in tags_id){
+                console.log(tags_id[i],tags_name[i]);
+                pages_tags.push({
+                  tags_id : tags_id[i],
+                  tags_name: tags_name[i]
+                })
+              }
+              data[0]["pages_tags"] = pages_tags
+              delete data[0].tags_name_all
+              delete data[0].tags_id_all;
+              console.log(data);
+              res.status(200).json(data);
             }
           }
         } catch (err) {
