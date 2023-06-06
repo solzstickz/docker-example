@@ -75,6 +75,7 @@ router.post("/:slug", async (req, res) => {
     );
 });
 
+//! domain.com/pages/uploads/pages
 router.post('/uploads/pages',uploads, function (req, res, next) {
   console.log('File uploaded successfully.');
   console.log(req.files[0].key);
@@ -97,21 +98,43 @@ router.post('/uploads/pages',uploads, function (req, res, next) {
 
 //! domain.com/pages/create/page
 router.post("/create/page", async (req, res) => {
-  let reqbody = await req.body;
+  let reqbody_tags = await req.body.pages_tags;
+  let reqbody_pages = await req.body;
+  delete reqbody_pages.pages_tags;
   const formatdatetime = "YYYY-MM-DD HH:mm:ss"
-  reqbody.pages_last_update = moment().format(formatdatetime);
-  reqbody.pages_detail.info.publish = moment().format(formatdatetime);
-  reqbody.pages_detail = await JSON.stringify(reqbody.pages_detail) 
-    pool.query(`INSERT INTO pages set ?`,[reqbody], async (err, result) => {
+  reqbody_pages.pages_last_update = moment().format(formatdatetime);
+    pool.query(`INSERT INTO pages set ?`,[reqbody_pages], async (err, result) => {
       try {
         if (err) {
-          console.log("Status Mysql Insert Error",err);
-            res.status(500).json({ message: "Status Mysql Insert Error" });
+            console.log("Status Mysql Insert Error",err);
+            res.status(500).json({ message: "Status Mysql Insert Pages Error" });
         } else {
           if (result.insertId > 0){
-            res.status(200).json({ message : "Status Insert Success"});
+            let new_tags = reqbody_tags.map((tags) => {
+              console.log(tags.tags_id);
+              let new_tags = reqbody_tags.map((tags) => {
+                return {"tags_id": tags.tags_id,"pages_id" : result.insertId}
+              })
+            })
+            pool.query(`INSERT INTO pages_tags set ?`,[new_tags], async (err, result) => {
+              try {
+                if (err) {
+                  console.log("Status Mysql Insert Error",err);
+                  res.status(500).json({ message: "Status Mysql Insert Pages_tags Error" });
+                }else{
+                  if (result.insertId > 0){
+                    res.status(200).json({ message : "Status Insert Success"});
+                  }else{
+                    res.status(201).json({ message: "Status Insert Pages_tags Error" });
+                  }
+                }
+              }catch (err) {
+                console.log(err);
+                res.status(500).json({ message: "Internal Server Error" });
+              }
+            });
           }else{
-            res.status(201).json({ message: "Status Insert Error" });
+            res.status(201).json({ message: "Status Insert Pages Error" });
           }
         }
       } catch (err) {
