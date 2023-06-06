@@ -53,7 +53,7 @@ router.post("/:slug", async (req, res) => {
               delete data[0].tags_name_all
               delete data[0].tags_id_all;
               console.log(data);
-              res.status(200).json(data);
+              res.status(200).json(data[0]);
             }
           }
         } catch (err) {
