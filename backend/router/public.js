@@ -76,40 +76,14 @@ router.post("/pages/:slug", async (req, res) => {
           if (result.length === 0) {
             res.status(404).json({ message: "Page Url Not Found !" });
           } else {
-            const pages = [];
-            const posts = [];
-
-            let first_pages = _.head(result);
-            pages.push({
-              pages_id: first_pages.pages_id,
-              pages_slug: first_pages.pages_slug,
-              pages_view: first_pages.pages_view,
-              pages_last_update: first_pages.pages_last_update,
-              pages_status_showing: first_pages.pages_status_showing,
-              pages_tags: first_pages.pages_tags,
-              pages_detail: first_pages.pages_detail,
-              pages_last_ep: first_pages.pages_last_ep,
-            });
-
-            _.forEach(result, (value, key) => {
-              posts.push({
-                posts_id: value.posts_id,
-                posts_slug: value.posts_slug,
-                posts_ep: value.posts_ep,
-                posts_detail: value.posts_detail,
-                posts_create: value.posts_create,
-                posts_view: value.posts_view,
-              });
-            });
-            pages.push(posts);
             await redisclient.set(
               `pages:full:${req.params.slug}`,
-              JSON.stringify(pages),
+              JSON.stringify(result),
               "EX",
               60
             );
             let data = await redisclient.get(`pages:full:${req.params.slug}`);
-            res.status(200).json(JSON.parse(data));
+            res.status(200).json(JSON.parse(result));
           }
         }
       } catch (err) {

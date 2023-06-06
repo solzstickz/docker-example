@@ -28,7 +28,7 @@ router.post("/", async (req, res) => {
 //! domain.com/pages/:slug
 router.post("/:slug", async (req, res) => {
     pool.query(
-      `SELECT * FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id WHERE pages.pages_slug = ? ORDER BY posts_ep DESC;`,
+      `SELECT GROUP_CONCAT(tags.tags_name SEPARATOR ',') as tags_name_all,GROUP_CONCAT(tags.tags_id SEPARATOR ',') as tags_id_all,pages.* FROM pages INNER JOIN pages_tags ON pages_tags.pages_id=pages.pages_id INNER JOIN tags ON tags.tags_id=pages_tags.tags_id WHERE pages.pages_slug = ? GROUP BY pages.pages_id;`,
       [req.params.slug],
       async (err, result) => {
         try {
