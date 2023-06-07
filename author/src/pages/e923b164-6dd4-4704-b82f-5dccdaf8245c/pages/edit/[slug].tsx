@@ -10,46 +10,54 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import pages from "..";
 import config from "../../../../../config/config";
+import Search_tags from "../../../../../components/Search_tags";
+interface CreatePages {
+  pages_slug: string;
+  pages_view: number;
+  pages_status_showing: string;
+  pages_last_ep: number;
+  pages_en: string;
+  pages_th: string;
+  pages_star: number;
+  pages_type: string;
+  pages_follow: number;
+  pages_title: string;
+  pages_simple: string;
+  pages_thumbnail: string;
+  pages_description: string;
+  pages_tags: Tag[];
+}
+interface Tag {
+  tags_id: number;
+  tags_slug: string;
+  tags_name: string;
+}
 export default function edit_pages({ ...props }) {
   const router = useRouter();
   const [uploas_page_thumbnail, setuploas_page_thumbnail] = useState<File>();
-  const [create_pages, set_create_pages] = useState({
-    pages_id: "",
+  const [create_pages, set_create_pages] = useState<CreatePages>({
     pages_slug: "",
     pages_view: 0,
     pages_status_showing: "",
-    pages_tags: "",
-    pages_last_ep: "",
-    pages_title: "",
-    pages_description: "",
-    pages_simple: "",
-    pages_thumbnail: "",
+    pages_last_ep: 0,
     pages_en: "",
     pages_th: "",
-    pages_star: "",
+    pages_star: 0,
     pages_type: "",
     pages_follow: 0,
-    pages_publish: "",
+    pages_title: "",
+    pages_simple: "",
+    pages_thumbnail: "",
+    pages_description: "",
+    pages_tags: [],
   });
-
-  // export async function getServerSideProps(context: any) {
-  //   let res = await axios.post(
-  //     `${process.env.API_END_POINT}/pages/${context.params.slug}`
-  //   );
-  //   let edit_pages = res.data[0];
-  //   return {
-  //     props: {
-  //       edit_pages,
-  //     },
-  //   };
-  // }
 
   useEffect(() => {
     axios_client
       .post(`/pages/${router.query.slug}`)
       .then((res) => {
-        console.log(res.data[0]);
-        set_create_pages(res.data[0]);
+        console.log(res.data);
+        set_create_pages(res.data);
       })
       .catch((err) => {
         console.log(`pages:edit:slug` + err);
@@ -91,6 +99,13 @@ export default function edit_pages({ ...props }) {
         console.log(`pages:edit:slug` + err);
       });
   };
+  const handleSelectedTagsChange = (tag: Tag[]) => {
+    set_create_pages({
+      ...create_pages,
+      pages_tags: tag,
+    });
+  };
+
   return (
     <>
       <Layer>
@@ -190,7 +205,7 @@ export default function edit_pages({ ...props }) {
               onChange={(e) => {
                 set_create_pages({
                   ...create_pages,
-                  pages_last_ep: e.target.value,
+                  pages_last_ep: Number(e.target.value),
                 });
               }}
             />
@@ -300,19 +315,17 @@ export default function edit_pages({ ...props }) {
                 Pages_tags | Example : ACTION,ADVENTURE,COMEDY
                 (ใส่ตัวใหญ่ทั้งหมดเท่านั้น)
               </span>
-              <input
-                className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                required
-                value={create_pages.pages_tags || ""}
-                name="tags"
-                type="text"
-                onChange={(e) => {
-                  set_create_pages({
-                    ...create_pages,
-                    pages_tags: e.target.value,
-                  });
-                }}
+              <Search_tags
+                onSelectedTagsChange={handleSelectedTagsChange}
+                edit_value={create_pages.pages_tags}
               />
+              <button
+                onClick={() => {
+                  console.log(create_pages.pages_tags);
+                }}
+              >
+                Show_state
+              </button>
             </div>
 
             <div className="mt-4">
@@ -322,19 +335,13 @@ export default function edit_pages({ ...props }) {
               <input
                 className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                 required
-                value={create_pages.pages_EN || ""}
+                value={create_pages.pages_en || ""}
                 name="EN"
                 type="text"
                 onChange={(e) => {
                   set_create_pages({
                     ...create_pages,
-                    pages_detail: {
-                      ...create_pages.pages_detail,
-                      info: {
-                        ...create_pages.pages_detail.info,
-                        EN: e.target.value,
-                      },
-                    },
+                    pages_en: e.target.value,
                   });
                 }}
               />
@@ -345,13 +352,13 @@ export default function edit_pages({ ...props }) {
               </span>
               <input
                 className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                value={create_pages.pages_TH || ""}
+                value={create_pages.pages_th || ""}
                 name="TH"
                 type="text"
                 onChange={(e) => {
                   set_create_pages({
                     ...create_pages,
-                    pages_TH: e.target.value,
+                    pages_th: e.target.value,
                   });
                 }}
               />
@@ -369,7 +376,7 @@ export default function edit_pages({ ...props }) {
                 onChange={(e) => {
                   set_create_pages({
                     ...create_pages,
-                    pages_star: e.target.value,
+                    pages_star: parseInt(e.target.value, 10),
                   });
                 }}
               />
