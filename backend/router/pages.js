@@ -55,6 +55,7 @@ router.post("/:slug", async (req, res) => {
               data[0]["pages_tags"] = pages_tags
               delete data[0].tags_name_all
               delete data[0].tags_id_all;
+              delete data[0].tags_slug_all;
               console.log(data);
               res.status(200).json(data[0]);
             }
@@ -103,7 +104,7 @@ router.post("/create/page", async (req, res) => {
             res.status(500).json({ message: "Status Mysql Insert Pages Error" });
         } else {
           if (result.insertId > 0){
-            let new_tags = reqbody_tags.map((tags) => {
+             let new_tags = reqbody_tags.map((tags) => {
              return  {"tags_id":tags.tags_id,"pages_id":result.insertId}
             })
             //  new_tags = JSON.stringify(new_tags);
@@ -175,19 +176,43 @@ router.post("/delete/page", async (req, res) => {
 
 //! domain.com/pages/create/page
 router.post("/edit/page/", async (req, res) => {
-  let reqbody = await req.body;
+  let reqbody_tags = await req.body.pages_tags;
+  let reqbody_pages = await req.body;
   const pages_id = await reqbody.pages_id;
   const formatdatetime = "YYYY-MM-DD HH:mm:ss"
   delete reqbody.pages_id;
-  reqbody.pages_last_update = moment().format(formatdatetime);
-  reqbody.pages_detail = await JSON.stringify(reqbody.pages_detail) 
-    pool.query(`UPDATE pages set ? WHERE pages_id = ?`,[reqbody,pages_id], async (err, result) => {
+  delete reqbody.pages_tags;
+  reqbody_pages.pages_last_update = moment().format(formatdatetime);
+    pool.query(`UPDATE pages set ? WHERE pages_id = ?`,[reqbody_pages,pages_id], async (err, result_pages) => {
       try {
         if (err) {
-            console.log(`Status Mysql Insert Error` + err);
-            res.status(500).json({ message: "Status Mysql Insert Error" });
+            console.log(`Status Mysql Update Error` + err);
+            res.status(500).json({ message: "Status Mysql Update Error" });
         } else {
           if (result.changedRows > 0){
+            let new_tags = reqbody_tags.map((tags) => {
+              return  {"tags_id":tags.tags_id,"pages_id":result.insertId}
+             })
+             //  new_tags = JSON.stringify(new_tags);
+             console.log(new_tags);
+             const values = new_tags.map((item) => [item.tags_id, item.pages_id]);
+             pool.query(`INSERT INTO pages_tags (tags_id,pages_id) values ?`,[values], async (err, result_pages_tags) => {
+               try {
+                 if (err) {
+                   console.log("Status Mysql Insert Error",err);
+                   res.status(500).json({ message: "Status Mysql Insert Pages_tags Error" });
+                 }else{
+                   if (result_pages_tags.insertId > 0){
+                     res.status(200).json({ message : "Status Insert Success"});
+                   }else{
+                     res.status(201).json({ message: "Status Insert Pages_tags Error" });
+                   }
+                 }
+               }catch (err) {
+                 console.log(err);
+                 res.status(500).json({ message: "Internal Server Error" });
+               }
+             });
             res.status(200).json({ message : "Status Update Success"});
           }else{
             res.status(201).json({ message: "Status Update Error Data Dupicate Please Try Again" });
@@ -199,6 +224,8 @@ router.post("/edit/page/", async (req, res) => {
       }
     });
 });
+
+
 
   
 
