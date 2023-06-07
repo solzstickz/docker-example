@@ -28,7 +28,7 @@ router.post("/", async (req, res) => {
 //! domain.com/pages/:slug
 router.post("/:slug", async (req, res) => {
     pool.query(
-      `SELECT GROUP_CONCAT(tags.tags_name SEPARATOR ',') as tags_name_all,GROUP_CONCAT(tags.tags_id SEPARATOR ',') as tags_id_all,pages.* FROM pages INNER JOIN pages_tags ON pages_tags.pages_id=pages.pages_id INNER JOIN tags ON tags.tags_id=pages_tags.tags_id WHERE pages.pages_slug = ? GROUP BY pages.pages_id ORDER BY tags.tags_name ASC;`,
+      `SELECT GROUP_CONCAT(tags.tags_name SEPARATOR ',') as tags_name_all,GROUP_CONCAT(tags.tags_id SEPARATOR ',') as tags_id_all,GROUP_CONCAT(tags.tags_slug SEPARATOR ',') as tags_slug_all,pages.* FROM pages INNER JOIN pages_tags ON pages_tags.pages_id=pages.pages_id INNER JOIN tags ON tags.tags_id=pages_tags.tags_id WHERE pages.pages_slug = ? GROUP BY pages.pages_id ORDER BY tags.tags_name ASC;`,
       [req.params.slug],
       async (err, result) => {
         try {
@@ -41,14 +41,17 @@ router.post("/:slug", async (req, res) => {
               let data = result
               let tags_name = result[0].tags_name_all.split(",");
               let tags_id = result[0].tags_id_all.split(",");
+              let tags_slug = result[0].tags_slug_all.split(",");
               let pages_tags= [];
               for(i in tags_id){
                 console.log(tags_id[i],tags_name[i]);
                 pages_tags.push({
-                  tags_id : tags_id[i],
-                  tags_name: tags_name[i]
+                  tags_id : Number(tags_id[i]),
+                  tags_name: tags_name[i],
+                  tags_slug: tags_slug[i]
                 })
               }
+              console.log(pages_tags);
               data[0]["pages_tags"] = pages_tags
               delete data[0].tags_name_all
               delete data[0].tags_id_all;
