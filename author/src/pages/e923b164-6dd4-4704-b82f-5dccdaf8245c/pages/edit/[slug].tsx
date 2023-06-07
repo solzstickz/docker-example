@@ -71,11 +71,11 @@ export default function edit_pages({ ...props }) {
     const formData = new FormData();
     formData.append("uploads_pages_thumbnail", uploas_page_thumbnail);
     axios_client
-      .post(`/pages/uploads/images`, formData)
+      .post(`/pages/uploads/pages`, formData)
       .then((res) => {
         set_create_pages({
           ...create_pages,
-          pages_thumbnail: `${config.API_URL}/${res.data}`,
+          pages_thumbnail: `${res.data.url}`,
         });
         //! not sure edit thumbnail pls recheck !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       })
@@ -85,20 +85,38 @@ export default function edit_pages({ ...props }) {
   };
 
   const handleSubmid = () => {
-    console.log(create_pages);
-    axios_client
-      .post(`/pages/edit/page/`, create_pages)
-      .then((res) => {
-        console.log(res.data);
+    if (
+      create_pages.pages_title.length < 50 ||
+      create_pages.pages_title.length > 60
+    ) {
+      alert("กรุณากรอก Title ให้ถูกต้อง");
+    } else if (
+      create_pages.pages_description.length < 145 ||
+      create_pages.pages_description.length > 160
+    ) {
+      alert("กรุณากรอก Description ให้ถูกต้อง");
+    } else if (create_pages.pages_slug === "") {
+      alert("กรุณากรอก Slug ให้ถูกต้อง");
+    } else if (create_pages.pages_thumbnail === "") {
+      alert("กรุณาอัพโหลดรูปภาพ");
+    } else if (create_pages.pages_tags.length == 0) {
+      alert("กรุณาเลือก Tag");
+    } else {
+      axios_client
+        .post(`/pages/edit/page/`, create_pages)
+        .then((res) => {
+          console.log(res.data);
 
-        setTimeout(() => {
-          router.push(`/${config.ADMIN_PATH}/pages/`);
-        }, 300);
-      })
-      .catch((err) => {
-        console.log(`pages:edit:slug` + err);
-      });
+          setTimeout(() => {
+            router.push(`/${config.ADMIN_PATH}/pages/`);
+          }, 300);
+        })
+        .catch((err) => {
+          console.log(`pages:edit:slug` + err);
+        });
+    }
   };
+
   const handleSelectedTagsChange = (tag: Tag[]) => {
     set_create_pages({
       ...create_pages,
@@ -240,7 +258,7 @@ export default function edit_pages({ ...props }) {
                 {create_pages.pages_thumbnail}
                 {create_pages.pages_thumbnail ? (
                   <Image
-                    src={create_pages.pages_thumbnail}
+                    src={`${config.CDN_URL}/${create_pages.pages_thumbnail}`}
                     width={200}
                     height={200}
                     className="mx-auto my-5"
@@ -321,7 +339,7 @@ export default function edit_pages({ ...props }) {
               />
               <button
                 onClick={() => {
-                  console.log(create_pages.pages_tags);
+                  console.log(create_pages);
                 }}
               >
                 Show_state

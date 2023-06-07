@@ -94,6 +94,8 @@ export default function create_pages({ ...props }) {
       alert("กรุณากรอก Slug ให้ถูกต้อง");
     } else if (create_pages.pages_thumbnail === "") {
       alert("กรุณาอัพโหลดรูปภาพ");
+    } else if (create_pages.pages_tags.length == 0) {
+      alert("กรุณาเลือก Tag");
     } else {
       axios_client
         .post(`/pages/create/page`, create_pages)

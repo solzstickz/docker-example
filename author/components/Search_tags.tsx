@@ -24,7 +24,7 @@ function MySearchSelect({ onSelectedTagsChange, edit_value }: SearchTagsProps) {
 
   useEffect(() => {
     setTags(edit_value);
-    setSelectedTags(edit_value);
+    setSelectedTags(edit_value || []);
   }, [edit_value]);
 
   const fetchData = async () => {
@@ -61,10 +61,7 @@ function MySearchSelect({ onSelectedTagsChange, edit_value }: SearchTagsProps) {
   };
 
   const handleTagSelect = (tag: Tag) => {
-    if (
-      selectedTags.map((t) => t.tags_id).includes(tag.tags_id) ||
-      edit_value.map((t) => t.tags_id).includes(tag.tags_id)
-    ) {
+    if (selectedTags.map((t) => t.tags_id).includes(tag.tags_id)) {
       alert("Tag already selected");
     } else {
       const updatedTags = [...selectedTags, tag];

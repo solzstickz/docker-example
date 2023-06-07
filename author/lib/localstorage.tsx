@@ -1,3 +1,7 @@
+import config from "../config/config";
+
+///!! set Time login here /admin_path
+
 export function setWithExpiry(key: string, value: string, ttl: number) {
   const now = new Date();
 
@@ -30,7 +34,8 @@ export function getWithExpiry(key: string) {
       // If the item is expired, delete the item from storage
       // and return null
       localStorage.removeItem(key);
-      return null;
+      alert("Session expired, please login again");
+      window.location.href = `/${config.ADMIN_PATH}`;
     }
     return item.value;
   } catch (e) {
