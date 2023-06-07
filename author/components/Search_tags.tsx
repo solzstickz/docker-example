@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { collectGenerateParams } from "next/dist/build/utils";
 
 interface Tag {
   tags_id: number;
   tags_slug: string;
   tags_name: string;
 }
+
 interface SearchTagsProps {
   onSelectedTagsChange: (tags: Tag[]) => void;
+  edit_value: Tag[];
 }
-function MySearchSelect({ onSelectedTagsChange }: SearchTagsProps) {
+
+function MySearchSelect({ onSelectedTagsChange, edit_value }: SearchTagsProps) {
   const [tags, setTags] = useState<Tag[]>([]);
   const [searchValue, setSearchValue] = useState("");
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
@@ -19,6 +21,11 @@ function MySearchSelect({ onSelectedTagsChange }: SearchTagsProps) {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    setTags(edit_value);
+    setSelectedTags(edit_value);
+  }, [edit_value]);
 
   const fetchData = async () => {
     try {
@@ -54,21 +61,19 @@ function MySearchSelect({ onSelectedTagsChange }: SearchTagsProps) {
   };
 
   const handleTagSelect = (tag: Tag) => {
-    // if (!selectedTags.includes(tag)) {
-    //   setSelectedTags([...selectedTags, tag]);
-    // }
-    if (selectedTags.map((tag) => tag.tags_id).includes(tag.tags_id)) {
+    if (
+      selectedTags.map((t) => t.tags_id).includes(tag.tags_id) ||
+      edit_value.map((t) => t.tags_id).includes(tag.tags_id)
+    ) {
       alert("Tag already selected");
     } else {
-      setSelectedTags([...selectedTags, tag]);
-      onSelectedTagsChange([...selectedTags, tag]);
-      console.log(selectedTags);
+      const updatedTags = [...selectedTags, tag];
+      setSelectedTags(updatedTags);
+      onSelectedTagsChange(updatedTags);
     }
-
     setSearchValue("");
-    setFilteredTags(tags);
-    // onSelectedTagsChange([...selectedTags, tag]);
   };
+
   const handleTagRemove = (tag: Tag) => {
     const updatedTags = selectedTags.filter((t) => t.tags_id !== tag.tags_id);
     setSelectedTags(updatedTags);
@@ -82,13 +87,14 @@ function MySearchSelect({ onSelectedTagsChange }: SearchTagsProps) {
         {selectedTags.map((tag) => (
           <li
             className="m-1 p-1 cursor-pointer text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-            key={tag.tags_id}
+            key={tag.tags_id} // Use the `tags_id` property as the key
             onClick={() => handleTagRemove(tag)}
           >
             {tag.tags_name}
           </li>
         ))}
       </ul>
+
       <input
         type="text"
         placeholder="Search tags"
@@ -102,10 +108,8 @@ function MySearchSelect({ onSelectedTagsChange }: SearchTagsProps) {
         {filteredTags.map((tag) => (
           <li
             className="m-1 p-1 cursor-pointer text-sm font-medium leading-5 text-white transition-colors duration-150 bg-gray-600 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-purple"
-            key={tag.tags_id}
-            onClick={() => {
-              handleTagSelect(tag);
-            }}
+            key={tag.tags_id} // Use the `tags_id` property as the key
+            onClick={() => handleTagSelect(tag)}
           >
             {tag.tags_name}
           </li>
