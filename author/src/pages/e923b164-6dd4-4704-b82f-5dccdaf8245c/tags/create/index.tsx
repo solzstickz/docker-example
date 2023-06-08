@@ -77,22 +77,6 @@ export default function create_tags({ ...props }) {
 
           <div className="px-4 py-3 bg-white rounded-lg shadow-md dark:bg-gray-800">
             <span className="text-gray-700 dark:text-gray-400 mt-4 text-sm">
-              tags_slug | Exapmle : one-piece (ห้ามเว้นวรรค หากจะเว้นวรรคให้ใช้
-              -)
-            </span>
-
-            <input
-              className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-              required
-              onChange={(e) => {
-                let check_slug = e.target.value.split(" ").join("-");
-                set_create_tags({
-                  ...create_tags,
-                  tags_slug: check_slug,
-                });
-              }}
-            />
-            <span className="text-gray-700 dark:text-gray-400 mt-4 text-sm">
               tags_name | Exapmle : one piece
             </span>
 
@@ -100,10 +84,11 @@ export default function create_tags({ ...props }) {
               className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
               required
               onChange={(e) => {
-                let name_uppercase = e.target.value.toUpperCase();
+                let name_uppercase = e.target.value.toLowerCase();
                 set_create_tags({
                   ...create_tags,
                   tags_name: name_uppercase,
+                  tags_slug: name_uppercase.replace(/ /g, "-"),
                 });
               }}
             />

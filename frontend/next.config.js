@@ -8,7 +8,7 @@ const nextConfig = {
       "ped-manga.com",
       "rose-manga.com",
       "7.soul-manga.com",
-      
+      "sv1.skz.app",
     ],
   },
 };

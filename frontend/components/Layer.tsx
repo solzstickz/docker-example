@@ -30,15 +30,15 @@ export default function Layer({ children, ...props }: Props) {
   //! scroll
 
   const set_theme = () => {
-    // if (
-    //   localStorage.theme === "dark" ||
-    //   (!("theme" in localStorage) &&
-    //     window.matchMedia("(prefers-color-scheme: dark)").matches)
-    // ) {
-    //   document.documentElement.classList.add("dark");
-    // } else {
-    //   document.documentElement.classList.remove("dark");
-    // }
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
 
     // Whenever the user explicitly chooses light mode
     // localStorage.theme = "light";
@@ -47,7 +47,7 @@ export default function Layer({ children, ...props }: Props) {
     // localStorage.theme = "dark";
 
     // Whenever the user explicitly chooses to respect the OS preference
-    localStorage.removeItem("theme");
+    // localStorage.removeItem("theme");
   };
   const change_theme = () => {
     if (themes === "dark") {
@@ -60,7 +60,6 @@ export default function Layer({ children, ...props }: Props) {
   };
   useEffect(() => {
     set_theme();
-    setThemes("light");
   }, []);
   return (
     <>

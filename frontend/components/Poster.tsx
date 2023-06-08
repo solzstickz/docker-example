@@ -9,31 +9,29 @@ export default function Poster({ ...props }) {
         <Link href={`/series/${props.pages_slug}`}>
           <div className="update_new-item-img h-[250px] w-[200px] relative  p-3 ">
             <Image
-              src={props.pages_detail.thumbnail}
+              src={`https://sv1.skz.app/${props.pages_thumbnail}`}
               fill={true}
               className="mx-auto rounded-tl-md rounded-tr-md"
-              alt={props.pages_detail.title}
+              alt={props.pages_title}
             />
             <div
               className={`update_new-status absolute w-[60px] h-[25px] ${
-                props.pages_detail.info.type === "Manga"
+                props.pages_type === "Manga"
                   ? "bg-color_Manga"
-                  : props.pages_detail.info.type === "Manhwa"
+                  : props.pages_type === "Manhwa"
                   ? "bg-color_Manhwa"
-                  : props.pages_detail.info.type === "Novel"
+                  : props.pages_type === "Novel"
                   ? "bg-color_Novel"
                   : null
               }  shadow-2xl rounded-tl-md rounded-br-md top-0 left-0`}
             >
               <p className="text-[16px] text-color_white text-center pt-[2px]">
-                {props.pages_detail.info.type}
+                {props.pages_type}
               </p>
             </div>
           </div>
           <div className="update_new-item-title text-center h-auto relative">
-            <h3 className="text-2xl  line-clamp-2">
-              {props.pages_detail.info.EN}
-            </h3>
+            <h3 className="text-2xl  line-clamp-2">{props.pages_en}</h3>
           </div>
         </Link>
         <div className="last_ep flex justify-around items-center">
