@@ -64,12 +64,20 @@ export default function create_pages({ ...props }) {
       .post(`/pages/uploads/pages`, formData)
       .then((res) => {
         console.log(res.data.url);
+
         set_create_pages({
           ...create_pages,
           pages_thumbnail: res.data.url,
         });
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.log(`pages/create/index` + err.response);
+        if (err.response === undefined) {
+          alert("ขนาดไฟล์ Size ใหญ่เกินไป");
+        } else {
+          alert("อัพโหลดรูปภาพไม่สำเร็จ กรุณาอัพโหลดไฟล์ .PNG .WEBP .GIF");
+        }
+      });
   };
   const handleSelectedTagsChange = (tag: Tag[]) => {
     set_create_pages({
@@ -101,6 +109,7 @@ export default function create_pages({ ...props }) {
         .post(`/pages/create/page`, create_pages)
         .then((res) => {
           console.log(res.data);
+
           if (res.status === 200) {
             alert("สร้างหน้าเรียบร้อย");
             set_create_pages({

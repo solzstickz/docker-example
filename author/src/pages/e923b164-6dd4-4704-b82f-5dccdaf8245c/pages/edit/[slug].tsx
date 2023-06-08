@@ -80,7 +80,12 @@ export default function edit_pages({ ...props }) {
         //! not sure edit thumbnail pls recheck !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       })
       .catch((err) => {
-        console.log(`pages:uploads_edit:slug` + err);
+        console.log(`pages/edit/[slug]` + err.response);
+        if (err.response === undefined) {
+          alert("ขนาดไฟล์ Size ใหญ่เกินไป");
+        } else {
+          alert("อัพโหลดรูปภาพไม่สำเร็จ กรุณาอัพโหลดไฟล์ .PNG .WEBP .GIF");
+        }
       });
   };
 
