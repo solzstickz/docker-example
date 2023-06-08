@@ -6,7 +6,7 @@ const _ = require("lodash");
 const multer = require("multer");
 const crypto = require("crypto");
 const uploads = require("../middleware/uploads");
-const moment = require('moment');
+const moment = require('moment-timezone');
 const pages = require('../module/pages');
 
 //! domain.com/pages/
@@ -16,6 +16,11 @@ router.post("/", async (req, res) => {
         if (err) {
           console.log(err);
         } else {
+          const formatdatetime = "YYYY-MM-DD HH:mm:ss"
+          for(i in result){
+            result[i].pages_last_update = moment(result[i].pages_last_update).tz('Asia/Bangkok').format(formatdatetime)
+            // console.log(moment().from(result[i].pages_last_update));
+          }
           res.status(200).json(result);
         }
       } catch (err) {

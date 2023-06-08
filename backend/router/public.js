@@ -111,6 +111,11 @@ router.get("/last_updated", async (req, res) => {
             if (result.length === 0) {
               res.status(404).json({ message: "Not Found" });
             }
+            const formatdatetime = "YYYY-MM-DD HH:mm:ss"
+          for(i in result){
+            result[i].pages_last_update = moment(result[i].pages_last_update).tz('Asia/Bangkok').format(formatdatetime)
+            // console.log(moment().from(result[i].pages_last_update));
+          }
             await redisclient.set(
               `/last_updated`,
               JSON.stringify(result),

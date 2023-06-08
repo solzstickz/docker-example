@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const moment = require('moment');
+const moment = require('moment-timezone');
 const pool = require("../config/mysql");
 require("dotenv").config();
 
@@ -14,8 +14,8 @@ module.exports = {
         delete reqbody_pages.pages_tags;
         const formatdatetime = "YYYY-MM-DD HH:mm:ss"
         const formatdateyear = "YYYY"
-        reqbody_pages.pages_last_update = moment().format(formatdatetime);
-        reqbody_pages.pages_publish = moment().format(formatdateyear);
+        reqbody_pages.pages_last_update = moment().tz('Asia/Bangkok').format(formatdatetime);
+        reqbody_pages.pages_publish = moment().tz('Asia/Bangkok').format(formatdateyear);
           pool.query(`INSERT INTO pages set ?`,[reqbody_pages], async (err, result) => {
             try {
               if (err) {
@@ -70,6 +70,9 @@ module.exports = {
                     res.status(404).json({ message: "Page Url Not Found !" });
                   } else {
                     let data = result
+                    const formatdatetime = "YYYY-MM-DD HH:mm:ss"
+                    console.log(moment().tz('Asia/Bangkok').format(formatdatetime));
+                    data[0].pages_last_update = moment(data[0].pages_last_update).tz('Asia/Bangkok').format(formatdatetime)
                     let tags_name = result[0].tags_name_all.split(",");
                     let tags_id = result[0].tags_id_all.split(",");
                     let tags_slug = result[0].tags_slug_all.split(",");
@@ -142,8 +145,8 @@ module.exports = {
         const formatdateyear = "YYYY"
         delete reqbody_pages.pages_id;
         delete reqbody_pages.pages_tags;
-        reqbody_pages.pages_last_update = moment().format(formatdatetime);
-        reqbody_pages.pages_publish = moment().format(formatdateyear);
+        reqbody_pages.pages_last_update = moment().tz('Asia/Bangkok').format(formatdatetime);
+        reqbody_pages.pages_publish = moment().tz('Asia/Bangkok').format(formatdateyear);
           pool.query(`UPDATE pages set ? WHERE pages_id = ?`,[reqbody_pages,pages_id], async (err, result_pages) => {
             try {
               if (err) {

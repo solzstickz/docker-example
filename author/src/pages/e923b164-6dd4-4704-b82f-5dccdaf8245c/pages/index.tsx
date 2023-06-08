@@ -147,7 +147,7 @@ const columns = [
   {
     name: "pages_last_update",
     selector: (row: any) =>
-      moment(row.pages_last_update).startOf("day").fromNow(),
+      moment().from(row.pages_last_update),
     sortable: true,
   },
   {
