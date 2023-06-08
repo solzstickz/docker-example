@@ -34,6 +34,9 @@ const uploads =  multer({
         } else if (file.mimetype.includes("gif")) {
           console.log("type file gif");
           cb(null, `${crypto.randomBytes(15).toString("hex")}.gif`);
+        }else if (file.mimetype.includes("webp")) {
+          console.log("type file gif");
+          cb(null, `${crypto.randomBytes(15).toString("hex")}.webp`);
         } else {
           cb(null, true);
         }

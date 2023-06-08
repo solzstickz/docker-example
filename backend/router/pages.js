@@ -36,7 +36,7 @@ router.post('/uploads/pages',uploads, function (req, res, next) {
   console.log('File uploaded successfully.');
   console.log(req.files[0].key);
   const path = `uploads/${req.files[0].key}`
-  res.json({url:`${path}`});
+  res.status(200).json({url:`${path}`});
 });
 
 // router.post(
