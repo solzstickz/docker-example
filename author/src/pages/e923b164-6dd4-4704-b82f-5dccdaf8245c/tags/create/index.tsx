@@ -26,9 +26,7 @@ export default function create_tags({ ...props }) {
   });
 
   const handleSubmid = async () => {
-    if (create_tags.tags_slug !== "" && create_tags.tags_name !== "") {
-      alert("กรุณากรอกข้อมูลให้ถูกต้อง");
-    } else {
+    if (create_tags.tags_slug != "" && create_tags.tags_name != "") {
       axios_client
         .post(`/tags/create/tag`, create_tags)
         .then((res) => {
@@ -44,7 +42,11 @@ export default function create_tags({ ...props }) {
             alert("สร้างหน้าไม่สำเร็จ");
           }
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      alert("กรุณากรอกข้อมูลให้ถูกต้อง");
     }
   };
   return (

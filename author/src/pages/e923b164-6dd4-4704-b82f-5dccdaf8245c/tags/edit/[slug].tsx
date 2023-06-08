@@ -35,7 +35,7 @@ export default function create_tags({ ...props }) {
         set_create_tags(res.data);
       })
       .catch((err) => {
-        console.log(`tags/edit/slug` + err);
+        console.log(`tags/:slug` + err);
       });
   }, []);
   const handleSubmid = async () => {
@@ -43,7 +43,7 @@ export default function create_tags({ ...props }) {
       alert("กรุณากรอกข้อมูลให้ถูกต้อง");
     } else {
       axios_client
-        .post(`/tags/create/tag`, create_tags)
+        .post(`/tags/edit/tag`, create_tags)
         .then((res) => {
           console.log(res.data);
           if (res.status === 200) {
@@ -57,7 +57,9 @@ export default function create_tags({ ...props }) {
             alert("สร้างหน้าไม่สำเร็จ");
           }
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          console.log(`tags/edit/tag` + err);
+        });
     }
   };
   return (
@@ -95,6 +97,7 @@ export default function create_tags({ ...props }) {
             <input
               className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
               required
+              value={create_tags.tags_slug}
               onChange={(e) => {
                 let check_slug = e.target.value.split(" ").join("-");
                 set_create_tags({
@@ -110,6 +113,7 @@ export default function create_tags({ ...props }) {
             <input
               className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
               required
+              value={create_tags.tags_name}
               onChange={(e) => {
                 let name_uppercase = e.target.value.toUpperCase();
                 set_create_tags({
