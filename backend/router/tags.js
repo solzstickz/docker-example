@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
 router.post("/create/tags", async (req, res) => {
   // await pages.create_tags(req, res);
   let reqbody = await req.body;
-  pool.query(`INSERT INTO pages_tags set ?`,[reqbody], async (err, result) => {
+  pool.query(`INSERT INTO tags set ?`,[reqbody], async (err, result) => {
     try {
       if (err) {
         console.log("Status Mysql Insert Error",err);
