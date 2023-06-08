@@ -63,8 +63,7 @@ export default function create_pages({ ...props }) {
     axios_client
       .post(`/pages/uploads/pages`, formData)
       .then((res) => {
-        console.log(res.data.url);
-
+        alert("อัพโหลดรูปภาพสำเร็จ");
         set_create_pages({
           ...create_pages,
           pages_thumbnail: res.data.url,
