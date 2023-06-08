@@ -100,7 +100,7 @@ export default function Layer({ children }: any) {
                 <Link
                   className={`${
                     comps_state.nav__anime
-                      ? " transition-colors duration-150 hover:text-gray-800 "
+                      ? " transition-colors duration-150  "
                       : " dark:hover:text-gray-200 dark:text-gray-100 text-gray-800"
                   } inline-flex items-center w-full text-sm font-semibold `}
                   href={`/${config.ADMIN_PATH}/dashboard/`}
@@ -113,7 +113,7 @@ export default function Layer({ children }: any) {
             <ul>
               {/* <li className="relative px-6 py-3">
                 <Link
-                  className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                  className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150  dark:hover:text-gray-200"
                   href="/"
                 >
                   <FaBookmark className="w-5 h-5" />
@@ -129,7 +129,7 @@ export default function Layer({ children }: any) {
                   });
                 }}
               >
-                <button className="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                <button className="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150  dark:hover:text-gray-200">
                   {comps_state.nav__anime ? (
                     <span
                       className="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
@@ -139,7 +139,7 @@ export default function Layer({ children }: any) {
                   <span
                     className={`${
                       comps_state.nav__anime
-                        ? "text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                        ? "text-gray-800 transition-colors duration-150  dark:hover:text-gray-200 dark:text-gray-100"
                         : ""
                     } inline-flex items-center`}
                   >
@@ -172,7 +172,7 @@ export default function Layer({ children }: any) {
                           comps_state.nav__anime
                             ? ""
                             : "dark:text-gray-100"
-                        } px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200`}
+                        } px-2 py-1 transition-colors duration-150  dark:hover:text-gray-200`}
                       >
                         <Link
                           className="w-full"
@@ -182,14 +182,14 @@ export default function Layer({ children }: any) {
                         </Link>
                       </li>
                       <li
-                        className={`px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200`}
+                        className={`px-2 py-1 transition-colors duration-150  dark:hover:text-gray-200`}
                       >
                         <Link className="w-full" href={`posts`}>
                           post
                         </Link>
                       </li>
                       <li
-                        className={`px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200`}
+                        className={`px-2 py-1 transition-colors duration-150  dark:hover:text-gray-200`}
                       >
                         <Link
                           className="w-full"
@@ -278,7 +278,7 @@ export default function Layer({ children }: any) {
           </header>
           {/* //! main */}
           <main className="h-full overflow-y-auto">
-            <div className="container px-6 mx-auto grid font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100">
+            <div className="container px-6 mx-auto grid font-semibold text-gray-800 transition-colors duration-150  dark:hover:text-gray-200 dark:text-gray-100">
               {children}
             </div>
           </main>

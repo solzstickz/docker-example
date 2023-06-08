@@ -217,12 +217,10 @@ export default function page({ ...props }: any) {
 
 export async function getServerSideProps(context: any) {
   try {
-    let res = await axios_client.get(
-      `${process.env.API_END_POINT}/public/pages/${context.query.slug}`
-    );
+    let res = await axios_client.get(`/public/pages/${context.query.slug}`);
     let res_data = await res.data;
     let res_page = await res_data[0];
-    let res_ep = await res_data[1];
+    let res_ep = await res_data[1]; 
     console.log(res_page);
     return { props: { res_page, res_ep } };
   } catch (error) {

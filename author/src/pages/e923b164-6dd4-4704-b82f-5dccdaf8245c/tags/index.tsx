@@ -93,7 +93,8 @@ createTheme(
 
 const handdleDelete = (id: number) => {
   window.confirm(`Are you sure you want to delete:\r ${id}?`);
-  let delete_id = [{ tags_id: id }];
+  let delete_id = { tags_id: id };
+  console.log(delete_id);
   axios_client
     .post(`/tags/delete/tag`, delete_id)
     .then((res) => {

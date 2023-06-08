@@ -1,11 +1,12 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import axios from "axios";
+
 import Link from "next/link";
 import { FaMoon } from "react-icons/fa";
 import Layer from "../../components/Layer";
 import moment from "moment";
 import Poster from "../../components/Poster";
+import axios_client from "../../config/axios_client";
 interface pages {
   pages_id: number;
   pages_slug: string;
@@ -84,6 +85,7 @@ export default function Home({ ...props }) {
                       key={i}
                       i={i}
                       pages_slug={pages.pages_slug}
+                      pages_thumbnail={pages.pages_thumbnail}
                       pages_detail={pages.pages_detail}
                       posts_slug={pages.posts_slug}
                       posts_ep={pages.posts_ep}
@@ -100,10 +102,8 @@ export default function Home({ ...props }) {
   );
 }
 export async function getServerSideProps(context: any) {
-  let res = await axios.get(`${process.env.API_END_POINT}/public/pages`);
-  let res_lastep = await axios.get(
-    `${process.env.API_END_POINT}/public/last_updated`
-  );
+  let res = await axios_client.get(`/public/pages`);
+  let res_lastep = await axios_client.get(`/public/last_updated`);
   let pages_lastep = await res_lastep.data;
   let pages = await res.data;
   console.log(pages_lastep, pages);

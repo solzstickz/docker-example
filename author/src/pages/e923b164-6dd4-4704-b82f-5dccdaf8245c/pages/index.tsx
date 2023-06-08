@@ -42,6 +42,7 @@ export default function pages({ ...props }) {
       .then((res) => {
         if (res.status) {
           setPages(res.data);
+          console.log(res.data);
         }
       })
       .catch((err) => {
