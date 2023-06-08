@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios_client from "../config/axios_client";
 
 interface Tag {
   tags_id: number;
@@ -29,7 +29,7 @@ function MySearchSelect({ onSelectedTagsChange, edit_value }: SearchTagsProps) {
 
   const fetchData = async () => {
     try {
-      const response = await axios.post<Tag[]>("http://localhost:7777/tags/");
+      const response = await axios_client.post<Tag[]>(`/tags/`);
       setTags(response.data);
       setFilteredTags(response.data);
     } catch (error) {

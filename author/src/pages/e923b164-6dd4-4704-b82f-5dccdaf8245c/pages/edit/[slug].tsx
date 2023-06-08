@@ -104,12 +104,9 @@ export default function edit_pages({ ...props }) {
     } else {
       axios_client
         .post(`/pages/edit/page/`, create_pages)
-        .then((res) => {
-          console.log(res.data);
-
-          setTimeout(() => {
-            router.push(`/${config.ADMIN_PATH}/pages/`);
-          }, 300);
+        .then(() => {
+          alert("edit pages success");
+          router.push(`/pages/${create_pages.pages_slug}`);
         })
         .catch((err) => {
           console.log(`pages:edit:slug` + err);
