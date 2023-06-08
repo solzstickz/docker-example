@@ -40,26 +40,26 @@ export default function create_tags({ ...props }) {
   }, []);
   const handleSubmid = async () => {
     if (create_tags.tags_slug !== "" && create_tags.tags_name !== "") {
-      alert("กรุณากรอกข้อมูลให้ถูกต้อง");
-    } else {
       axios_client
         .post(`/tags/edit/tag`, create_tags)
         .then((res) => {
           console.log(res.data);
           if (res.status === 200) {
-            alert("สร้างหน้าเรียบร้อย");
+            alert("อัพเดท tags เรียบร้อย");
             set_create_tags({
               tags_slug: "",
               tags_name: "",
             });
             router.push(`/${config.ADMIN_PATH}/tags/`);
           } else {
-            alert("สร้างหน้าไม่สำเร็จ");
+            alert("อัพเดท tags ไม่สำเร็จ");
           }
         })
         .catch((err) => {
           console.log(`tags/edit/tag` + err);
         });
+    } else {
+      alert("กรุณากรอกข้อมูลให้ถูกต้อง");
     }
   };
   return (
