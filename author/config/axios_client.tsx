@@ -4,6 +4,9 @@ import config from "./config";
 
 const axiosInstance = axios.create({
   baseURL: config.API_URL,
+  headers: {
+    "Access-Control-Allow-Origin": "https://author.skz.app",
+  },
 });
 
 axiosInstance.interceptors.request.use((config) => {
