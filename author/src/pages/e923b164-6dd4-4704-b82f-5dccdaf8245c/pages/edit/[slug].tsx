@@ -52,6 +52,7 @@ export default function edit_pages({ ...props }) {
     pages_tags: [],
   });
 
+  //! Edit pages Setup data
   useEffect(() => {
     axios_client
       .post(`/pages/${router.query.slug}`)
@@ -73,6 +74,7 @@ export default function edit_pages({ ...props }) {
     axios_client
       .post(`/pages/uploads/pages`, formData)
       .then((res) => {
+        alert("อัพโหลดรูปภาพสำเร็จ");
         set_create_pages({
           ...create_pages,
           pages_thumbnail: `${res.data.url}`,
@@ -111,7 +113,7 @@ export default function edit_pages({ ...props }) {
         .post(`/pages/edit/page/`, create_pages)
         .then(() => {
           alert("edit pages success");
-          router.push(`/pages/${create_pages.pages_slug}`);
+          router.push(`/${config.ADMIN_PATH}/pages`);
         })
         .catch((err) => {
           console.log(`pages:edit:slug` + err);
