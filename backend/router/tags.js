@@ -8,14 +8,38 @@ const crypto = require("crypto");
 const uploads = require("../middleware/uploads");
 // const tags = require("../module/tags");
 
-
 router.post("/", async (req, res) => {
-  pool.query("SELECT * FROM tags ORDER BY tags.tags_name ASC;", async (err, result) => {
+  pool.query(
+    "SELECT * FROM tags ORDER BY tags.tags_name ASC;",
+    async (err, result) => {
+      try {
+        if (err) {
+          console.log(err);
+        } else {
+          res.status(200).json(result);
+        }
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
+      }
+    }
+  );
+});
+
+router.post("/create/tag", async (req, res) => {
+  // await pages.create_tags(req, res);
+  let reqbody = await req.body;
+  pool.query(`INSERT INTO tags set ?`, [reqbody], async (err, result) => {
     try {
       if (err) {
-        console.log(err);
+        console.log("Status Mysql Insert Error", err);
+        res.status(500).json({ message: "Status Mysql Insert tags Error" });
       } else {
-        res.status(200).json(result);
+        if (result.insertId > 0) {
+          res.status(200).json({ message: "Status Insert tags Success" });
+        } else {
+          res.status(201).json({ message: "Status Insert tags Error" });
+        }
       }
     } catch (err) {
       console.log(err);
@@ -24,22 +48,42 @@ router.post("/", async (req, res) => {
   });
 });
 
-router.post("/create/tag", async (req, res) => {
+router.post("/:slug/", async (req, res) => {
+  pool.query(
+    `SELECT * FROM tags where tags.tags_slug='${req.params.slug}' LIMIT 1;`,
+    async (err, result) => {
+      try {
+        if (err) {
+          console.log(err);
+        } else {
+          res.status(200).json(result[0]);
+        }
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
+      }
+    }
+  );
+});
+
+router.post("/edit/tag", async (req, res) => {
   // await pages.create_tags(req, res);
   let reqbody = await req.body;
-  pool.query(`INSERT INTO tags set ?`,[reqbody], async (err, result) => {
+  const tags_id = await reqbody.tags_id;
+  pool.query(`UPDATE tags set ? WHERE tags_id = ?`, [reqbody,tags_id], async (err, result) => {
     try {
       if (err) {
-        console.log("Status Mysql Insert Error",err);
-        res.status(500).json({ message: "Status Mysql Insert tags Error" });
-      }else{
-        if (result.insertId > 0){
-          res.status(200).json({ message : "Status Insert tags Success"});
-        }else{
-          res.status(201).json({ message: "Status Insert tags Error" });
+        console.log("Status Mysql Insert Error", err);
+        res.status(500).json({ message: "Status Mysql Update tags Error" });
+      } else {
+        console.log(result);
+        if (result.affectedRows > 0) {
+          res.status(200).json({ message: "Status Update tags Success" });
+        } else {
+          res.status(201).json({ message: "Status Update tags Error" });
         }
       }
-    }catch (err) {
+    } catch (err) {
       console.log(err);
       res.status(500).json({ message: "Internal Server Error" });
     }
@@ -78,23 +122,5 @@ router.post("/create/tag", async (req, res) => {
 //     );
 //   }
 // });
-
-router.post("/edit/:slug/", async (req, res) => {
-  pool.query(
-    `SELECT * FROM tags where tags.tags_slug='${req.params.slug}' LIMIT 1;`,
-    async (err, result) => {
-      try {
-        if (err) {
-          console.log(err);
-        } else {
-          res.status(200).json(result[0]);
-        }
-      } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
-      }
-    }
-  );
-});
 
 module.exports = router;
