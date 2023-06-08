@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import moment from "moment";
 import Select from "react-select";
-import { FaUpload } from "react-icons/fa";
+import { FaUpload, FaReply } from "react-icons/fa";
 import config from "../../../../../config/config";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -139,6 +139,17 @@ export default function create_pages({ ...props }) {
     <>
       <Layer>
         <div className="container px-6 mx-auto grid">
+          <div className="px-6 my-3 flex justify-end">
+            <button
+              className="flex items-center justify-between p-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+              onClick={() => {
+                router.push(`/${config.ADMIN_PATH}/pages/`);
+              }}
+            >
+              <FaReply className="w-3 h-3 m-2" />
+              Pages
+            </button>
+          </div>
           <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
             Create Pages Amime :D
           </h2>
@@ -152,6 +163,7 @@ export default function create_pages({ ...props }) {
           <h4 className="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
             Seo Config
           </h4>
+
           <div className="px-4 py-3 bg-white rounded-lg shadow-md dark:bg-gray-800">
             <span className="text-gray-700 dark:text-gray-400 mt-4 text-sm">
               Title | Exapmle : One Piece อ่านมังงะ วันพีช แปลไทย TH
