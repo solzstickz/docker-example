@@ -31,8 +31,8 @@ router.post("/create/tag", async (req, res) => {
   let reqbody = await req.body;
   pool.query(`INSERT INTO tags set ?`, [reqbody], async (err, result) => {
     try {
-      if (err) {
-        console.log("Status Mysql Insert Error", err);
+      if (err) { 
+        console.log("Status Mysql Insert tags Error", err);
         res.status(500).json({ message: "Status Mysql Insert tags Error" });
       } else {
         if (result.insertId > 0) {
@@ -90,6 +90,28 @@ router.post("/edit/tag", async (req, res) => {
   });
 });
 
+router.post("/delete/tag", async (req, res) => {
+  // await pages.create_tags(req, res);
+  let reqbody = await req.body;
+  pool.query(`DELETE FROM tags where tags_id in (?)`,[reqbody.tags_id], async (err, result) => {
+    try {
+      if (err) {
+        console.log("Status Delete tags Error",err);
+        res.status(500).json({ message: "Status Delete tags Error" });
+      } else {
+        console.log(result);
+        if (result.affectedRows > 0){
+          res.status(200).json({ message : "Status Delete tags Success"});
+        }else {
+          res.status(201).json({ message : "Status Delete tags Not Found"});
+        }
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Internal Server tags Error" });
+    }
+  });
+});
 // router.post("/", async (req, res) => {
 //   let redis_res = await redisclient.get(`/last_updated`);
 //   if (redis_res) {
