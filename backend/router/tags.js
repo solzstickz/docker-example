@@ -24,7 +24,7 @@ router.post("/", async (req, res) => {
   });
 });
 
-router.post("/create/tags", async (req, res) => {
+router.post("/create/tag", async (req, res) => {
   // await pages.create_tags(req, res);
   let reqbody = await req.body;
   pool.query(`INSERT INTO tags set ?`,[reqbody], async (err, result) => {
