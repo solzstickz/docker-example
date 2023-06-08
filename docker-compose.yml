@@ -1,24 +1,35 @@
 version: "3.9"
 name: docker-compose-lamp
 services:
-  # fontend:
-  #   build: ./fontend/
+  # frontend:
+  #   build: ./frontend/
   #   container_name: fontend_nextjs
   #   image: node:latest
   #   restart: always
   #   ports:
   #     - "3000:3000"
   #   volumes:
-  #     - ./fontend/:/var/www/html
+  #     - ./frontend/:/var/www/html
   #   depends_on:
-  #     - db_mysql
-  #   environment:
-  #     DB_HOST: db
-  #     DB_USER: skz
-  #     DB_PASSWORD: Skzqqwwee44$$
-  #     DB_NAME: db_mysql
+  #     - backend
   #   networks:
-  #     - mynetwork
+  #     - appnetwork
+  
+  author:
+    container_name: author
+    build: ./author/
+    image: node:latest
+    restart: always
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./author:/author
+    working_dir: /author
+    depends_on:
+      - backend
+    command: npm run dev
+    networks:
+      appnetwork:
 
   nginx:
     container_name: nginx
@@ -34,10 +45,11 @@ services:
     depends_on:
       - backend
     networks:
-      mysqlnetwork:
+      appnetwork:
+
 
   backend:
-    container_name: backend_nodejs
+    container_name: backend
     build: ./backend/
     image: node:latest
     restart: always
@@ -45,15 +57,16 @@ services:
       - "7777:7777"
     volumes:
       - ./backend:/app_backend
-    working_dir: /app_backend 
+    working_dir: /app_backend
     environment:
       - NODE_ENV= development
     command: npm run dev
     networks:
-      mysqlnetwork:
+      appnetwork:
 networks:
-  mysqlnetwork:
+  appnetwork:
     driver: bridge
+
 # mysql:
 #   restart: always
 #   image: mysql:5.7
