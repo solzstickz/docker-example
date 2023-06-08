@@ -27,7 +27,7 @@ services:
     working_dir: /author
     depends_on:
       - backend
-    command: npm run dev
+    command: npm run start
     networks:
       appnetwork:
 
