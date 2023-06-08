@@ -11,15 +11,14 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import axios_client from "../../../../../config/axios_client";
 import Search_tags from "../../../../../components/Search_tags";
-
+import { FaReply } from "react-icons/fa";
 interface CreateTags {
   tags_slug: string;
   tags_name: string;
 }
 
 export default function create_tags({ ...props }) {
-    const router = useRouter();
-    
+  const router = useRouter();
 
   const [create_tags, set_create_tags] = useState<CreateTags>({
     tags_slug: "",
@@ -52,6 +51,17 @@ export default function create_tags({ ...props }) {
     <>
       <Layer>
         <div className="container px-6 mx-auto grid">
+          <div className="px-6 my-3 flex justify-end">
+            <button
+              className="flex items-center justify-between p-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+              onClick={() => {
+                router.push(`/${config.ADMIN_PATH}/tags/`);
+              }}
+            >
+              <FaReply className="w-3 h-3 m-2" />
+              Tags
+            </button>
+          </div>
           <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
             Create Tags
           </h2>
@@ -102,6 +112,16 @@ export default function create_tags({ ...props }) {
                 onClick={handleSubmid}
               >
                 Create Tags
+              </button>
+
+              <button
+                className="w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green my-3"
+                type="button"
+                onClick={() => {
+                  console.log(create_tags);
+                }}
+              >
+                State Tags
               </button>
             </div>
             <div className="mt-4">{`tags_slug : ${create_tags.tags_slug}`}</div>
