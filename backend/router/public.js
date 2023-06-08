@@ -33,7 +33,7 @@ router.get("/pages/", async (req, res) => {
   }
 });
 
-router.post("/pages/sitemap", async (req, res) => {
+router.get("/pages/sitemap", async (req, res) => {
   let redis_res = await redisclient.get("pages:res");
 
   if (redis_res) {
@@ -61,8 +61,8 @@ router.post("/pages/sitemap", async (req, res) => {
 });
 
 //! domain.com/pages/:slug
-router.post("/pages/:slug", async (req, res) => {
-  let redis_res = await redisclient.get(`pages:full:${req.params.slug}`);
+router.get("/pages/:slug", async (req, res) => {
+  let redis_res = await redisclient.get(`public/pages/${req.params.slug}`);
   // if (redis_res) {
   //   res.status(200).json(JSON.parse(redis_res));
   // } else {
@@ -72,19 +72,19 @@ router.post("/pages/:slug", async (req, res) => {
     async (err, result) => {
       try {
         if (err) {
-          console.log("pages/:slug" + err);
+          console.log(`public/pages/` + err);
         } else {
           if (result.length === 0) {
             res.status(404).json({ message: "Page Url Not Found !" });
           } else {
             await redisclient.set(
-              `pages:full:${req.params.slug}`,
+              `public/pages/${req.params.slug}`,
               JSON.stringify(result),
               "EX",
               60
             );
-            let data = await redisclient.get(`pages:full:${req.params.slug}`);
-            res.status(200).json(JSON.parse(result));
+            let data = await redisclient.get(`public/pages/${req.params.slug}`);
+            res.status(200).json(JSON.parse(data));
           }
         }
       } catch (err) {
@@ -94,6 +94,39 @@ router.post("/pages/:slug", async (req, res) => {
     }
   );
   // }
+});
+
+router.get("/last_updated", async (req, res) => {
+  let redis_res = await redisclient.get(`/last_updated`);
+  if (redis_res) {
+    res.status(200).json(JSON.parse(redis_res));
+  } else {
+    pool.query(
+      "SELECT pages.*,posts.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id where posts_ep>pages.pages_last_ep-1 ORDER BY pages.pages_last_update ASC;",
+      async (err, result) => {
+        try {
+          if (err) {
+            console.log(err);
+          } else {
+            if (result.length === 0) {
+              res.status(404).json({ message: "Not Found" });
+            }
+            await redisclient.set(
+              `/last_updated`,
+              JSON.stringify(result),
+              "EX",
+              60
+            );
+            let data = await redisclient.get(`/last_updated`);
+            res.status(200).json(JSON.parse(data));
+          }
+        } catch (err) {
+          console.log(err);
+          res.status(500).json({ message: "Internal Server Error" });
+        }
+      }
+    );
+  }
 });
 
 module.exports = router;

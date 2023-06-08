@@ -1,0 +1,115 @@
+import React from "react";
+import Layer from "../../../../../components/Layer";
+import axios from "axios";
+import Link from "next/link";
+import { useState } from "react";
+import moment from "moment";
+import Select from "react-select";
+import { FaUpload } from "react-icons/fa";
+import config from "../../../../../config/config";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import axios_client from "../../../../../config/axios_client";
+import Search_tags from "../../../../../components/Search_tags";
+
+interface CreateTags {
+  tags_slug: string;
+  tags_name: string;
+}
+
+export default function create_tags({ ...props }) {
+    const router = useRouter();
+    
+
+  const [create_tags, set_create_tags] = useState<CreateTags>({
+    tags_slug: "",
+    tags_name: "",
+  });
+
+  const handleSubmid = async () => {
+    if (create_tags.tags_slug !== "" && create_tags.tags_name !== "") {
+      alert("กรุณากรอกข้อมูลให้ถูกต้อง");
+    } else {
+      axios_client
+        .post(`/tags/create/tag`, create_tags)
+        .then((res) => {
+          console.log(res.data);
+          if (res.status === 200) {
+            alert("สร้างหน้าเรียบร้อย");
+            set_create_tags({
+              tags_slug: "",
+              tags_name: "",
+            });
+            router.push(`/${config.ADMIN_PATH}/tags/`);
+          } else {
+            alert("สร้างหน้าไม่สำเร็จ");
+          }
+        })
+        .catch((err) => console.error(err));
+    }
+  };
+  return (
+    <>
+      <Layer>
+        <div className="container px-6 mx-auto grid">
+          <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+            Create Tags
+          </h2>
+
+          {/* <div className="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple">
+            <div className="flex items-center">
+              <span>สร้างโพส</span>
+            </div>
+            <span>View more →</span>
+          </div> */}
+
+          <div className="px-4 py-3 bg-white rounded-lg shadow-md dark:bg-gray-800">
+            <span className="text-gray-700 dark:text-gray-400 mt-4 text-sm">
+              tags_slug | Exapmle : one-piece (ห้ามเว้นวรรค หากจะเว้นวรรคให้ใช้
+              -)
+            </span>
+
+            <input
+              className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              required
+              onChange={(e) => {
+                let check_slug = e.target.value.split(" ").join("-");
+                set_create_tags({
+                  ...create_tags,
+                  tags_slug: check_slug,
+                });
+              }}
+            />
+            <span className="text-gray-700 dark:text-gray-400 mt-4 text-sm">
+              tags_name | Exapmle : one piece
+            </span>
+
+            <input
+              className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              required
+              onChange={(e) => {
+                let name_uppercase = e.target.value.toUpperCase();
+                set_create_tags({
+                  ...create_tags,
+                  tags_name: name_uppercase,
+                });
+              }}
+            />
+            <div className="mt-4">
+              <button
+                className="w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green my-3"
+                type="button"
+                onClick={handleSubmid}
+              >
+                Create Tags
+              </button>
+            </div>
+            <div className="mt-4">{`tags_slug : ${create_tags.tags_slug}`}</div>
+
+            <div className="mt-4">{`tags_name : ${create_tags.tags_name}`}</div>
+          </div>
+        </div>
+      </Layer>
+    </>
+  );
+}

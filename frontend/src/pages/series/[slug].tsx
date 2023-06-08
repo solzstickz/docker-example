@@ -1,7 +1,7 @@
 import React, { use, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Layer from "../../../components/Layer";
-import axios from "axios";
+import axios_client from "../../../config/axios_client";
 import Image from "next/image";
 import { FaStar, FaBookOpen } from "react-icons/fa";
 import Link from "next/link";
@@ -21,7 +21,7 @@ export default function page({ ...props }: any) {
         >
           <div
             style={{
-              "--image-url": `url(${props.res_page.pages_detail.thumbnail})`,
+              "--image-url": `url(${props.res_page.pages_thumbnail})`,
             }}
             className="pages_thumb_img bg-cover bg-center h-[300px]  bg-no-repeat  bg-[image:var(--image-url)]"
           ></div>
@@ -31,19 +31,18 @@ export default function page({ ...props }: any) {
           <div className="pages_deltail_ep w-full md:w-9/12">
             <div className="title">
               <h1 className="text-3xl md:text-5xl text-color_white font-bold my-5 md:my-0">
-                {props.res_page.pages_detail.title}
+                {props.res_page.pages_title}
               </h1>
             </div>
 
             <div className="pages_content md:mx-10 mt-[80px]">
               <div className="story my-10 text-left dark:text-color_gray text-color_dark_gray text-2xl">
                 <h2 className="text-3xl ">
-                  เรื่องย่อ {props.res_page.pages_detail.info.EN} แปลไทย{" "}
+                  เรื่องย่อ {props.res_page.pages_en} แปลไทย{" "}
                 </h2>
                 <p>
-                  อ่านมังงะ {props.res_page.pages_detail.info.EN} {""}
-                  {props.res_page.pages_detail.info.TH}{" "}
-                  {props.res_page.pages_detail.simple}
+                  อ่านมังงะ {props.res_page.pages_en} {""}
+                  {props.res_page.pages_th} {props.res_page.pages_simple}
                 </p>
               </div>
               <div className="tags">
@@ -217,18 +216,17 @@ export default function page({ ...props }: any) {
 }
 
 export async function getServerSideProps(context: any) {
-  let res = await axios.post(
-    `${process.env.API_END_POINT}/pages/${context.query.slug}`,
-    "",
-    {
-      headers: {
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlN1cGVydXNlciIsImlhdCI6MTY4NTcwMDQwMywiZXhwIjoxNjg1NzAyMjAzfQ.EhEo_IXj0m_uaYwn7iSdz9eD6XbP-IcpJMM7airITs0`,
-      },
-    }
-  );
-  let res_data = await res.data;
-  let res_page = await res_data[0];
-  let res_ep = await res_data[1];
-  console.log(res_ep);
-  return { props: { res_page, res_ep } };
+  try {
+    let res = await axios_client.get(
+      `${process.env.API_END_POINT}/public/pages/${context.query.slug}`
+    );
+    let res_data = await res.data;
+    let res_page = await res_data[0];
+    let res_ep = await res_data[1];
+    console.log(res_page);
+    return { props: { res_page, res_ep } };
+  } catch (error) {
+    console.log(error);
+  }
+  return { props: {} };
 }
