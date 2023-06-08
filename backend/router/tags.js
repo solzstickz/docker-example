@@ -6,6 +6,7 @@ const _ = require("lodash");
 const multer = require("multer");
 const crypto = require("crypto");
 const uploads = require("../middleware/uploads");
+// const tags = require("../module/tags");
 
 
 router.post("/", async (req, res) => {
@@ -17,6 +18,28 @@ router.post("/", async (req, res) => {
         res.status(200).json(result);
       }
     } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  });
+});
+
+router.post("/create/tags", async (req, res) => {
+  // await pages.create_tags(req, res);
+  let reqbody = await req.body;
+  pool.query(`INSERT INTO pages_tags set ?`,[reqbody], async (err, result) => {
+    try {
+      if (err) {
+        console.log("Status Mysql Insert Error",err);
+        res.status(500).json({ message: "Status Mysql Insert tags Error" });
+      }else{
+        if (result.insertId > 0){
+          res.status(200).json({ message : "Status Insert tags Success"});
+        }else{
+          res.status(201).json({ message: "Status Insert tags Error" });
+        }
+      }
+    }catch (err) {
       console.log(err);
       res.status(500).json({ message: "Internal Server Error" });
     }
@@ -56,20 +79,15 @@ router.post("/", async (req, res) => {
 //   }
 // });
 
-router.post("/:slug", async (req, res) => {
-  // console.log(req.params.slug);
-  // let redis_res = await redisclient.get(`tags:${req.params.slug}`);
-  // if (redis_res) {
-  //   res.status(200).json(JSON.parse(redis_res));
-  // } else {
+router.post("/edit/:slug/", async (req, res) => {
   pool.query(
-    `SELECT pages.*,posts.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id where posts_ep>pages.pages_last_ep-1 && pages_tags LIKE '%${req.params.slug}%' ORDER BY pages.pages_id ASC;`,
+    `SELECT * FROM tags where tags.tags_slug='${req.params.slug}' LIMIT 1;`,
     async (err, result) => {
       try {
         if (err) {
           console.log(err);
         } else {
-          res.json(result);
+          res.status(200).json(result[0]);
         }
       } catch (err) {
         console.log(err);
