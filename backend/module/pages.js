@@ -13,7 +13,9 @@ module.exports = {
         console.log(reqbody_pages);
         delete reqbody_pages.pages_tags;
         const formatdatetime = "YYYY-MM-DD HH:mm:ss"
+        const formatdateyear = "YYYY"
         reqbody_pages.pages_last_update = moment().format(formatdatetime);
+        reqbody_pages.pages_publish = moment().format(formatdateyear);
           pool.query(`INSERT INTO pages set ?`,[reqbody_pages], async (err, result) => {
             try {
               if (err) {
@@ -137,9 +139,11 @@ module.exports = {
         let reqbody_pages = await req.body;
         const pages_id = await reqbody_pages.pages_id;
         const formatdatetime = "YYYY-MM-DD HH:mm:ss"
+        const formatdateyear = "YYYY"
         delete reqbody_pages.pages_id;
         delete reqbody_pages.pages_tags;
         reqbody_pages.pages_last_update = moment().format(formatdatetime);
+        reqbody_pages.pages_publish = moment().format(formatdateyear);
           pool.query(`UPDATE pages set ? WHERE pages_id = ?`,[reqbody_pages,pages_id], async (err, result_pages) => {
             try {
               if (err) {
