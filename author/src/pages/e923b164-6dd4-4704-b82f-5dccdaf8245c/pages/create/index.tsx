@@ -311,7 +311,10 @@ export default function create_pages({ ...props }) {
                 className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                 required
               /> */}
-              <Search_tags onSelectedTagsChange={handleSelectedTagsChange} />
+              <Search_tags
+                onSelectedTagsChange={handleSelectedTagsChange}
+                edit_value={create_pages.pages_tags}
+              />
               <button
                 onClick={() => {
                   console.log(create_pages.pages_tags);
