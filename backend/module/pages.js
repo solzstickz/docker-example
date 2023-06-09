@@ -70,9 +70,9 @@ module.exports = {
                     res.status(404).json({ message: "Page Url Not Found !" });
                   } else {
                     let data = result
-                    const formatdatetime = "YYYY-MM-DD HH:mm:ss"
-                    console.log(moment().tz('Asia/Bangkok').format(formatdatetime));
-                    data[0].pages_last_update = moment(data[0].pages_last_update).tz('Asia/Bangkok').format(formatdatetime)
+                    // const formatdatetime = "YYYY-MM-DD HH:mm:ss"
+                    // console.log(moment().tz('Asia/Bangkok').format(formatdatetime));
+                    // data[0].pages_last_update = moment(data[0].pages_last_update).tz('Asia/Bangkok').format(formatdatetime)
                     let tags_name = result[0].tags_name_all.split(",");
                     let tags_id = result[0].tags_id_all.split(",");
                     let tags_slug = result[0].tags_slug_all.split(",");

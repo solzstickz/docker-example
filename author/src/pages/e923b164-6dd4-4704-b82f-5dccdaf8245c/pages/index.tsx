@@ -6,7 +6,7 @@ import DataTable, {
 } from "react-data-table-component";
 import axios from "axios";
 import { useEffect } from "react";
-import moment from "moment";
+import moment from "moment-timezone";
 import Link from "next/link";
 import config from "../../../../config/config";
 import { useRouter } from "next/router";
