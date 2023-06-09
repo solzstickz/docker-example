@@ -147,7 +147,7 @@ router.post("/delete/tag", async (req, res) => {
 
 router.post("/pages/:slug", async (req, res) => {
   pool.query(
-    `SELECT tags.* FROM pages INNER JOIN pages_tags ON pages_tags.pages_id=pages.pages_id INNER JOIN tags ON tags.tags_id=pages_tags.tags_id where pages.pages_id=? ORDER BY tags.tags_name ASC;`,
+    `SELECT tags.* FROM pages INNER JOIN pages_tags ON pages_tags.pages_id=pages.pages_id INNER JOIN tags ON tags.tags_id=pages_tags.tags_id where pages.pages_slug=? ORDER BY tags.tags_name ASC;`,
     [req.params.slug],
     async (err, result) => {
       try {
