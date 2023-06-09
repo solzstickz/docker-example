@@ -1,15 +1,13 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import Layer from "../../../../../components/Layer";
+import Layer from "../../../../../../components/Layer";
 import axios from "axios";
 import Link from "next/link";
 import moment from "moment";
 import Select from "react-select";
 import { FaUpload, FaReply } from "react-icons/fa";
-import config from "../../../../../config/config";
+import config from "../../../../../../config/config";
 import { useRouter } from "next/router";
-import axios_client from "../../../../../config/axios_client";
-
-const MAX_COUNT = 5;
+import axios_client from "../../../../../../config/axios_client";
 
 interface Posts {
   posts_id: number;
@@ -33,14 +31,20 @@ export default function create_posts({ ...props }) {
     posts_view: 0,
   });
 
-  const handleUpload = async () => {
-    if (!uploas_page_thumbnail) {
-      return;
-    }
+  const handleUpload = async (filesArray: any) => {
+    // if (!uploas_page_thumbnail) {
+    //   return;
+    // }
     const formData = new FormData();
-    formData.append("uploads_pages_thumbnail", uploas_page_thumbnail);
+    if (filesArray.length) {
+      for (let i = 0; i < filesArray.length; i++) {
+        formData.append("uploads_posts_images", filesArray[i]);
+        formData.append("pages_slug", router.query.pages_slug as string);
+      }
+    }
+
     axios_client
-      .post(`/pages/uploads/pages`, formData)
+      .post(`/posts/uploads/posts`, formData)
       .then((res) => {
         alert("อัพโหลดรูปภาพสำเร็จ");
         console.log(res.data);
@@ -56,8 +60,11 @@ export default function create_posts({ ...props }) {
   };
 
   const handleFileEvent = (e: ChangeEvent<HTMLInputElement>) => {
-    const chosenFiles = Array.from(e.target.files);
-    handleUploadFiles(chosenFiles);
+    const chosenFiles = e.target.files;
+    if (chosenFiles) {
+      const filesArray = Array.from(chosenFiles);
+      handleUpload(filesArray);
+    }
   };
 
   // const handleSubmid = async (e: FormEvent) => {
@@ -86,6 +93,16 @@ export default function create_posts({ ...props }) {
     <>
       <Layer>
         <div className="container px-6 mx-auto grid">
+          <div className="px-6 my-3 flex justify-start">
+            <Link href={`/${config.ADMIN_PATH}/pages/`}>Pages</Link>
+            <Link
+              href={`/${config.ADMIN_PATH}/pages/posts/${router.query.pages_slug}`}
+            >
+              /{router.query.pages_slug}
+            </Link>
+
+            <p className="text-gray-400">/create</p>
+          </div>
           <div className="px-6 my-3 flex justify-end">
             <button
               className="flex items-center justify-between p-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
@@ -137,7 +154,7 @@ export default function create_posts({ ...props }) {
                 className="block my-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 p-3 "
                 multiple
                 id="fileUpload"
-                accept="application/pdf, image/png"
+                accept="image/gif,image/webp, image/png"
                 onChange={handleFileEvent}
                 disabled={fileLimit}
               />

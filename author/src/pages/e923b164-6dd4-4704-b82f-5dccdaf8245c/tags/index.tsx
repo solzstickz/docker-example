@@ -174,18 +174,24 @@ const columns = [
 const FilterComponent = ({ filterText, onFilter, onClear }: any) => {
   return (
     <>
-      <input
-        id="search"
-        type="text"
-        className="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
-        placeholder="Filter By Name"
-        aria-label="Search Input"
-        value={filterText}
-        onChange={onFilter}
-      />
-      <button type="button" onClick={onClear}>
-        X
-      </button>
+      <div className="input_ relative">
+        <input
+          id="search"
+          type="text"
+          className="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
+          placeholder="Filter By Name"
+          aria-label="Search Input"
+          value={filterText}
+          onChange={onFilter}
+        />
+        <button
+          className="absolute w-5 h-5 right-2 top-1 "
+          type="button"
+          onClick={onClear}
+        >
+          x
+        </button>
+      </div>
     </>
   );
 };
