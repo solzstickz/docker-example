@@ -20,16 +20,8 @@ interface Posts {
 
 export default function create_posts({ ...props }) {
   const router = useRouter();
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  const [fileLimit, setFileLimit] = useState(false);
-  const [post, setPost] = useState<Posts>({
-    posts_id: 0,
-    posts_slug: "",
-    pages_id: 0,
-    posts_ep: 0,
-    posts_detail: [],
-    posts_view: 0,
-  });
+
+  const [create_posts, setCreate_posts] = useState<Posts[]>([]);
 
   const handleUpload = async (filesArray: any) => {
     // if (!uploas_page_thumbnail) {
@@ -39,14 +31,18 @@ export default function create_posts({ ...props }) {
     if (filesArray.length) {
       for (let i = 0; i < filesArray.length; i++) {
         formData.append("uploads_posts_images", filesArray[i]);
-        formData.append("pages_slug", router.query.pages_slug as string);
       }
     }
 
     axios_client
-      .post(`/posts/uploads/posts`, formData)
+      .post(`/posts/uploads/posts/${router.query.pages_slug}"`, formData)
       .then((res) => {
         alert("อัพโหลดรูปภาพสำเร็จ");
+        setCreate_posts({
+          ...create_posts,
+          posts_detail: res.data,
+        });
+
         console.log(res.data);
       })
       .catch((err) => {
@@ -131,11 +127,13 @@ export default function create_posts({ ...props }) {
             </div>
             <div className="my-2">
               <span className="text-gray-700 dark:text-gray-400 mt-4 text-sm">
-                pages_id | Exapmle : 1
+                posts_ep | Exapmle : one-pice-ตอนที่-1
               </span>
+
               <input
-                name="pages_id"
                 className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                required
+                type="text"
               />
             </div>
           </div>
@@ -156,7 +154,6 @@ export default function create_posts({ ...props }) {
                 id="fileUpload"
                 accept="image/gif,image/webp, image/png"
                 onChange={handleFileEvent}
-                disabled={fileLimit}
               />
               <button
                 className="p-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"

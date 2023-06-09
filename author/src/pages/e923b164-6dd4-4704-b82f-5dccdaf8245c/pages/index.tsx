@@ -282,7 +282,7 @@ export const Table_pages = ({ data_table }: any) => {
     <>
       <div className="table_pages grid ">
         <DataTable
-          title="Movie List"
+          title={`Pages Table`}
           columns={columns}
           data={filteredItems}
           progressPending={pending}

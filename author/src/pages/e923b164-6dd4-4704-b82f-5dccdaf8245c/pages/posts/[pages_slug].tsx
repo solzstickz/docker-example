@@ -12,11 +12,30 @@ import config from "../../../../../config/config";
 import { useRouter } from "next/router";
 
 import { FaEdit, FaRecycle, FaTrash } from "react-icons/fa";
-type pages = {
+
+type Tags = {
+  tags_id: number;
+  tags_slug: string;
+  tags_name: string;
+};
+
+type Posts_Detail = {
+  alt: string;
+  url: string;
+  image_no: number;
+};
+
+type Pages_Posts = {
+  posts_id: number;
+  posts_slug: string;
   pages_id: number;
+  posts_ep: number;
+  posts_detail: Posts_Detail[];
+  posts_create: string;
+  posts_views: number;
   pages_slug: string;
   pages_view: number;
-  pages_last_update: Date;
+  pages_last_update: string;
   pages_status_showing: string;
   pages_last_ep: number;
   pages_en: string;
@@ -24,7 +43,7 @@ type pages = {
   pages_star: number;
   pages_type: string;
   pages_follow: number;
-  pages_publish: Date;
+  pages_publish: number;
   pages_title: string;
   pages_simple: string;
   pages_thumbnail: string;
@@ -33,30 +52,50 @@ type pages = {
 
 export default function pages_post_pages_slug({ ...props }) {
   const router = useRouter();
-  const [pages, setPages] = React.useState<pages[]>([]);
+  const [pages_posts, setPages_posts] = React.useState<Pages_Posts[]>([]);
+  const [pages_tags, setPages_tags] = React.useState<Tags[]>([]);
   useEffect(() => {
-    console.log(router.query);
+    get_pages_posts();
+    get_pages_tags();
+    console.log(router.query.pages_slug);
   }, []);
-  // useEffect(() => {
-  //   axios_client
-  //     .post(`/pages/posts/${router.query.pages_slug}`)
-  //     .then((res) => {
-  //       if (res.status) {
-  //         setPages(res.data);
-  //         console.log(res.data);
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       if (err) {
-  //         router.push(`/${config.ADMIN_PATH}/`);
-  //       }
-  //       console.log(`pages:edit:index` + err);
-  //     });
-  // }, []);
+  useEffect(() => {}, []);
+
+  const get_pages_posts = async () => {
+    axios_client
+      .post(`/pages/posts/${router.query.pages_slug}`)
+      .then((res) => {
+        if (res.status) {
+          setPages_posts(res.data);
+          console.log(res.data);
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          console.log(`pages:edit:index` + err);
+        }
+      });
+  };
+
+  const get_pages_tags = async () => {
+    axios_client
+      .post(`/tags/pages/${router.query.pages_slug}`)
+      .then((res) => {
+        if (res.status) {
+          console.log(res.data);
+          setPages_tags(res.data.pages_tags);
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          console.log(`pages:edit:index` + err);
+        }
+      });
+  };
   return (
     <>
       <Layer>
-        <div className="create_pages">
+        <div className="pages_posts">
           <div className="px-6 my-3 flex justify-start">
             <Link href={`/${config.ADMIN_PATH}/pages/`}>Pages</Link>
             <p className="text-gray-400">/{router.query.pages_slug}</p>
@@ -76,11 +115,24 @@ export default function pages_post_pages_slug({ ...props }) {
               </span>
             </button>
           </div>
+          <div className="posts_tags my-3">
+            <h1 className="text-md my-3">Posts_tags:</h1>
+            {pages_tags.map((item, index) => {
+              return (
+                <span
+                  className="m-1 p-1 cursor-pointer text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+                  key={index}
+                >
+                  {item.tags_name}
+                </span>
+              );
+            })}
+          </div>
         </div>
 
         <div className="table_pages mt-5">
           <Table_pages_posts
-            data_table={pages}
+            data_table={pages_posts}
             pages_slug={router.query.pages_slug}
           />
         </div>
@@ -140,29 +192,31 @@ const handdleDelete = (id: number) => {
 
 const columns = [
   {
-    name: "pages_id",
-    selector: (row: any) => row.pages_id,
+    name: "posts_id",
+    selector: (row: any) => row.posts_id,
     cell: (row: any, index: number) => (
-      <Link href={`pages/edit/${row.pages_slug}`}>{row.pages_id}</Link>
+      <Link href={`pages/edit/${row.posts_slug}`}>{row.posts_id}</Link>
     ),
     sortable: true,
   },
   {
-    name: "pages_slug",
-    selector: (row: any) => row.pages_slug,
+    name: "posts_slug",
+    selector: (row: any) => row.posts_slug,
     cell: (row: any, index: number) => (
-      <Link href={`pages/posts/${row.pages_slug}`}>{row.pages_slug}</Link>
+      <Link href={`/${config.ADMIN_PATH}/pages/posts/edit/${row.posts_slug}`}>
+        {row.posts_slug}
+      </Link>
     ),
     sortable: true,
   },
   {
-    name: "pages_last_update",
-    selector: (row: any) => moment().from(row.pages_last_update),
+    name: "posts_create",
+    selector: (row: any) => moment().from(row.posts_create),
     sortable: true,
   },
   {
-    name: "View",
-    selector: (row: any) => row.pages_view,
+    name: "posts_views",
+    selector: (row: any) => row.posts_views,
     sortable: true,
   },
   {
@@ -247,8 +301,8 @@ export const Table_pages_posts = ({ data_table, pages_slug }: any) => {
     React.useState(false);
   const filteredItems = data_table.filter(
     (item: any) =>
-      item.pages_slug &&
-      item.pages_title.toLowerCase().includes(filterText.toLowerCase())
+      item.posts_slug &&
+      item.posts_slug.toLowerCase().includes(filterText.toLowerCase())
   );
   const [selectedRows, setSelectedRows] = React.useState([]);
 
@@ -279,7 +333,7 @@ export const Table_pages_posts = ({ data_table, pages_slug }: any) => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const ExpandedComponent: React.FC<ExpanderComponentProps<pages>> = ({
+  const ExpandedComponent: React.FC<ExpanderComponentProps<Pages_Posts>> = ({
     data,
   }) => {
     return <pre className="text-[8px]">{JSON.stringify(data, null, 2)}</pre>;
@@ -289,7 +343,7 @@ export const Table_pages_posts = ({ data_table, pages_slug }: any) => {
     <>
       <div className="table_pages grid ">
         <DataTable
-          title={`${pages_slug}`}
+          title={`Pages: ${pages_slug}`}
           columns={columns}
           data={filteredItems}
           progressPending={pending}
