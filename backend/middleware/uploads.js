@@ -44,7 +44,7 @@ const uploads =  multer({
         //use Date.now() for unique file keys
       },
     }),
-  }).array('uploads_pages_thumbnail', 3);
+  }).array('uploads_pages_thumbnail', 5);
 
 
 
