@@ -1,17 +1,16 @@
 import React, { use, useState } from "react";
-import Layer from "../../../../components/Layer";
+import Layer from "../../../../../components/Layer";
 import DataTable, {
   createTheme,
   ExpanderComponentProps,
 } from "react-data-table-component";
-import axios from "axios";
+import axios_client from "../../../../../config/axios_client";
 import { useEffect } from "react";
 import moment from "moment-timezone";
 import Link from "next/link";
-import config from "../../../../config/config";
+import config from "../../../../../config/config";
 import { useRouter } from "next/router";
-import { setWithExpiry, getWithExpiry } from "../../../../lib/localstorage";
-import axios_client from "../../../../config/axios_client";
+
 import { FaEdit, FaRecycle, FaTrash } from "react-icons/fa";
 type pages = {
   pages_id: number;
@@ -32,41 +31,46 @@ type pages = {
   pages_description: string;
 };
 
-export default function pages({ ...props }) {
+export default function pages_post_pages_slug({ ...props }) {
   const router = useRouter();
   const [pages, setPages] = React.useState<pages[]>([]);
-
   useEffect(() => {
-    axios_client
-      .post(`/pages/`)
-      .then((res) => {
-        if (res.status) {
-          setPages(res.data);
-          console.log(res.data);
-        }
-      })
-      .catch((err) => {
-        if (err) {
-          router.push(`/${config.ADMIN_PATH}/`);
-        }
-        console.log(`pages:edit:index` + err);
-      });
+    console.log(router.query);
   }, []);
+  // useEffect(() => {
+  //   axios_client
+  //     .post(`/pages/posts/${router.query.pages_slug}`)
+  //     .then((res) => {
+  //       if (res.status) {
+  //         setPages(res.data);
+  //         console.log(res.data);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       if (err) {
+  //         router.push(`/${config.ADMIN_PATH}/`);
+  //       }
+  //       console.log(`pages:edit:index` + err);
+  //     });
+  // }, []);
   return (
     <>
       <Layer>
         <div className="create_pages">
           <div className="px-6 my-3 flex justify-start">
             <Link href={`/${config.ADMIN_PATH}/pages/`}>Pages</Link>
+            <p className="text-gray-400">/{router.query.pages_slug}</p>
           </div>
           <div className="px-6 my-3 flex justify-end gap-3">
             <button
               className="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
               onClick={() => {
-                router.push(`pages/create`);
+                router.push(
+                  `/${config.ADMIN_PATH}/pages/posts/create/${router.query.pages_slug}`
+                );
               }}
             >
-              Create Pages
+              Create Posts {router.query.pages_slug}
               <span className="ml-2" aria-hidden="true">
                 +
               </span>
@@ -75,7 +79,10 @@ export default function pages({ ...props }) {
         </div>
 
         <div className="table_pages mt-5">
-          <Table_pages data_table={pages} />
+          <Table_pages_posts
+            data_table={pages}
+            pages_slug={router.query.pages_slug}
+          />
         </div>
       </Layer>
     </>
@@ -229,7 +236,7 @@ const FilterComponent = ({ filterText, onFilter, onClear }: any) => {
   );
 };
 
-export const Table_pages = ({ data_table }: any) => {
+export const Table_pages_posts = ({ data_table, pages_slug }: any) => {
   const [pending, setPending] = React.useState(true);
   useEffect(() => {
     setPending(false);
@@ -282,7 +289,7 @@ export const Table_pages = ({ data_table }: any) => {
     <>
       <div className="table_pages grid ">
         <DataTable
-          title="Movie List"
+          title={`${pages_slug}`}
           columns={columns}
           data={filteredItems}
           progressPending={pending}
