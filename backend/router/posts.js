@@ -36,11 +36,17 @@ router.post("/", async (req, res) => {
   }
 });
 
+//! domain.com/pages/uploads/pages
 router.post('/uploads/posts',uploads, function (req, res, next) {
   console.log('File uploaded successfully.');
-  console.log(req.files[0].key);
+  let jsonimg = [];
+  for(i in req.files){
+    let name = `uploads/${req.files[i].key}`
+    jsonimg.push({'url':name,'img_number':Number(i)+1});
+  }
+  console.log(jsonimg);
   const path = `uploads/${req.files[0].key}`
-  res.json({url:`${path}`});
+  res.status(200).json({url:`${path}`});
 });
 
 router.post("/:slug", async (req, res) => {
