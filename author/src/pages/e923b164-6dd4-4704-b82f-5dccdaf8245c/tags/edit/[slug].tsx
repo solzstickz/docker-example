@@ -102,7 +102,7 @@ export default function create_tags({ ...props }) {
                 let check_slug = e.target.value.split(" ").join("-");
                 set_create_tags({
                   ...create_tags,
-                  tags_slug: check_slug,
+                  tags_slug: check_slug.toLowerCase(),
                 });
               }}
             />
@@ -115,7 +115,7 @@ export default function create_tags({ ...props }) {
               required
               value={create_tags.tags_name}
               onChange={(e) => {
-                let name_uppercase = e.target.value.toUpperCase();
+                let name_uppercase = e.target.value.toLowerCase();
                 set_create_tags({
                   ...create_tags,
                   tags_name: name_uppercase,

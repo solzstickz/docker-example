@@ -101,15 +101,14 @@ export default function create_tags({ ...props }) {
                 Create Tags
               </button>
 
-              <button
-                className="w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green my-3"
-                type="button"
+              <p
+                className="cursor-pointer"
                 onClick={() => {
                   console.log(create_tags);
                 }}
               >
-                State Tags
-              </button>
+                show_state
+              </p>
             </div>
             <div className="mt-4">{`tags_slug : ${create_tags.tags_slug}`}</div>
 
