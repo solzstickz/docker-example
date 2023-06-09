@@ -20,7 +20,7 @@ const s3 = new aws.S3({
   secretAccessKey:'CYHobUPR4PBxJT0wG2mpYwSjRfmaO5ny0s/u5RpcgSo'
 });
 // Change bucket property to your Space name
-const uploads =  multer({
+const uploads_pages =  multer({
     storage: multerS3({
       s3: s3,
       acl: "public-read",
@@ -46,6 +46,36 @@ const uploads =  multer({
     }),
   }).array('uploads_pages_thumbnail', 5);
 
+  const uploads_posts =  multer({
+    storage: multerS3({
+      s3: s3,
+      acl: "public-read",
+      bucket: "uploads-storage/uploads",
+      contentType: multerS3.AUTO_CONTENT_TYPE,
+      key: function (req, file, cb) {
+        console.log(file.mimetype);
+        if (file.mimetype.includes("png")) {
+          console.log("type file png");
+          cb(null, `${crypto.randomBytes(15).toString("hex")}.png`);
+        } else if (file.mimetype.includes("gif")) {
+          console.log("type file gif");
+          cb(null, `${crypto.randomBytes(15).toString("hex")}.gif`);
+        }else if (file.mimetype.includes("webp")) {
+          console.log("type file gif");
+          cb(null, `${crypto.randomBytes(15).toString("hex")}.webp`);
+        } else {
+          cb(null, true);
+        }
+        // cb(null, true);
+        //use Date.now() for unique file keys
+      },
+    }),
+  }).array('uploads_posts_images', 5);
+
+  const uploads = {
+    uploads_pages,
+    uploads_posts,
+  };
 
 
 

@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
 });
 
 //! domain.com/pages/uploads/pages
-router.post('/uploads/posts',uploads, function (req, res, next) {
+router.post('/uploads/posts',uploads.uploads_posts, function (req, res, next) {
   console.log('File uploaded successfully.');
   let jsonimg = [];
   for(i in req.files){
