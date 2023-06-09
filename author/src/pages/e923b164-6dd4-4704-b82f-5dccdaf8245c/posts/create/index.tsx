@@ -11,51 +11,48 @@ import axios_client from "../../../../../config/axios_client";
 
 const MAX_COUNT = 5;
 
+interface Posts {
+  posts_id: number;
+  posts_slug: string;
+  pages_id: number;
+  posts_ep: number;
+  posts_detail: [];
+  posts_view: number;
+}
+
 export default function create_posts({ ...props }) {
   const router = useRouter();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [fileLimit, setFileLimit] = useState(false);
+  const [post, setPost] = useState<Posts>({
+    posts_id: 0,
+    posts_slug: "",
+    pages_id: 0,
+    posts_ep: 0,
+    posts_detail: [],
+    posts_view: 0,
+  });
 
-  const handleUploadFiles = async (files: File[]) => {
-    const uploaded: File[] = [...uploadedFiles];
-    let limitExceeded = false;
-
-    Array.prototype.some.call(files, (file: File) => {
-      if (uploaded.findIndex((f) => f.name === file.name) === -1) {
-        uploaded.push(file);
-        if (uploaded.length === MAX_COUNT) setFileLimit(true);
-        if (uploaded.length > MAX_COUNT) {
-          alert(`คุณสามารถเพิ่มไฟล์ได้สูงสุด ${MAX_COUNT} ไฟล์เท่านั้น`);
-          setFileLimit(false);
-          limitExceeded = true;
-          return true;
-        }
-      }
-    });
-
-    if (!limitExceeded) {
-      setUploadedFiles(uploaded);
-
-      const formData = new FormData();
-      files.forEach((file) => {
-        formData.append("uploads_pages_thumbnail", file);
-      });
-
-      try {
-        const response = await axios_client.post(
-          `/pages/uploads/pages`,
-          formData
-        );
-        alert("อัพโหลดรูปภาพสำเร็จ");
-        // set_create_pages({
-        //   ...create_pages,
-        //   pages_thumbnail: response.data.url,
-        // });
-        console.log(response.data);
-      } catch (error) {
-        console.error(error);
-      }
+  const handleUpload = async () => {
+    if (!uploas_page_thumbnail) {
+      return;
     }
+    const formData = new FormData();
+    formData.append("uploads_pages_thumbnail", uploas_page_thumbnail);
+    axios_client
+      .post(`/pages/uploads/pages`, formData)
+      .then((res) => {
+        alert("อัพโหลดรูปภาพสำเร็จ");
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(`pages/create/index` + err.response);
+        if (err.response === undefined) {
+          alert("ขนาดไฟล์ Size ใหญ่เกินไป");
+        } else {
+          alert("อัพโหลดรูปภาพไม่สำเร็จ กรุณาอัพโหลดไฟล์ .PNG .WEBP .GIF");
+        }
+      });
   };
 
   const handleFileEvent = (e: ChangeEvent<HTMLInputElement>) => {
@@ -146,15 +143,11 @@ export default function create_posts({ ...props }) {
               />
               <button
                 className="p-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-                onClick={handleUploadFiles}
+                onClick={handleUpload}
               >
                 Upload
               </button>
-              <div className="uploaded-files-list">
-                {uploadedFiles.map((file) => (
-                  <div key={file.name}>{file.name}</div>
-                ))}
-              </div>
+              <div className="uploaded-files-list"></div>
             </div>
           </div>
         </div>
