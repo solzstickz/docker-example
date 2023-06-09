@@ -145,4 +145,27 @@ router.post("/delete/tag", async (req, res) => {
 //   }
 // });
 
+router.post("/pages/:slug", async (req, res) => {
+  pool.query(
+    `SELECT tags.* FROM pages INNER JOIN pages_tags ON pages_tags.pages_id=pages.pages_id INNER JOIN tags ON tags.tags_id=pages_tags.tags_id where pages.pages_slug=? ORDER BY tags.tags_name ASC;`,
+    [req.params.slug],
+    async (err, result) => {
+      try {
+        if (err) {
+          console.log(`public/pages/` + err);
+        } else {
+          if (result.length === 0) {
+            res.status(404).json({ message: "Page Url Not Found !" });
+          } else {
+            res.status(200).json({"pages_tags":result});
+          }
+        }
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
+      }
+    }
+  );
+});
+
 module.exports = router;

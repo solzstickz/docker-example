@@ -42,7 +42,7 @@ router.post('/uploads/posts',uploads.uploads_posts, async function (req, res, ne
   let jsonimg = [];
   for(i in req.files){
     let name = await `uploads/${req.files[i].key}`
-   await jsonimg.push({'url':name,'img_number':Number(i)+1});
+   await jsonimg.push({'url':name,'image_no':Number(i)+1});
   }
   console.log(jsonimg);
   await res.status(200).json(jsonimg);

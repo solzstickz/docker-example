@@ -71,6 +71,31 @@ router.post("/edit/page/", async (req, res) => {
   await pages.edit_pages(req, res);
 });
 
+router.post("/posts/:slug", async (req, res) => {
+  pool.query(
+    `SELECT * FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id WHERE pages.pages_slug = ? ORDER BY posts_ep DESC;`,
+    [req.params.slug],
+    async (err, result) => {
+      try {
+        if (err) {
+          console.log(`public/pages/` + err);
+        } else {
+          if (result.length === 0) {
+            res.status(404).json({ message: "Page Url Not Found !" });
+          } else {
+            res.status(200).json(result);
+          }
+        }
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
+      }
+    }
+  );
+});
+
+
+
 
 
 
