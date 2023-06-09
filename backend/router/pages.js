@@ -73,7 +73,7 @@ router.post("/edit/page/", async (req, res) => {
 
 router.post("/posts/:slug", async (req, res) => {
   pool.query(
-    `SELECT * FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id WHERE pages.pages_slug = ? ORDER BY posts_ep DESC;`,
+    `SELECT * FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id WHERE pages.pages_id = ? ORDER BY posts_ep DESC;`,
     [req.params.slug],
     async (err, result) => {
       try {
