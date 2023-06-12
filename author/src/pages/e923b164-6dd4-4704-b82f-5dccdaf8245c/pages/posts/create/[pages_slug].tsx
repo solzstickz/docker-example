@@ -59,7 +59,7 @@ export default function create_posts({ ...props }) {
             MySwal.showLoading();
           },
         });
-        const res = await axios_client.post(`/posts/uploads/posts`, formData);
+        const res = await axios_client.post(`posts/uploads/posts`, formData);
         MySwal.close();
         MySwal.fire({
           position: "center",
@@ -133,27 +133,30 @@ export default function create_posts({ ...props }) {
 
   const handleSubmid = async () => {
     console.log(create_posts);
-    // try {
-    //   const res = await axios_client.post(`/posts/create/post`, create_posts);
-    //   console.log(res.data);
-    //   MySwal.fire({
-    //     position: "center",
-    //     icon: "success",
-    //     title: "เพิ่มข้อมูลสำเร็จแล้ว",
-    //     showConfirmButton: false,
-    //     timer: 1500,
-    //   });
-    //   // router.push(`/${config.ADMIN_PATH}/posts/`);
-    // } catch (err: any) {
-    //   console.log(`pages/posts/create:submit` + err);
-    //   MySwal.fire({
-    //     position: "center",
-    //     icon: "warning",
-    //     title: "เพิ่มข้อมูลไม่สำเร็จ",
-    //     showConfirmButton: false,
-    //     timer: 1500,
-    //   });
-    // }
+    try {
+      const res = await axios_client.post(`/posts/create/post`, create_posts);
+      console.log(res.data);
+      MySwal.fire({
+        position: "center",
+        icon: "success",
+        title: "เพิ่มข้อมูลสำเร็จแล้ว",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      router.push(
+        `/${config.ADMIN_PATH}/pages/posts/${router.query.pages_slug}`
+      );
+    } catch (err: any) {
+      console.log(`pages/posts/create:submit` + err);
+      MySwal.fire({
+        position: "center",
+        icon: "warning",
+        title: "เพิ่มข้อมูลไม่สำเร็จ",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
 
   return (

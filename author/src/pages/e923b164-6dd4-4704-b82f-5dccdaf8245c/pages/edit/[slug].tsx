@@ -56,7 +56,7 @@ export default function edit_pages({ ...props }) {
   //! Edit pages Setup data
   useEffect(() => {
     axios_client
-      .post(`/pages/${router.query.slug}`)
+      .post(`pages/${router.query.slug}`)
       .then((res) => {
         console.log(res.data);
         set_create_pages(res.data);
@@ -64,7 +64,7 @@ export default function edit_pages({ ...props }) {
       .catch((err) => {
         console.log(`pages:edit:slug` + err);
       });
-  }, []);
+  }, [router.query.slug]);
 
   const handleUpload = async () => {
     if (!uploas_page_thumbnail) {
