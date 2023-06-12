@@ -48,6 +48,17 @@ router.post('/uploads/posts',uploads.uploads_posts, async function (req, res, ne
   await res.status(200).json(jsonimg);
 });
 
+router.post('/uploads/delete', async function (req, res, next) {
+  const data = await req.body; 
+  let keyname = []
+  for(i in data){
+    let name =  data[i].url;
+    keyname.push({Key:name})
+  }
+  await console.log(keyname);
+  await uploads.uploads_posts_delete(keyname,req,res);
+});
+
 router.post("/:slug", async (req, res) => {
   let redis_res = await redisclient.get(`post/:slug:${req.params.slug}`);
   if (redis_res) {

@@ -72,9 +72,31 @@ const uploads_pages =  multer({
     }),
   }).array('uploads_posts_images', 5);
 
+  const uploads_posts_delete = (keyname,req,res) =>{
+    const params = {
+      Bucket: 'uploads-storage',
+      Delete: {
+        Objects: keyname
+      }
+    };
+  
+    s3.deleteObjects(params, (err, data) => {
+      if (err) {
+        console.log('เกิดข้อผิดพลาดในการลบไฟล์:', err);
+        return res.status(500).json({ message:'File deleted Error'});
+      }else if(data.Deleted.length === 0) {
+        console.log('ไม่พบไฟล์ที่ต้องการลบ');
+        return res.status(201).json({ message: 'Not Found File deleted' });
+      }else {
+        return res.status(200).json({ message:'File deleted successfully'});
+      }
+    });
+  }
+
   const uploads = {
     uploads_pages,
     uploads_posts,
+    uploads_posts_delete
   };
 
 
