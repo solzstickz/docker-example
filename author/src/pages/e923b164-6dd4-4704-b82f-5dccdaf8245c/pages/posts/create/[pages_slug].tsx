@@ -8,58 +8,118 @@ import { FaUpload, FaReply } from "react-icons/fa";
 import config from "../../../../../../config/config";
 import { useRouter } from "next/router";
 import axios_client from "../../../../../../config/axios_client";
-
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { create } from "domain";
 interface Posts {
   posts_id: number;
   posts_slug: string;
   pages_id: number;
   posts_ep: number;
-  posts_detail: [];
+  posts_detail: Post_detail[];
   posts_view: number;
+}
+interface Post_detail {
+  url: string;
+  image_no: number;
 }
 
 export default function create_posts({ ...props }) {
   const router = useRouter();
+  const MySwal = withReactContent(Swal);
 
-  const [create_posts, setCreate_posts] = useState<Posts[]>([]);
+  const [create_posts, setCreate_posts] = useState<Posts>({
+    posts_id: 0,
+    posts_slug: "",
+    pages_id: 0,
+    posts_ep: 0,
+    posts_detail: [],
+    posts_view: 0,
+  });
+  const [uploads_progress, setUploads_progress] = useState<boolean>(false);
+  const [filesArray, setFilesArray] = useState<any[]>([]);
 
-  const handleUpload = async (filesArray: any) => {
-    // if (!uploas_page_thumbnail) {
-    //   return;
-    // }
-    const formData = new FormData();
+  const handleUpload = async () => {
     if (filesArray.length) {
+      const formData = new FormData();
       for (let i = 0; i < filesArray.length; i++) {
         formData.append("uploads_posts_images", filesArray[i]);
       }
-    }
 
-    axios_client
-      .post(`/posts/uploads/posts/${router.query.pages_slug}"`, formData)
-      .then((res) => {
-        alert("อัพโหลดรูปภาพสำเร็จ");
+      try {
+        Swal.fire({
+          title: "กำลังอัพโหลดรูปภาพ",
+          timerProgressBar: true,
+
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+        const res = await axios_client.post(`/posts/uploads/posts`, formData);
+        Swal.close();
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "อัพโหลดรูปภาพสำเร็จแล้ว",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        console.log(res.data);
         setCreate_posts({
           ...create_posts,
           posts_detail: res.data,
         });
-
-        console.log(res.data);
-      })
-      .catch((err) => {
+      } catch (err: any) {
         console.log(`pages/create/index` + err.response);
         if (err.response === undefined) {
-          alert("ขนาดไฟล์ Size ใหญ่เกินไป");
+          Swal.fire({
+            position: "center",
+            icon: "warning",
+            title: "ขนาดไฟล์ Size ใหญ่เกินไป",
+            showConfirmButton: false,
+            timer: 1500,
+          });
         } else {
-          alert("อัพโหลดรูปภาพไม่สำเร็จ กรุณาอัพโหลดไฟล์ .PNG .WEBP .GIF");
+          Swal.fire({
+            position: "center",
+            icon: "warning",
+            title: "อัพโหลดรูปภาพไม่สำเร็จ กรุณาอัพโหลดไฟล์ .PNG .WEBP .GIF",
+            showConfirmButton: false,
+            timer: 1500,
+          });
         }
+      }
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "warning",
+        title: "กรุณาเลือกไฟล์ที่ต้องการอัพโหลด",
+        showConfirmButton: false,
+        timer: 1500,
       });
+    }
   };
 
   const handleFileEvent = (e: ChangeEvent<HTMLInputElement>) => {
-    const chosenFiles = e.target.files;
-    if (chosenFiles) {
-      const filesArray = Array.from(chosenFiles);
-      handleUpload(filesArray);
+    if (create_posts.posts_detail.length == 0) {
+      if (e.target.files) {
+        setFilesArray(Array.from(e.target.files));
+      }
+    } else {
+      console.log(create_posts.posts_detail);
+      // try {
+      //   axios_client.post(`/posts/uploads/delete`, create_posts.posts_detail);
+      // } catch (err: any) {
+      //   console.log(`pages/uploads/delete` + err);
+      // }
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "ลบรูปภาพเก่าเรียบร้อยแล้ว",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 
@@ -123,6 +183,12 @@ export default function create_posts({ ...props }) {
               <input
                 className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                 required
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setCreate_posts({
+                    ...create_posts,
+                    posts_slug: e.target.value,
+                  });
+                }}
               />
             </div>
             <div className="my-2">
@@ -161,7 +227,37 @@ export default function create_posts({ ...props }) {
               >
                 Upload
               </button>
-              <div className="uploaded-files-list"></div>
+            </div>
+            <div className="uploaded-files-list flex gap-10 flex-warp justify-center">
+              {create_posts.posts_detail.length === 0 ? (
+                <div className="text-gray-700 dark:text-gray-400 text-sm">
+                  <p className="text-2xl">กรุณาอัพโหลดรูปภาพ</p>
+                </div>
+              ) : (
+                create_posts.posts_detail.map((item: any, index: number) => (
+                  <div className="flex flex-warp flex-col" key={index}>
+                    <img
+                      className="h-[500px]  object-cover"
+                      src={`https://sv1.skz.app/${item.url}`}
+                      alt=""
+                    />
+                    <span className="text-gray-700 dark:text-gray-400 text-xl text-center">
+                      {item.image_no}
+                    </span>
+                  </div>
+                ))
+              )}
+            </div>
+            <div className="my-2">
+              <button
+                className="w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green my-3"
+                type="button"
+                onClick={() => {
+                  console.log(create_posts);
+                }}
+              >
+                Submit
+              </button>
             </div>
           </div>
         </div>
