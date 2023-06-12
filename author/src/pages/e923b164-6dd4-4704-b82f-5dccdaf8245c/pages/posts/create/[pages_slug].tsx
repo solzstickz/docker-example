@@ -10,14 +10,13 @@ import { useRouter } from "next/router";
 import axios_client from "../../../../../../config/axios_client";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { create } from "domain";
+import { useEffect } from "react";
+
 interface Posts {
-  posts_id: number;
   posts_slug: string;
-  pages_id: number;
+  pages_slug: string;
   posts_ep: number;
   posts_detail: Post_detail[];
-  posts_view: number;
 }
 interface Post_detail {
   url: string;
@@ -29,15 +28,19 @@ export default function create_posts({ ...props }) {
   const MySwal = withReactContent(Swal);
 
   const [create_posts, setCreate_posts] = useState<Posts>({
-    posts_id: 0,
     posts_slug: "",
-    pages_id: 0,
+    pages_slug: "",
     posts_ep: 0,
     posts_detail: [],
-    posts_view: 0,
   });
-  const [uploads_progress, setUploads_progress] = useState<boolean>(false);
   const [filesArray, setFilesArray] = useState<any[]>([]);
+
+  useEffect(() => {
+    setCreate_posts({
+      ...create_posts,
+      pages_slug: router.query.pages_slug as string,
+    });
+  }, [router.query.pages_slug]);
 
   const handleUpload = async () => {
     if (filesArray.length) {
@@ -47,33 +50,34 @@ export default function create_posts({ ...props }) {
       }
 
       try {
-        Swal.fire({
+        MySwal.fire({
           title: "กำลังอัพโหลดรูปภาพ",
           timerProgressBar: true,
 
           showConfirmButton: false,
           didOpen: () => {
-            Swal.showLoading();
+            MySwal.showLoading();
           },
         });
         const res = await axios_client.post(`/posts/uploads/posts`, formData);
-        Swal.close();
-        Swal.fire({
+        MySwal.close();
+        MySwal.fire({
           position: "center",
           icon: "success",
           title: "อัพโหลดรูปภาพสำเร็จแล้ว",
           showConfirmButton: false,
           timer: 1500,
         });
-        console.log(res.data);
+
         setCreate_posts({
           ...create_posts,
           posts_detail: res.data,
         });
+        console.log(create_posts);
       } catch (err: any) {
         console.log(`pages/create/index` + err.response);
         if (err.response === undefined) {
-          Swal.fire({
+          MySwal.fire({
             position: "center",
             icon: "warning",
             title: "ขนาดไฟล์ Size ใหญ่เกินไป",
@@ -81,7 +85,7 @@ export default function create_posts({ ...props }) {
             timer: 1500,
           });
         } else {
-          Swal.fire({
+          MySwal.fire({
             position: "center",
             icon: "warning",
             title: "อัพโหลดรูปภาพไม่สำเร็จ กรุณาอัพโหลดไฟล์ .PNG .WEBP .GIF",
@@ -91,7 +95,7 @@ export default function create_posts({ ...props }) {
         }
       }
     } else {
-      Swal.fire({
+      MySwal.fire({
         position: "center",
         icon: "warning",
         title: "กรุณาเลือกไฟล์ที่ต้องการอัพโหลด",
@@ -108,12 +112,16 @@ export default function create_posts({ ...props }) {
       }
     } else {
       console.log(create_posts.posts_detail);
-      // try {
-      //   axios_client.post(`/posts/uploads/delete`, create_posts.posts_detail);
-      // } catch (err: any) {
-      //   console.log(`pages/uploads/delete` + err);
-      // }
-      Swal.fire({
+      try {
+        axios_client.post(`/posts/uploads/delete`, create_posts.posts_detail);
+      } catch (err: any) {
+        console.log(`pages/uploads/delete` + err);
+      }
+      if (e.target.files) {
+        setFilesArray(Array.from(e.target.files));
+      }
+
+      MySwal.fire({
         position: "center",
         icon: "success",
         title: "ลบรูปภาพเก่าเรียบร้อยแล้ว",
@@ -123,27 +131,30 @@ export default function create_posts({ ...props }) {
     }
   };
 
-  // const handleSubmid = async (e: FormEvent) => {
-  //   e.preventDefault();
-
-  //   const formData = new FormData();
-
-  //   for (let i = 0; i < uploadedFiles.length; i++) {
-  //     formData.append("files", uploadedFiles[i]);
-  //   }
-
-  //   try {
-  //     const response = await axios.post("/upload", formData, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //     });
-
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const handleSubmid = async () => {
+    console.log(create_posts);
+    // try {
+    //   const res = await axios_client.post(`/posts/create/post`, create_posts);
+    //   console.log(res.data);
+    //   MySwal.fire({
+    //     position: "center",
+    //     icon: "success",
+    //     title: "เพิ่มข้อมูลสำเร็จแล้ว",
+    //     showConfirmButton: false,
+    //     timer: 1500,
+    //   });
+    //   // router.push(`/${config.ADMIN_PATH}/posts/`);
+    // } catch (err: any) {
+    //   console.log(`pages/posts/create:submit` + err);
+    //   MySwal.fire({
+    //     position: "center",
+    //     icon: "warning",
+    //     title: "เพิ่มข้อมูลไม่สำเร็จ",
+    //     showConfirmButton: false,
+    //     timer: 1500,
+    //   });
+    // }
+  };
 
   return (
     <>
@@ -186,7 +197,7 @@ export default function create_posts({ ...props }) {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setCreate_posts({
                     ...create_posts,
-                    posts_slug: e.target.value,
+                    posts_slug: e.target.value.split(" ").join("-"),
                   });
                 }}
               />
@@ -199,7 +210,13 @@ export default function create_posts({ ...props }) {
               <input
                 className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                 required
-                type="text"
+                type="number"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setCreate_posts({
+                    ...create_posts,
+                    posts_ep: parseInt(e.target.value),
+                  });
+                }}
               />
             </div>
           </div>
@@ -252,9 +269,7 @@ export default function create_posts({ ...props }) {
               <button
                 className="w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green my-3"
                 type="button"
-                onClick={() => {
-                  console.log(create_posts);
-                }}
+                onClick={handleSubmid}
               >
                 Submit
               </button>

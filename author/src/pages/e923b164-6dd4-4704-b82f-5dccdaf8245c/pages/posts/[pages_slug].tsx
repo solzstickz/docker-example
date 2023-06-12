@@ -55,11 +55,13 @@ export default function pages_post_pages_slug({ ...props }) {
   const [pages_posts, setPages_posts] = React.useState<Pages_Posts[]>([]);
   const [pages_tags, setPages_tags] = React.useState<Tags[]>([]);
   useEffect(() => {
-    get_pages_posts();
-    get_pages_tags();
-    console.log(router.query.pages_slug);
-  }, []);
-  useEffect(() => {}, []);
+    if (router.query.pages_slug == undefined) {
+      return;
+    } else {
+      get_pages_posts();
+      get_pages_tags();
+    }
+  }, [router.query.pages_slug]);
 
   const get_pages_posts = async () => {
     axios_client
@@ -114,6 +116,16 @@ export default function pages_post_pages_slug({ ...props }) {
                 +
               </span>
             </button>
+          </div>
+
+          <div className="posts_thumbnail">
+            {pages_posts.length ? (
+              <img
+                src={`${config.CDN_URL}${pages_posts[0]?.pages_thumbnail}`}
+                className="w-[200px] h-[300px] object-cover"
+                alt=""
+              />
+            ) : null}
           </div>
           <div className="posts_tags my-3">
             <h1 className="text-md my-3">Posts_tags:</h1>
