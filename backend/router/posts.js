@@ -80,6 +80,8 @@ router.post('/create/post', async function (req, res) {
                 let alt =`${pages_slug}-ตอนที่-${reqbody.posts_ep}-${reqbody.posts_detail[i].image_no}`;
                 reqbody.posts_detail[i].alt = alt;
               }
+              reqbody.posts_detail = JSON.stringify(reqbody.posts_detail)
+              console.log(reqbody);
               pool.query(`INSERT INTO posts set ?`,[reqbody], async (err, result) => {
                 try {
                   if (err) {
