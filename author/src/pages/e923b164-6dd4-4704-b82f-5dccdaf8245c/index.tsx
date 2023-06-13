@@ -27,7 +27,7 @@ export default function login() {
   const handleSubmit = () => {
     axios
       .post(
-        `${config.API_URL}/auth/create_token`,
+        `${config.API_URL}auth/create_token`,
         JSON.stringify({
           username: `${req.username}`,
           password: `${req.password}`,
