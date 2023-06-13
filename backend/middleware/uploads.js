@@ -70,7 +70,7 @@ const uploads_pages =  multer({
         //use Date.now() for unique file keys
       },
     }),
-  }).array('uploads_posts_images', 5);
+  }).array('uploads_posts_images', 30);
 
   const uploads_posts_delete = (keyname,req,res) =>{
     const params = {
