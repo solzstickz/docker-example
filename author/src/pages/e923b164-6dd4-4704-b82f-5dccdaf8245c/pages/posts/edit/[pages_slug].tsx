@@ -11,7 +11,7 @@ import axios_client from "../../../../../../config/axios_client";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useEffect } from "react";
-
+import Image from "next/image";
 interface Posts {
   posts_slug: string;
   pages_slug: string;
@@ -40,14 +40,20 @@ export default function edit_posts({ ...props }) {
       ...edit_posts,
       pages_slug: router.query.pages_slug as string,
     });
-    // get_edit_posts();
+    if (router.query.pages_slug) {
+      const slug = router.query.pages_slug as string;
+      get_edit_posts(slug);
+    }
   }, [router.query.pages_slug]);
 
-  const get_edit_posts = async () => {
-    const fetch = await axios_client.post(
-      `posts/edit/${router.query.posts_slug}`
-    );
-    setedit_posts(fetch.data);
+  const get_edit_posts = async (slug: string) => {
+    try {
+      const res = await axios_client.post(`posts/${slug}`);
+      const data = await res.data[0];
+      setedit_posts(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleUpload = async () => {
@@ -208,6 +214,7 @@ export default function edit_posts({ ...props }) {
                     posts_slug: e.target.value.split(" ").join("-"),
                   });
                 }}
+                value={edit_posts.posts_slug || ""}
               />
             </div>
             <div className="my-2">
@@ -225,6 +232,7 @@ export default function edit_posts({ ...props }) {
                     posts_ep: parseInt(e.target.value),
                   });
                 }}
+                value={edit_posts.posts_ep || ""}
               />
             </div>
           </div>
@@ -253,18 +261,29 @@ export default function edit_posts({ ...props }) {
                 Upload
               </button>
             </div>
-            <div className="uploaded-files-list flex gap-10 flex-warp justify-center">
-              {edit_posts.posts_detail.length === 0 ? (
-                <div className="text-gray-700 dark:text-gray-400 text-sm">
-                  <p className="text-2xl">กรุณาอัพโหลดรูปภาพ</p>
-                </div>
+            <div className="uploaded-files-list flex gap-10 flex-wrap justify-center">
+              {edit_posts.posts_detail == undefined ? (
+                <>
+                  <div className="text-gray-700 dark:text-gray-400 text-sm">
+                    <p className="text-2xl">กรุณาอัพโหลดรูปภาพ</p>
+                  </div>
+                </>
               ) : (
                 edit_posts.posts_detail.map((item: any, index: number) => (
-                  <div className="flex flex-warp flex-col" key={index}>
-                    <img
-                      className="h-[500px]  object-cover"
+                  <div
+                    className="flex flex-warp flex-col relative h-[500px] w-auto"
+                    key={index}
+                    style={{ height: "500px", width: "auto" }}
+                  >
+                    <Image
+                      className="w-full h-full block"
                       src={`https://sv1.skz.app/${item.url}`}
                       alt=""
+                      object-fit="cover"
+                      width={500}
+                      height={500}
+                      quality={1}
+                      // priority={true}
                     />
                     <span className="text-gray-700 dark:text-gray-400 text-xl text-center">
                       {item.image_no}
