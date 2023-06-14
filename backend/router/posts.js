@@ -4,6 +4,7 @@ const redisclient = require("../config/redis");
 const pool = require("../config/mysql");
 const moment = require('moment-timezone');
 const uploads = require("../middleware/uploads");
+const posts = require('../module/posts');
 
 router.post("/", async (req, res) => {
   try {
@@ -49,6 +50,7 @@ router.post('/uploads/posts',uploads.uploads_posts, async function (req, res) {
   await res.status(200).json(jsonimg);
 });
 
+//! domain.com/pages/uploads/delete
 router.post('/uploads/delete', async function (req, res) {
   const data = await req.body; 
   let keyname = []
@@ -60,80 +62,28 @@ router.post('/uploads/delete', async function (req, res) {
   await uploads.uploads_posts_delete(keyname,req,res);
 });
 
+//! domain.com/pages/create/posts
 router.post('/create/post', async function (req, res) {
-    let reqbody = await req.body;
-    const pages_slug = req.body.pages_slug;
-    delete reqbody.pages_slug;
-    console.log(reqbody);
-    const formatdatetime = "YYYY-MM-DD HH:mm:ss"
-    reqbody.posts_create = moment().tz('Asia/Bangkok').format(formatdatetime);
-      pool.query(`SELECT * FROM pages where pages_slug=? ORDER BY pages_last_update DESC LIMIT 1;`,[pages_slug], async (err, result_pages_id) => {
-        try {
-          if (err) {
-              console.log("Status Mysql Insert Error",err);
-              res.status(500).json({ message: "Status Mysql Select Pages_slug Error" });
-          } else {
-            if (result_pages_id.length > 0){
-              reqbody.pages_id = result_pages_id[0].pages_id
-              console.log(result_pages_id);
-               for(i in reqbody.posts_detail){
-                let alt =`${pages_slug}-ตอนที่-${reqbody.posts_ep}-${reqbody.posts_detail[i].image_no}`;
-                reqbody.posts_detail[i].alt = alt;
-              }
-              reqbody.posts_detail = JSON.stringify(reqbody.posts_detail)
-              console.log(reqbody);
-              pool.query(`INSERT INTO posts set ?`,[reqbody], async (err, result) => {
-                try {
-                  if (err) {
-                      console.log("Status Mysql Insert Error",err);
-                      res.status(500).json({ message: "Status Mysql Posts Insert Error" });
-                  } else {
-                    if (result.insertId > 0){
-                      res.status(200).json({ message: "Status Posts Insert Success" });
-                    }else{
-                      res.status(201).json({ message: "Status Posts Insert Not found" });
-                    }
-                  }
-                } catch (err) {
-                  console.log(err);
-                  res.status(500).json({ message: "Internal Server Error" });
-                }
-              });
-            }else{
-              res.status(201).json({ message: "Status Pages_slug Not_found" });
-            }
-          }
-        } catch (err) {
-          console.log(err);
-          res.status(500).json({ message: "Internal Server Error" });
-        }
-      });
+  await posts.create_posts(req, res)
 });
 
+//! domain.com/pages/:slug
 router.post("/:slug", async (req, res) => {
-  let redis_res = await redisclient.get(`post/:slug:${req.params.slug}`);
-  if (redis_res) {
-    res.status(200).json(JSON.parse(redis_res));
-  } else {
+  let posts_slug = req.params.slug;
+  console.log(posts_slug);
     pool.query(
-      `SELECT * FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id WHERE posts_slug = ? ORDER BY posts_ep DESC;`,
-      [req.params.slug],
+      `SELECT posts.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id WHERE posts_slug = ? ORDER BY posts_ep DESC;`,
+      [posts_slug],
       async (err, result) => {
         try {
           if (err) {
             console.log("posts/:slug" + err);
           } else {
-            if (result.length === 0) {
-              res.status(404).json({ message: "Page Url Not Found !" });
+            if(result.length > 0){
+              res.status(200).json(result[0]);
+            }else{
+              res.status(201).json({ message: "Page Url Not Found !" });
             }
-            await redisclient.set(
-              `post/:slug:${req.params.slug}`,
-              JSON.stringify(result),
-              "EX",
-              60
-            );
-            let data = await redisclient.get(`post/:slug:${req.params.slug}`);
-            res.status(200).json(JSON.parse(data));
           }
         } catch (err) {
           console.log(err);
@@ -141,7 +91,36 @@ router.post("/:slug", async (req, res) => {
         }
       }
     );
-  }
+  // }
 });
+
+//! domain.com/edit/post
+router.post("/edit/post", async (req, res) => {
+  await posts.edit_posts(req, res)
+});
+
+//! domain.com/pages/:slug
+router.post("/delete/post", async (req, res) => {
+  let posts_id = req.body.posts_id;
+  console.log(posts_id);
+  pool.query(`DELETE FROM posts where posts_id in (?)`,[posts_id], async (err, result) => {
+    try {
+      if (err) {
+        console.log("Status Delete pages Error",err);
+        res.status(500).json({ message: "Status Delete Posts Error" });
+      } else {
+        if (result.affectedRows > 0){
+          res.status(200).json({ message : "Status Delete Posts Success"});
+        }else {
+          res.status(201).json({ message : "Status Delete Posts Not Found"});
+        }
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Internal Server Pages Error" });
+    }
+  });
+});
+
 
 module.exports = router;
