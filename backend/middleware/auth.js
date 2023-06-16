@@ -43,7 +43,7 @@ router.post("/create_token", async (req, res) => {
         // sameSite: 'strict',
         // domain: 'peng.com',
         expires: new Date(Date.now() + 3600000),
-      }).status(200).json({ token:token, role: "admin_api_key" });
+      }).status(200).json({ access_token:token, role: "admin_api_key" });
   } else {
     if (api_key == process.env.API_KEY) {
       const token = jwt.sign({ api_key }, process.env.TOKEN_SECRET, {
