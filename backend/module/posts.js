@@ -61,7 +61,11 @@ module.exports = {
       const posts_id = await data.posts_id;
       const formatdatetime = "YYYY-MM-DD HH:mm:ss"
       data.posts_create = moment().tz('Asia/Bangkok').format(formatdatetime);
-      delete data.posts_detail;
+      for(i in data.posts_detail){
+        let alt =`${data.posts_slug}-ตอนที่-${data.posts_ep}-${data.posts_detail[i].image_no}`;
+        data.posts_detail[i].alt = alt;
+      }
+      data.posts_detail = JSON.stringify(data.posts_detail)
       delete data.posts_id;
         pool.query(
           `UPDATE posts set ? WHERE posts_id = ?`,
