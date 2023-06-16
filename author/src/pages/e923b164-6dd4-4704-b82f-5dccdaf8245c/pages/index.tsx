@@ -10,7 +10,6 @@ import moment from "moment-timezone";
 import Link from "next/link";
 import config from "../../../../config/config";
 import { useRouter } from "next/router";
-import { setWithExpiry, getWithExpiry } from "../../../../lib/cookie";
 import axios_client from "../../../../config/axios_client";
 import { FaEdit, FaRecycle, FaTrash } from "react-icons/fa";
 const popup = require("../../../../lib/popup");
@@ -64,6 +63,7 @@ export default function pages({ ...props }) {
           <div className="px-6 my-3 flex justify-start">
             <Link href={`/${config.ADMIN_PATH}/pages/`}>Pages</Link>
           </div>
+
           <div className="px-6 my-3 flex justify-end gap-3">
             <button
               className="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
@@ -124,15 +124,15 @@ const handdleDelete = (id: number) => {
           .post(`/pages/delete/page`, delete_id)
           .then((res) => {
             if (res.status === 200) {
-              alert(`${res.data.message}`);
+              popup.success(`${res.data.message}`);
               window.location.reload();
               console.log(delete_id);
             }
             if (res.status === 201) {
-              alert(`${res.data.message}`);
+              popup.success(`${res.data.message}`);
             }
             if (res.status === 400) {
-              alert(`${res.data.message}`);
+              popup.error(`${res.data.message}`);
             }
           })
           .catch((err) => {

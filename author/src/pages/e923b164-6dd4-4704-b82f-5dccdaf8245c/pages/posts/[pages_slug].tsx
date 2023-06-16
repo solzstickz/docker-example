@@ -10,7 +10,7 @@ import moment from "moment-timezone";
 import Link from "next/link";
 import config from "../../../../../config/config";
 import { useRouter } from "next/router";
-
+const popup = require("../../../../../lib/popup");
 import { FaEdit, FaRecycle, FaTrash } from "react-icons/fa";
 
 type Tags = {
@@ -186,15 +186,15 @@ const handdleDelete = (id: number) => {
     .post(`/pages/delete/page`, delete_id)
     .then((res) => {
       if (res.status === 200) {
-        alert(`${res.data.message}`);
+        popup.success(`${res.data.message}`);
         window.location.reload();
         console.log(delete_id);
       }
       if (res.status === 201) {
-        alert(`${res.data.message}`);
+        popup.warning(`${res.data.message}`);
       }
       if (res.status === 400) {
-        alert(`${res.data.message}`);
+        popup.error(`${res.data.message}`);
       }
     })
     .catch((err) => {
