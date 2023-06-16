@@ -1,8 +1,8 @@
 import axios from "axios";
-import { getWithExpiry } from "../lib/localstorage";
+
 import config from "./config";
 require("dotenv").config();
-
+const Cookies = require("js-cookie");
 const axiosInstance = axios.create({
   baseURL: config.API_URL,
   headers: {
@@ -11,7 +11,8 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use((config) => {
-  const accessToken = getWithExpiry("access_token");
+  const accessToken = Cookies.get("access_token");
+  console.log(`access_token` + accessToken);
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }

@@ -215,7 +215,9 @@ const columns = [
     name: "posts_slug",
     selector: (row: any) => row.posts_slug,
     cell: (row: any, index: number) => (
-      <Link href={`/${config.ADMIN_PATH}/pages/posts/edit/${row.posts_slug}`}>
+      <Link
+        href={`/${config.ADMIN_PATH}/pages/posts/edit/${row.posts_slug}?pages_slug=${row.pages_slug}`}
+      >
         {row.posts_slug}
       </Link>
     ),
@@ -266,7 +268,7 @@ const columns = [
     cell: (row: any) => (
       <button
         className="text-red-500 bg-orange-100 rounded-md dark:text-red-100 dark:bg-red-500 p-2"
-        onClick={() => handdleDelete(row.pages_id)}
+        onClick={() => handdleDelete(row.pages_slug)}
       >
         <FaTrash className="w-3 h-3 " />
       </button>

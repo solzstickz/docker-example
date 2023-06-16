@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useEffect } from "react";
 import Image from "next/image";
+const popup = require("../../../../../../lib/popup");
 interface Posts {
   posts_slug: string;
   pages_slug: string;
@@ -25,7 +26,6 @@ interface Post_detail {
 
 export default function create_posts({ ...props }) {
   const router = useRouter();
-  const MySwal = withReactContent(Swal);
 
   const [create_posts, setCreate_posts] = useState<Posts>({
     posts_slug: "",
@@ -38,9 +38,9 @@ export default function create_posts({ ...props }) {
   useEffect(() => {
     setCreate_posts({
       ...create_posts,
-      pages_slug: router.query.pages_slug as string,
+      pages_slug: router.query.posts_slug as string,
     });
-  }, [router.query.pages_slug]);
+  }, [router.query.posts_slug]);
 
   const handleUpload = async () => {
     if (filesArray.length) {
@@ -50,25 +50,18 @@ export default function create_posts({ ...props }) {
       }
 
       try {
-        MySwal.fire({
+        popup.MySwal.fire({
           title: "กำลังอัพโหลดรูปภาพ",
           timerProgressBar: true,
 
           showConfirmButton: false,
           didOpen: () => {
-            MySwal.showLoading();
+            popup.MySwal.showLoading();
           },
         });
         const res = await axios_client.post(`posts/uploads/posts`, formData);
-        MySwal.close();
-        MySwal.fire({
-          position: "center",
-          icon: "success",
-          title: "อัพโหลดรูปภาพสำเร็จแล้ว",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-
+        popup.MySwal.close();
+        popup.success("อัพโหลดรูปภาพสำเร็จแล้ว", "");
         setCreate_posts({
           ...create_posts,
           posts_detail: res.data,
@@ -77,31 +70,16 @@ export default function create_posts({ ...props }) {
       } catch (err: any) {
         console.log(`pages/create/index` + err.response);
         if (err.response === undefined) {
-          MySwal.fire({
-            position: "center",
-            icon: "warning",
-            title: "ขนาดไฟล์ Size ใหญ่เกินไป",
-            showConfirmButton: false,
-            timer: 1500,
-          });
+          popup.warning("ขนาดไฟล์ Size ใหญ่เกินไป", "");
         } else {
-          MySwal.fire({
-            position: "center",
-            icon: "warning",
-            title: "อัพโหลดรูปภาพไม่สำเร็จ กรุณาอัพโหลดไฟล์ .PNG .WEBP .GIF",
-            showConfirmButton: false,
-            timer: 1500,
-          });
+          popup.warning(
+            "อัพโหลดรูปภาพไม่สำเร็จ กรุณาอัพโหลดไฟล์ .PNG .WEBP .GIF",
+            ""
+          );
         }
       }
     } else {
-      MySwal.fire({
-        position: "center",
-        icon: "warning",
-        title: "กรุณาเลือกไฟล์ที่ต้องการอัพโหลด",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      popup.warning("กรุณาเลือกไฟล์ที่ต้องการอัพโหลด", "");
     }
   };
 
@@ -121,13 +99,7 @@ export default function create_posts({ ...props }) {
         setFilesArray(Array.from(e.target.files));
       }
 
-      MySwal.fire({
-        position: "center",
-        icon: "success",
-        title: "ลบรูปภาพเก่าเรียบร้อยแล้ว",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      popup.success("ลบรูปภาพเก่าเรียบร้อยแล้ว", "");
     }
   };
 
@@ -136,26 +108,16 @@ export default function create_posts({ ...props }) {
     try {
       const res = await axios_client.post(`/posts/create/post`, create_posts);
       console.log(res.data);
-      MySwal.fire({
-        position: "center",
-        icon: "success",
-        title: "เพิ่มข้อมูลสำเร็จแล้ว",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+
+      popup.success("เพิ่มข้อมูลสำเร็จแล้ว", "");
 
       router.push(
-        `/${config.ADMIN_PATH}/pages/posts/${router.query.pages_slug}`
+        `/${config.ADMIN_PATH}/pages/posts/${router.query.posts_slug}`
       );
     } catch (err: any) {
       console.log(`pages/posts/create:submit` + err);
-      MySwal.fire({
-        position: "center",
-        icon: "warning",
-        title: "เพิ่มข้อมูลไม่สำเร็จ",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+
+      popup.warning("เพิ่มข้อมูลไม่สำเร็จ", "");
     }
   };
 
@@ -166,9 +128,9 @@ export default function create_posts({ ...props }) {
           <div className="px-6 my-3 flex justify-start">
             <Link href={`/${config.ADMIN_PATH}/pages/`}>Pages</Link>
             <Link
-              href={`/${config.ADMIN_PATH}/pages/posts/${router.query.pages_slug}`}
+              href={`/${config.ADMIN_PATH}/pages/posts/${router.query.posts_slug}`}
             >
-              /{router.query.pages_slug}
+              /{router.query.posts_slug}
             </Link>
 
             <p className="text-gray-400">/create</p>

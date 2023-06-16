@@ -53,6 +53,10 @@ export default function create_tags({ ...props }) {
     <>
       <Layer>
         <div className="container px-6 mx-auto grid">
+          <div className="px-6 my-3 flex justify-start">
+            <Link href={`/${config.ADMIN_PATH}/tags/`}>Tags</Link>
+            <p className="text-gray-400">/create_tags</p>
+          </div>
           <div className="px-6 my-3 flex justify-end">
             <button
               className="flex items-center justify-between p-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"

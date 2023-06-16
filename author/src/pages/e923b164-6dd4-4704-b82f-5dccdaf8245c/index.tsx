@@ -12,15 +12,23 @@ import Image from "next/image";
 import axios_client from "../../../config/axios_client";
 import { useRouter } from "next/router";
 import config from "../../../config/config";
-import { setWithExpiry } from "../../../lib/localstorage";
+const Cookies = require("js-cookie");
 import axios from "axios";
+
+const popup = require("../../../lib/popup");
+
 export default function login() {
   const router = useRouter();
+
   const [showPassword, setShowPassword] = useState(false);
   const [req, setReq] = useState({
     username: "",
     password: "",
   });
+
+  useEffect(() => {
+    change_theme();
+  }, []);
   const handleShowPassword = () => {
     showPassword === true ? setShowPassword(false) : setShowPassword(true);
   };
@@ -39,21 +47,25 @@ export default function login() {
         }
       )
       .then((res) => {
-        if (res.data.token) {
-          //! 1 sec = 1000ms , 6000ms = 1 min , 600000ms = 10 min , 3600000ms = 1 hour , 86400000ms = 1 day
-          setWithExpiry("access_token", res.data.token, 3600000);
+        if (res.data) {
+          Cookies.set(
+            "access_token",
+            res.data.access_token,
+            { expires: 0.5 },
+            { HttpOnly: true }
+          );
           router.push(`/${config.ADMIN_PATH}/dashboard`);
         }
       })
       .catch((err) => {
         if (err) {
-          alert("Username or Password is wrong");
+          popup.error("Username or Password is wrong", "");
           console.log(err);
         }
       });
   };
 
-  useEffect(() => {
+  const change_theme = () => {
     if (
       localStorage.theme === "dark" ||
       (!("theme" in localStorage) &&
@@ -63,7 +75,7 @@ export default function login() {
     } else {
       document.documentElement.classList.remove("dark");
     }
-  }, []);
+  };
   return (
     <>
       <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">

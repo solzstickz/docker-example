@@ -10,7 +10,7 @@ import moment from "moment";
 import Link from "next/link";
 import config from "../../../../config/config";
 import { useRouter } from "next/router";
-import { setWithExpiry, getWithExpiry } from "../../../../lib/localstorage";
+import { setWithExpiry, getWithExpiry } from "../../../../lib/cookie";
 import axios_client from "../../../../config/axios_client";
 import { FaEdit, FaRecycle, FaTrash } from "react-icons/fa";
 type tags = {
@@ -24,6 +24,10 @@ export default function tags({ ...props }) {
   const [tags, setTags] = React.useState<tags[]>([]);
 
   useEffect(() => {
+    getTags();
+  }, []);
+
+  const getTags = async () => {
     axios_client
       .post(`/tags/`)
       .then((res) => {
@@ -37,11 +41,14 @@ export default function tags({ ...props }) {
         }
         console.log(`tags:edit:index` + err);
       });
-  }, []);
+  };
   return (
     <>
       <Layer>
         <div className="create_tags">
+          <div className="px-6 my-3 flex justify-start">
+            <Link href={`/${config.ADMIN_PATH}/tags/`}>Tags</Link>
+          </div>
           <div className="px-6 my-3 flex justify-end gap-3">
             <button
               className="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
@@ -249,7 +256,7 @@ export const Table_tags = ({ data_table }: any) => {
     <>
       <div className="table_tags grid ">
         <DataTable
-          title="Movie List"
+          title="Tags List"
           columns={columns}
           data={filteredItems}
           progressPending={pending}

@@ -27,17 +27,20 @@ export default function create_tags({ ...props }) {
   });
 
   useEffect(() => {
-    console.log(router.query.slug);
+    getTags();
+  }, [router.query.slug]);
+
+  const getTags = async () => {
     axios_client
       .post(`/tags/${router.query.slug}`)
       .then((res) => {
-        console.log(res.data);
         set_create_tags(res.data);
       })
       .catch((err) => {
         console.log(`tags/:slug` + err);
       });
-  }, []);
+  };
+
   const handleSubmid = async () => {
     if (create_tags.tags_slug !== "" && create_tags.tags_name !== "") {
       axios_client
@@ -66,6 +69,10 @@ export default function create_tags({ ...props }) {
     <>
       <Layer>
         <div className="container px-6 mx-auto grid">
+          <div className="px-6 my-3 flex justify-start">
+            <Link href={`/${config.ADMIN_PATH}/tags/`}>Tags</Link>
+            <p className="text-gray-400">/edit_tags</p>
+          </div>
           <div className="px-6 my-3 flex justify-end">
             <button
               className="flex items-center justify-between p-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
@@ -78,7 +85,7 @@ export default function create_tags({ ...props }) {
             </button>
           </div>
           <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-            Create Tags
+            Edit Tags
           </h2>
 
           {/* <div className="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple">
@@ -97,7 +104,7 @@ export default function create_tags({ ...props }) {
             <input
               className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
               required
-              value={create_tags.tags_slug}
+              value={create_tags.tags_slug || ""}
               onChange={(e) => {
                 let check_slug = e.target.value.split(" ").join("-");
                 set_create_tags({
@@ -113,7 +120,7 @@ export default function create_tags({ ...props }) {
             <input
               className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
               required
-              value={create_tags.tags_name}
+              value={create_tags.tags_name || ""}
               onChange={(e) => {
                 let name_uppercase = e.target.value.toLowerCase();
                 set_create_tags({

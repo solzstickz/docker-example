@@ -11,7 +11,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import axios_client from "../../../../../config/axios_client";
 import Search_tags from "../../../../../components/Search_tags";
-
+const popup = require("../../../../../lib/popup");
 interface Tag {
   tags_id: number;
   tags_slug: string;
@@ -36,6 +36,7 @@ interface CreatePages {
 
 export default function create_pages({ ...props }) {
   const router = useRouter();
+
   const [uploas_page_thumbnail, setuploas_page_thumbnail] = useState<File>();
   const [create_pages, set_create_pages] = useState<CreatePages>({
     pages_slug: "",
@@ -63,7 +64,7 @@ export default function create_pages({ ...props }) {
     axios_client
       .post(`/pages/uploads/pages`, formData)
       .then((res) => {
-        alert("อัพโหลดรูปภาพสำเร็จ");
+        popup.success("อัพโหลดรูปภาพสำเร็จ", "");
         set_create_pages({
           ...create_pages,
           pages_thumbnail: res.data.url,
@@ -72,9 +73,12 @@ export default function create_pages({ ...props }) {
       .catch((err) => {
         console.log(`pages/create/index` + err.response);
         if (err.response === undefined) {
-          alert("ขนาดไฟล์ Size ใหญ่เกินไป");
+          popup.error("ขนาดไฟล์ Size ใหญ่เกินไป", "");
         } else {
-          alert("อัพโหลดรูปภาพไม่สำเร็จ กรุณาอัพโหลดไฟล์ .PNG .WEBP .GIF");
+          popup.error(
+            "อัพโหลดรูปภาพไม่สำเร็จ กรุณาอัพโหลดไฟล์ .PNG .WEBP .GIF",
+            ""
+          );
         }
       });
   };
@@ -91,18 +95,18 @@ export default function create_pages({ ...props }) {
       create_pages.pages_title.length < 50 ||
       create_pages.pages_title.length > 60
     ) {
-      alert("กรุณากรอก Title ให้ถูกต้อง");
+      popup.warning("กรุณากรอก Title ให้ถูกต้อง", "");
     } else if (
       create_pages.pages_description.length < 145 ||
       create_pages.pages_description.length > 160
     ) {
-      alert("กรุณากรอก Description ให้ถูกต้อง");
+      popup.warning("กรุณากรอก Description ให้ถูกต้อง", "");
     } else if (create_pages.pages_slug === "") {
-      alert("กรุณากรอก Slug ให้ถูกต้อง");
+      popup.warning("กรุณากรอก Slug ให้ถูกต้อง", "");
     } else if (create_pages.pages_thumbnail === "") {
-      alert("กรุณาอัพโหลดรูปภาพ");
+      popup.warning("กรุณาอัพโหลดรูปภาพ", "");
     } else if (create_pages.pages_tags.length == 0) {
-      alert("กรุณาเลือก Tag");
+      popup.warning("กรุณาเลือก Tag", "");
     } else {
       axios_client
         .post(`/pages/create/page`, create_pages)
@@ -110,7 +114,7 @@ export default function create_pages({ ...props }) {
           console.log(res.data);
 
           if (res.status === 200) {
-            alert("สร้างหน้าเรียบร้อย");
+            popup.success("สร้าง pages สำเร็จ", "");
             set_create_pages({
               pages_slug: "",
               pages_view: 0,
@@ -129,7 +133,7 @@ export default function create_pages({ ...props }) {
             });
             router.push(`/${config.ADMIN_PATH}/pages/`);
           } else {
-            alert("สร้างหน้าไม่สำเร็จ");
+            popup.error("เกิดข้อผิดพลาด สร้าง pages ไม่สำเร็จ", "");
           }
         })
         .catch((err) => console.error(err));

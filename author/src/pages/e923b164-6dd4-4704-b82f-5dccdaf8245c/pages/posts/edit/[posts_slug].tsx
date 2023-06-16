@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useEffect } from "react";
 import Image from "next/image";
+const popup = require("../../../../../../lib/popup");
 interface Posts {
   posts_slug: string;
   pages_slug: string;
@@ -38,19 +39,22 @@ export default function edit_posts({ ...props }) {
   useEffect(() => {
     setedit_posts({
       ...edit_posts,
-      pages_slug: router.query.pages_slug as string,
+      pages_slug: router.query.posts_slug as string,
     });
-    if (router.query.pages_slug) {
-      const slug = router.query.pages_slug as string;
+
+    if (router.query.posts_slug) {
+      const slug = router.query.posts_slug as string;
       get_edit_posts(slug);
     }
-  }, [router.query.pages_slug]);
+  }, [router.query.posts_slug]);
 
   const get_edit_posts = async (slug: string) => {
     try {
-      const res = await axios_client.post(`posts/${slug}`);
-      const data = await res.data[0];
-      setedit_posts(data);
+      if (slug != undefined) {
+        const res = await axios_client.post(`/posts/${slug}`);
+        setedit_posts(res.data);
+        console.log(edit_posts);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -73,49 +77,26 @@ export default function edit_posts({ ...props }) {
             MySwal.showLoading();
           },
         });
-        const res = await axios_client.post(`/posts/uploads/posts`, formData);
+        const res = await axios_client.post(`posts/uploads/posts`, formData);
         MySwal.close();
-        MySwal.fire({
-          position: "center",
-          icon: "success",
-          title: "อัพโหลดรูปภาพสำเร็จแล้ว",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-
+        popup.success("อัพโหลดรูปภาพสำเร็จแล้ว", "");
         setedit_posts({
           ...edit_posts,
           posts_detail: res.data,
         });
-        console.log(edit_posts);
       } catch (err: any) {
         console.log(`pages/edit/index` + err.response);
         if (err.response === undefined) {
-          MySwal.fire({
-            position: "center",
-            icon: "warning",
-            title: "ขนาดไฟล์ Size ใหญ่เกินไป",
-            showConfirmButton: false,
-            timer: 1500,
-          });
+          popup.warning("ขนาดไฟล์ Size ใหญ่เกินไป", "");
         } else {
-          MySwal.fire({
-            position: "center",
-            icon: "warning",
-            title: "อัพโหลดรูปภาพไม่สำเร็จ กรุณาอัพโหลดไฟล์ .PNG .WEBP .GIF",
-            showConfirmButton: false,
-            timer: 1500,
-          });
+          popup.warning(
+            "อัพโหลดรูปภาพไม่สำเร็จ กรุณาอัพโหลดไฟล์ .PNG .WEBP .GIF",
+            ""
+          );
         }
       }
     } else {
-      MySwal.fire({
-        position: "center",
-        icon: "warning",
-        title: "กรุณาเลือกไฟล์ที่ต้องการอัพโหลด",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      popup.warning("กรุณาเลือกไฟล์ที่ต้องการอัพโหลด", "");
     }
   };
 
@@ -127,7 +108,7 @@ export default function edit_posts({ ...props }) {
     } else {
       console.log(edit_posts.posts_detail);
       try {
-        axios_client.post(`/posts/uploads/delete`, edit_posts.posts_detail);
+        axios_client.post(`posts/uploads/delete`, edit_posts.posts_detail);
       } catch (err: any) {
         console.log(`pages/uploads/delete` + err);
       }
@@ -135,13 +116,7 @@ export default function edit_posts({ ...props }) {
         setFilesArray(Array.from(e.target.files));
       }
 
-      MySwal.fire({
-        position: "center",
-        icon: "success",
-        title: "ลบรูปภาพเก่าเรียบร้อยแล้ว",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      popup.success("ลบรูปภาพเก่าเรียบร้อยแล้ว", "");
     }
   };
 
@@ -150,23 +125,12 @@ export default function edit_posts({ ...props }) {
     try {
       const res = await axios_client.post(`/posts/edit/post`, edit_posts);
       console.log(res.data);
-      MySwal.fire({
-        position: "center",
-        icon: "success",
-        title: "เพิ่มข้อมูลสำเร็จแล้ว",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      // router.push(`/${config.ADMIN_PATH}/posts/`);
+
+      popup.success("เพิ่มข้อมูลสำเร็จแล้ว", "");
+      router.back();
     } catch (err: any) {
       console.log(`pages/posts/edit:submit` + err);
-      MySwal.fire({
-        position: "center",
-        icon: "warning",
-        title: "เพิ่มข้อมูลไม่สำเร็จ",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      popup.warning("เพิ่มข้อมูลไม่สำเร็จ", "");
     }
   };
 
@@ -285,6 +249,7 @@ export default function edit_posts({ ...props }) {
                       quality={1}
                       // priority={true}
                     />
+
                     <span className="text-gray-700 dark:text-gray-400 text-xl text-center">
                       {item.image_no}
                     </span>

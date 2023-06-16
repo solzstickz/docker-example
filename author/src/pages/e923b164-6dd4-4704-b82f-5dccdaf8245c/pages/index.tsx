@@ -10,9 +10,10 @@ import moment from "moment-timezone";
 import Link from "next/link";
 import config from "../../../../config/config";
 import { useRouter } from "next/router";
-import { setWithExpiry, getWithExpiry } from "../../../../lib/localstorage";
+import { setWithExpiry, getWithExpiry } from "../../../../lib/cookie";
 import axios_client from "../../../../config/axios_client";
 import { FaEdit, FaRecycle, FaTrash } from "react-icons/fa";
+const popup = require("../../../../lib/popup");
 type pages = {
   pages_id: number;
   pages_slug: string;
@@ -37,12 +38,15 @@ export default function pages({ ...props }) {
   const [pages, setPages] = React.useState<pages[]>([]);
 
   useEffect(() => {
+    getPages();
+  }, []);
+  const getPages = async () => {
     axios_client
       .post(`/pages/`)
       .then((res) => {
         if (res.status) {
           setPages(res.data);
-          console.log(res.data);
+          // console.log(res.data);
         }
       })
       .catch((err) => {
@@ -51,7 +55,8 @@ export default function pages({ ...props }) {
         }
         console.log(`pages:edit:index` + err);
       });
-  }, []);
+  };
+
   return (
     <>
       <Layer>
@@ -109,25 +114,31 @@ createTheme(
 );
 
 const handdleDelete = (id: number) => {
-  window.confirm(`Are you sure you want to delete:\r ${id}?`);
-  let delete_id = [{ pages_id: id }];
-  axios_client
-    .post(`/pages/delete/page`, delete_id)
-    .then((res) => {
-      if (res.status === 200) {
-        alert(`${res.data.message}`);
-        window.location.reload();
-        console.log(delete_id);
+  // window.confirm(`Are you sure you want to delete:\r ${id}?`);
+  popup
+    .confirm("Are you sure you want to delete:", `${id}?`)
+    .then((res: any) => {
+      if (res) {
+        let delete_id = [{ pages_id: id }];
+        axios_client
+          .post(`/pages/delete/page`, delete_id)
+          .then((res) => {
+            if (res.status === 200) {
+              alert(`${res.data.message}`);
+              window.location.reload();
+              console.log(delete_id);
+            }
+            if (res.status === 201) {
+              alert(`${res.data.message}`);
+            }
+            if (res.status === 400) {
+              alert(`${res.data.message}`);
+            }
+          })
+          .catch((err) => {
+            console.log(`pages:edit:index` + err);
+          });
       }
-      if (res.status === 201) {
-        alert(`${res.data.message}`);
-      }
-      if (res.status === 400) {
-        alert(`${res.data.message}`);
-      }
-    })
-    .catch((err) => {
-      console.log(`pages:edit:index` + err);
     });
 };
 

@@ -20,7 +20,7 @@ interface comps_state {
   nav__anime: boolean;
 }
 
-import { setWithExpiry, getWithExpiry } from "../lib/localstorage";
+const Cookies = require("js-cookie");
 import axios_cliclient from "../config/axios_client";
 export default function Layer({ children }: any) {
   const router = useRouter();
@@ -31,16 +31,18 @@ export default function Layer({ children }: any) {
     nav__anime: false,
   });
 
-  const Check_token = () => {
-    if (getWithExpiry("access_token")) {
-      console.log("Access_token", getWithExpiry("access_token"));
-    } else {
+
+  useEffect(() => {
+    vertify_token();
+  }, []);
+
+  const vertify_token = () => {
+    const access_token = Cookies.get("access_token");
+    console.log(`dashboard:layout` + access_token);
+    if (access_token == undefined || access_token == "") {
       router.push(`/${config.ADMIN_PATH}`);
     }
   };
-  useEffect(() => {
-    Check_token();
-  }, []);
 
   const change_theme = () => {
     if (themes === "dark") {
@@ -56,6 +58,11 @@ export default function Layer({ children }: any) {
   };
 
   useEffect(() => {
+    const access_token = document.cookie.replace(
+      /(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/,
+      "$1"
+    );
+    console.log(access_token);
     if (
       localStorage.theme === "dark" ||
       (!("theme" in localStorage) &&
@@ -207,12 +214,11 @@ export default function Layer({ children }: any) {
               <button
                 className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
                 onClick={() => {
-                  localStorage.removeItem("access_token");
                   router.push(`/${config.ADMIN_PATH}`);
-                  console.log(
-                    "Clear Token ",
-                    localStorage.getItem("access_token")
-                  );
+                  document.cookie =
+                    "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+                  Cookies.remove("access_token");
                 }}
               >
                 Create account
