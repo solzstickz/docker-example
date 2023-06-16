@@ -179,26 +179,29 @@ createTheme(
   "dark"
 );
 
-const handdleDelete = (id: number) => {
-  window.confirm(`Are you sure you want to delete:\r ${id}?`);
-  let delete_id = [{ pages_id: id }];
-  axios_client
-    .post(`/pages/delete/page`, delete_id)
-    .then((res) => {
-      if (res.status === 200) {
-        popup.success(`${res.data.message}`);
-        window.location.reload();
-        console.log(delete_id);
+const handdleDelete = (posts_slug: string) => {
+  popup
+    .confirm("Are you sure you want to delete:", `${posts_slug}?`)
+    .then((res: any) => {
+      if (res) {
+        axios_client
+          .post(`/posts/delete/${posts_slug}`)
+          .then((res) => {
+            if (res.status === 200) {
+              popup.success(`${res.data.message}`);
+              window.location.reload();
+            }
+            if (res.status === 201) {
+              popup.success(`${res.data.message}`);
+            }
+            if (res.status === 400) {
+              popup.error(`${res.data.message}`);
+            }
+          })
+          .catch((err) => {
+            console.log(`pages:edit:index` + err);
+          });
       }
-      if (res.status === 201) {
-        popup.warning(`${res.data.message}`);
-      }
-      if (res.status === 400) {
-        popup.error(`${res.data.message}`);
-      }
-    })
-    .catch((err) => {
-      console.log(`pages:edit:index` + err);
     });
 };
 
@@ -268,7 +271,7 @@ const columns = [
     cell: (row: any) => (
       <button
         className="text-red-500 bg-orange-100 rounded-md dark:text-red-100 dark:bg-red-500 p-2"
-        onClick={() => handdleDelete(row.pages_slug)}
+        onClick={() => handdleDelete(row.posts_slug as string)}
       >
         <FaTrash className="w-3 h-3 " />
       </button>
