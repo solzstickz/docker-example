@@ -9,6 +9,7 @@ const nextConfig = {
       "load.skz.app",
       "sv1.skz.app",
     ],
+    minimumCacheTTL: 60,
   },
 };
 

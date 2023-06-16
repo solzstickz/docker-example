@@ -11,7 +11,7 @@ import axios_client from "../../../../../../config/axios_client";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useEffect } from "react";
-
+import Image from "next/image";
 interface Posts {
   posts_slug: string;
   pages_slug: string;
@@ -248,23 +248,54 @@ export default function create_posts({ ...props }) {
                 Upload
               </button>
             </div>
-            <div className="uploaded-files-list flex gap-10 flex-warp justify-center">
+            <div className="uploaded-files-list flex gap-10  flex-wrap justify-center">
               {create_posts.posts_detail.length === 0 ? (
-                <div className="text-gray-700 dark:text-gray-400 text-sm">
-                  <p className="text-2xl">กรุณาอัพโหลดรูปภาพ</p>
-                </div>
+                <>
+                  <div className="text-gray-700 dark:text-gray-400 text-sm">
+                    <p className="text-2xl">กรุณาอัพโหลดรูปภาพ</p>
+                  </div>
+                  {/* <div className="flex flex-warp flex-col relative h-[500px] w-auto">
+                    <Image
+                      className="w-full h-full block"
+                      src={`https://sv1.skz.app/uploads/499675fd86a1cb32a50ca57b56ad7e.webp`}
+                      alt=""
+                      object-fit="cover"
+                      width={500}
+                      height={500}
+                    />
+                  </div> */}
+                </>
               ) : (
                 create_posts.posts_detail.map((item: any, index: number) => (
-                  <div className="flex flex-warp flex-col" key={index}>
-                    <img
-                      className="h-[500px]  object-cover"
+                  <div
+                    className="flex flex-warp flex-col relative h-[500px] w-auto"
+                    key={index}
+                    style={{ height: "500px", width: "auto" }}
+                  >
+                    <Image
+                      className="w-full h-full block"
                       src={`https://sv1.skz.app/${item.url}`}
                       alt=""
+                      object-fit="cover"
+                      width={500}
+                      height={500}
+                      quality={1}
+                      // priority={true}
                     />
                     <span className="text-gray-700 dark:text-gray-400 text-xl text-center">
                       {item.image_no}
                     </span>
                   </div>
+                  // <div className="flex flex-warp flex-col" key={index}>
+                  //   <img
+                  //     className="h-[500px]  object-cover"
+                  //     src={`https://sv1.skz.app/${item.url}`}
+                  //     alt=""
+                  //   />
+                  //   <span className="text-gray-700 dark:text-gray-400 text-xl text-center">
+                  //     {item.image_no}
+                  //   </span>
+                  // </div>
                 ))
               )}
             </div>
