@@ -8,7 +8,8 @@ import { FaUpload, FaReply } from "react-icons/fa";
 import config from "../../../../../../config/config";
 import { useRouter } from "next/router";
 import axios_client from "../../../../../../config/axios_client";
-
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import { useEffect } from "react";
 import Image from "next/image";
 const popup = require("../../../../../../lib/popup");
@@ -25,7 +26,7 @@ interface Post_detail {
 
 export default function create_posts({ ...props }) {
   const router = useRouter();
-
+  const MySwal = withReactContent(Swal);
   const [create_posts, setCreate_posts] = useState<Posts>({
     posts_slug: "",
     pages_slug: "",
@@ -49,17 +50,17 @@ export default function create_posts({ ...props }) {
       }
 
       try {
-        popup.MySwal.fire({
+        MySwal.fire({
           title: "กำลังอัพโหลดรูปภาพ",
           timerProgressBar: true,
 
           showConfirmButton: false,
           didOpen: () => {
-            popup.MySwal.showLoading();
+            MySwal.showLoading();
           },
         });
         const res = await axios_client.post(`posts/uploads/posts`, formData);
-        popup.MySwal.close();
+        MySwal.close();
         popup.success("อัพโหลดรูปภาพสำเร็จแล้ว", "");
         setCreate_posts({
           ...create_posts,
