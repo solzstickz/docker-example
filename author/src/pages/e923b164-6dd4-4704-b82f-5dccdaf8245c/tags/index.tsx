@@ -103,7 +103,7 @@ const handdleDelete = (id: number) => {
     .confirm("Are you sure you want to delete:", `${id}?`)
     .then((res: any) => {
       if (res) {
-        let delete_id = [{ pages_id: id }];
+        let delete_id = { tags_id: id };
         axios_client
           .post(`/tags/delete/tag`, delete_id)
           .then((res) => {

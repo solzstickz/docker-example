@@ -62,7 +62,7 @@ export default function create_pages({ ...props }) {
     const formData = new FormData();
     formData.append("uploads_pages_thumbnail", uploas_page_thumbnail);
     axios_client
-      .post(`/pages/uploads/pages`, formData)
+      .post(`pages/uploads/pages`, formData)
       .then((res) => {
         popup.success("อัพโหลดรูปภาพสำเร็จ", "");
         set_create_pages({

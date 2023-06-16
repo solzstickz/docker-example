@@ -136,7 +136,7 @@ export default function create_tags({ ...props }) {
                 type="button"
                 onClick={handleSubmid}
               >
-                Create Tags
+                Update Tags
               </button>
             </div>
             <div className="mt-4">{`tags_slug : ${create_tags.tags_slug}`}</div>
