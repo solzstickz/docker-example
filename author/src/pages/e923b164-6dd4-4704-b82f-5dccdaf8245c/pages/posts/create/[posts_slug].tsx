@@ -8,8 +8,7 @@ import { FaUpload, FaReply } from "react-icons/fa";
 import config from "../../../../../../config/config";
 import { useRouter } from "next/router";
 import axios_client from "../../../../../../config/axios_client";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
+
 import { useEffect } from "react";
 import Image from "next/image";
 const popup = require("../../../../../../lib/popup");

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios_client from "../config/axios_client";
-
+const popup = require("../lib/popup");
 interface Tag {
   tags_id: number;
   tags_slug: string;
@@ -62,7 +62,8 @@ function MySearchSelect({ onSelectedTagsChange, edit_value }: SearchTagsProps) {
 
   const handleTagSelect = (tag: Tag) => {
     if (selectedTags.map((t) => t.tags_id).includes(tag.tags_id)) {
-      alert("Tag already selected");
+
+      popup.warning("Tag already selected")
     } else {
       const updatedTags = [...selectedTags, tag];
       setSelectedTags(updatedTags);

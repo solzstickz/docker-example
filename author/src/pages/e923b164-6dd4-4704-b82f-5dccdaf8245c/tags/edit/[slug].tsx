@@ -13,6 +13,7 @@ import axios_client from "../../../../../config/axios_client";
 import Search_tags from "../../../../../components/Search_tags";
 import { useEffect } from "react";
 import { FaReply } from "react-icons/fa";
+const popup = require("../../../../../lib/popup");
 interface CreateTags {
   tags_slug: string;
   tags_name: string;
@@ -48,21 +49,21 @@ export default function create_tags({ ...props }) {
         .then((res) => {
           console.log(res.data);
           if (res.status === 200) {
-            alert("อัพเดท tags เรียบร้อย");
+            popup.success("อัพเดท tags เรียบร้อย");
             set_create_tags({
               tags_slug: "",
               tags_name: "",
             });
             router.push(`/${config.ADMIN_PATH}/tags/`);
           } else {
-            alert("อัพเดท tags ไม่สำเร็จ");
+            popup.error("อัพเดท tags ไม่สำเร็จ");
           }
         })
         .catch((err) => {
           console.log(`tags/edit/tag` + err);
         });
     } else {
-      alert("กรุณากรอกข้อมูลให้ถูกต้อง");
+      popup.warning("กรุณากรอกข้อมูลให้ถูกต้อง");
     }
   };
   return (

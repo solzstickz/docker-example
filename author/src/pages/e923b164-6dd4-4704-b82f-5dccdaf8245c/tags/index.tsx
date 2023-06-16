@@ -10,7 +10,7 @@ import moment from "moment";
 import Link from "next/link";
 import config from "../../../../config/config";
 import { useRouter } from "next/router";
-import { setWithExpiry, getWithExpiry } from "../../../../lib/cookie";
+const popup = require("../../../../lib/popup");
 import axios_client from "../../../../config/axios_client";
 import { FaEdit, FaRecycle, FaTrash } from "react-icons/fa";
 type tags = {
@@ -99,26 +99,30 @@ createTheme(
 );
 
 const handdleDelete = (id: number) => {
-  window.confirm(`Are you sure you want to delete:\r ${id}?`);
-  let delete_id = { tags_id: id };
-  console.log(delete_id);
-  axios_client
-    .post(`/tags/delete/tag`, delete_id)
-    .then((res) => {
-      if (res.status === 200) {
-        alert(`${res.data.message}`);
-        window.location.reload();
-        console.log(delete_id);
+  popup
+    .confirm("Are you sure you want to delete:", `${id}?`)
+    .then((res: any) => {
+      if (res) {
+        let delete_id = [{ pages_id: id }];
+        axios_client
+          .post(`/tags/delete/tag`, delete_id)
+          .then((res) => {
+            if (res.status === 200) {
+              popup.success(`${res.data.message}`);
+              window.location.reload();
+              console.log(delete_id);
+            }
+            if (res.status === 201) {
+              popup.error(`${res.data.message}`);
+            }
+            if (res.status === 400) {
+              popup.error(`${res.data.message}`);
+            }
+          })
+          .catch((err) => {
+            console.log(`tags:edit:index` + err);
+          });
       }
-      if (res.status === 201) {
-        alert(`${res.data.message}`);
-      }
-      if (res.status === 400) {
-        alert(`${res.data.message}`);
-      }
-    })
-    .catch((err) => {
-      console.log(`tags:edit:index` + err);
     });
 };
 

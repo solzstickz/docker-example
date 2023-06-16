@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import axios_client from "../../../../../config/axios_client";
 import Search_tags from "../../../../../components/Search_tags";
 import { FaReply } from "react-icons/fa";
+const popup = require("../../../../../lib/popup");
 interface CreateTags {
   tags_slug: string;
   tags_name: string;
@@ -32,21 +33,21 @@ export default function create_tags({ ...props }) {
         .then((res) => {
           console.log(res.data);
           if (res.status === 200) {
-            alert("สร้างหน้าเรียบร้อย");
+            popup.success("สร้างหน้าเรียบร้อย");
             set_create_tags({
               tags_slug: "",
               tags_name: "",
             });
             router.push(`/${config.ADMIN_PATH}/tags/`);
           } else {
-            alert("สร้างหน้าไม่สำเร็จ");
+            popup.error("สร้างหน้าไม่สำเร็จ");
           }
         })
         .catch((err) => {
           console.log(err);
         });
     } else {
-      alert("กรุณากรอกข้อมูลให้ถูกต้อง");
+      popup.warning("กรุณากรอกข้อมูลให้ถูกต้อง");
     }
   };
   return (
