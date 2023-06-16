@@ -255,7 +255,9 @@ const columns = [
     name: "Edit",
     selector: (row: any) => row.pages_slug,
     cell: (row: any) => (
-      <Link href={`pages/edit/${row.pages_slug}`}>
+      <Link
+        href={`/${config.ADMIN_PATH}/pages/posts/edit/${row.posts_slug}?pages_slug=${row.pages_slug}`}
+      >
         <button className="text-orange-500 bg-orange-100 rounded-md dark:text-orange-100 dark:bg-orange-500 p-2">
           <FaEdit className="w-3 h-3 " />
         </button>

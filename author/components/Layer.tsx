@@ -31,14 +31,13 @@ export default function Layer({ children }: any) {
     nav__anime: false,
   });
 
-
   useEffect(() => {
     vertify_token();
   }, []);
 
   const vertify_token = () => {
     const access_token = Cookies.get("access_token");
-    console.log(`dashboard:layout` + access_token);
+    console.log(`access_token : ` + access_token);
     if (access_token == undefined || access_token == "") {
       router.push(`/${config.ADMIN_PATH}`);
     }
@@ -58,11 +57,6 @@ export default function Layer({ children }: any) {
   };
 
   useEffect(() => {
-    const access_token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/,
-      "$1"
-    );
-    console.log(access_token);
     if (
       localStorage.theme === "dark" ||
       (!("theme" in localStorage) &&
@@ -188,13 +182,13 @@ export default function Layer({ children }: any) {
                           pages
                         </Link>
                       </li>
-                      <li
+                      {/* <li
                         className={`px-2 py-1 transition-colors duration-150  dark:hover:text-gray-200`}
                       >
                         <Link className="w-full" href={`posts`}>
                           post
                         </Link>
-                      </li>
+                      </li> */}
                       <li
                         className={`px-2 py-1 transition-colors duration-150  dark:hover:text-gray-200`}
                       >
