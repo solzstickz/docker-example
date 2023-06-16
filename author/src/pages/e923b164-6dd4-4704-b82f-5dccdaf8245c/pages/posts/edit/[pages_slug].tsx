@@ -147,27 +147,27 @@ export default function edit_posts({ ...props }) {
 
   const handleSubmid = async () => {
     console.log(edit_posts);
-    // try {
-    //   const res = await axios_client.post(`/posts/edit/post`, edit_posts);
-    //   console.log(res.data);
-    //   MySwal.fire({
-    //     position: "center",
-    //     icon: "success",
-    //     title: "เพิ่มข้อมูลสำเร็จแล้ว",
-    //     showConfirmButton: false,
-    //     timer: 1500,
-    //   });
-    //   // router.push(`/${config.ADMIN_PATH}/posts/`);
-    // } catch (err: any) {
-    //   console.log(`pages/posts/edit:submit` + err);
-    //   MySwal.fire({
-    //     position: "center",
-    //     icon: "warning",
-    //     title: "เพิ่มข้อมูลไม่สำเร็จ",
-    //     showConfirmButton: false,
-    //     timer: 1500,
-    //   });
-    // }
+    try {
+      const res = await axios_client.post(`/posts/edit/post`, edit_posts);
+      console.log(res.data);
+      MySwal.fire({
+        position: "center",
+        icon: "success",
+        title: "เพิ่มข้อมูลสำเร็จแล้ว",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      // router.push(`/${config.ADMIN_PATH}/posts/`);
+    } catch (err: any) {
+      console.log(`pages/posts/edit:submit` + err);
+      MySwal.fire({
+        position: "center",
+        icon: "warning",
+        title: "เพิ่มข้อมูลไม่สำเร็จ",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
 
   return (
