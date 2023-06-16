@@ -100,8 +100,8 @@ router.post("/edit/post", async (req, res) => {
 });
 
 //! domain.com/pages/:slug
-router.post("/delete/post", async (req, res) => {
-  let posts_id = req.body.posts_id;
+router.post("/delete/:slug", async (req, res) => {
+  let posts_id = req.params.slug;
   console.log(posts_id);
   pool.query(`DELETE FROM posts where posts_id in (?)`,[posts_id], async (err, result) => {
     try {
