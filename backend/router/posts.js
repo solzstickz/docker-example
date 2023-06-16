@@ -103,7 +103,7 @@ router.post("/edit/post", async (req, res) => {
 router.post("/delete/:slug", async (req, res) => {
   let posts_id = req.params.slug;
   console.log(posts_id);
-  pool.query(`DELETE FROM posts where posts_id in (?)`,[posts_id], async (err, result) => {
+  pool.query(`DELETE FROM posts where posts_slug in (?)`,[posts_id], async (err, result) => {
     try {
       if (err) {
         console.log("Status Delete pages Error",err);
