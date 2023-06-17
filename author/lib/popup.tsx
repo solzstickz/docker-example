@@ -37,6 +37,8 @@ module.exports = {
     });
   },
   async confirm(title: string, text: string) {
+    //! resolve = true
+    //! reject = false
     const confirm = new Promise((resolve, reject) => {
       MySwal.fire({
         title: title,
@@ -57,3 +59,5 @@ module.exports = {
     return confirm;
   },
 };
+
+

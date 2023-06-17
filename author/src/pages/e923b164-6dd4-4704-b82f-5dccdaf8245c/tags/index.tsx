@@ -255,7 +255,13 @@ export const Table_tags = ({ data_table }: any) => {
   }) => {
     return <pre className="text-[8px]">{JSON.stringify(data, null, 2)}</pre>;
   };
+  const paginationComponentOptions = {
+    // rowsPerPageText: "Filas por página",
+    // rangeSeparatorText: "de",
 
+    selectAllRowsItem: true,
+    selectAllRowsItemText: "All",
+  };
   return (
     <>
       <div className="table_tags grid ">
@@ -271,6 +277,7 @@ export const Table_tags = ({ data_table }: any) => {
           persistTableHead
           theme="solarized"
           expandableRowsComponent={ExpandedComponent}
+          paginationComponentOptions={paginationComponentOptions}
         />
       </div>
     </>

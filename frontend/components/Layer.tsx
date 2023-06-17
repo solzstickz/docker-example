@@ -164,12 +164,14 @@ export default function Layer({ children, ...props }: Props) {
               width={1920}
               height={500}
               alt="logo"
+              quality={1}
             />
             <Image
               src="/img/hotgraph88.webp"
               width={1920}
               height={500}
               alt="logo"
+              quality={1}
             />
           </div>
         </div>

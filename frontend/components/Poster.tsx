@@ -2,6 +2,7 @@ import React, { use, useState } from "react";
 import Link from "next/link";
 import moment from "moment";
 import Image from "next/image";
+import config from "../config/config";
 export default function Poster({ ...props }) {
   return (
     <>
@@ -9,16 +10,17 @@ export default function Poster({ ...props }) {
         <Link href={`/series/${props.pages_slug}`}>
           <div className="update_new-item-img h-[250px] w-[200px] relative  p-3 ">
             <Image
-              src={`https://sv1.skz.app/${props.pages_thumbnail}`}
+              src={`${config.CDN_URL}${props.pages_thumbnail}`}
               fill={true}
               className="mx-auto rounded-tl-md rounded-tr-md"
+              quality={1}
               alt={props.pages_title}
             />
             <div
               className={`update_new-status absolute w-[60px] h-[25px] ${
                 props.pages_type === "Manga"
                   ? "bg-color_Manga"
-                  : props.pages_type === "Manhwa"
+                  : props.pages_type === "Manhua"
                   ? "bg-color_Manhwa"
                   : props.pages_type === "Novel"
                   ? "bg-color_Novel"

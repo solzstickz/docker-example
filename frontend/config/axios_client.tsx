@@ -1,5 +1,4 @@
 require("dotenv").config();
 const axios = require("axios");
-axios.defaults.baseURL = "http://localhost:7777";
+axios.defaults.baseURL = "http://load.skz.app/";
 export default axios;
-    

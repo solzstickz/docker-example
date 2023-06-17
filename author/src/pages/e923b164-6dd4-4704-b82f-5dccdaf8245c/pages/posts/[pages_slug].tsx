@@ -357,6 +357,12 @@ export const Table_pages_posts = ({ data_table, pages_slug }: any) => {
   }) => {
     return <pre className="text-[8px]">{JSON.stringify(data, null, 2)}</pre>;
   };
+  const paginationComponentOptions = {
+    // rowsPerPageText: "Filas por página",
+    // rangeSeparatorText: "de",
+    selectAllRowsItem: true,
+    selectAllRowsItemText: "All",
+  };
 
   return (
     <>
@@ -373,6 +379,7 @@ export const Table_pages_posts = ({ data_table, pages_slug }: any) => {
           persistTableHead
           theme="solarized"
           expandableRowsComponent={ExpandedComponent}
+          paginationComponentOptions={paginationComponentOptions}
         />
       </div>
     </>

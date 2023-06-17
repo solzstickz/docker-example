@@ -101,31 +101,31 @@ router.get("/last_updated", async (req, res) => {
   // if (redis_res) {
   //   res.status(200).json(JSON.parse(redis_res));
   // } else {
-    pool.query(
-      "SELECT pages.*,posts.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id where posts.posts_ep=pages.pages_last_ep ORDER BY pages.pages_last_update DESC;",
-      async (err, result) => {
-        try {
-          if (err) {
-            console.log(err);
-          } else {
-            if (result.length === 0) {
-              res.status(404).json({ message: "Not Found" });
-            }
-            await redisclient.set(
-              `/last_updated`,
-              JSON.stringify(result),
-              "EX",
-              5
-            );
-            let data = await redisclient.get(`/last_updated`);
-            res.status(200).json(JSON.parse(data));
-          }
-        } catch (err) {
+  pool.query(
+    "SELECT pages.*,posts.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id where posts.posts_ep=pages.pages_last_ep ORDER BY pages.pages_last_update DESC;",
+    async (err, result) => {
+      try {
+        if (err) {
           console.log(err);
-          res.status(500).json({ message: "Internal Server Error" });
+        } else {
+          if (result.length === 0) {
+            res.status(404).json({ message: "Not Found" });
+          }
+          await redisclient.set(
+            `/last_updated`,
+            JSON.stringify(result),
+            "EX",
+            5
+          );
+          let data = await redisclient.get(`/last_updated`);
+          res.status(200).json(JSON.parse(data));
         }
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
       }
-    );
+    }
+  );
   // }
 });
 
