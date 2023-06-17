@@ -61,6 +61,7 @@ router.post("/create/page", async (req, res) => {
   await pages.create_pages(req, res);
 });
 
+
 //! domain.com/pages/delete/page
 router.post("/delete/page", async (req, res) => {
   await pages.delete_pages(req, res);

@@ -29,7 +29,7 @@ services:
       - backend
     environment:
       - TZ=Asia/Bangkok
-    command: bash -c "npm install && npm run dev"
+    command: bash -c "npm install && npm run build && npm run start"
     networks:
       appnetwork:
 
@@ -63,7 +63,7 @@ services:
     environment:
       - NODE_ENV= development
       - TZ=Asia/Bangkok
-    command: npm run dev
+    command: npm run start
     networks:
       appnetwork:
 networks:

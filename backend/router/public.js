@@ -8,21 +8,25 @@ const crypto = require("crypto");
 const uploads = require("../middleware/uploads");
 const moment = require("moment");
 const axios = require("axios");
+const redis_server = require("../module/server_redis");
 
 //! domain.com/pages/
 router.get("/pages/", async (req, res) => {
-  let redis_res = await redisclient.get("pages:res");
-
+  let redis_key = "public:pages"
+  let redis_res = await redisclient.get(redis_key);
   if (redis_res) {
     res.status(200).json(JSON.parse(redis_res));
+    console.log('found');
   } else {
+    console.log('not found');
     pool.query("SELECT * FROM `pages`;", async (err, result) => {
       try {
         if (err) {
           console.log(err);
         } else {
-          await redisclient.set("pages:res", JSON.stringify(result), "EX", 60);
-          let data = await redisclient.get("pages:res");
+          // await  redisclient.sendCommand(['SET','peng' ,JSON.stringify(result),'EX','60']).then((result,err) => {});
+          await redis_server.set(redis_key, result);
+          let data = await redisclient.get(redis_key);
           res.status(200).json(JSON.parse(data));
         }
       } catch (err) {
