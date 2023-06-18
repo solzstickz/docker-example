@@ -31,13 +31,14 @@ interface pages_lastupdate {
 
 export default function Home({ ...props }) {
   const [currentPage, setCurrentPage] = useState(1); // หน้าปัจจุบัน
-  const [itemsPerPage, setItemsPerPage] = useState(10); // จำนวนรายการต่อหน้า
+  const [itemsPerPage, setItemsPerPage] = useState(12); // จำนวนรายการต่อหน้า
   const [totalPages, setTotalPages] = useState(0); // จำนวนหน้าทั้งหมด
   const [displayedPages, setDisplayedPages] = useState([]); // รายการหน้าที่จะแสดงในหน้าปัจจุบัน
 
   useEffect(() => {
     // คำนวณจำนวนหน้าทั้งหมด
     const total = Math.ceil(props.pages_lastep.length / itemsPerPage);
+    console.log(props.pages_lastep.length);
     setTotalPages(total);
   }, [props.pages_lastep, itemsPerPage]);
 

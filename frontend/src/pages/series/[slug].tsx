@@ -8,7 +8,7 @@ import Link from "next/link";
 import moment from "moment";
 import config from "../../../config/config";
 import { CSSProperties } from "react";
-export default function page({ ...props }: any) {
+export default function Page({ ...props }: any) {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     setLoading(false);
