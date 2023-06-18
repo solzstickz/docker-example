@@ -207,6 +207,7 @@ export default function Home({ ...props }) {
                       pages_simple={pages.pages_simple}
                       pages_thumbnail={pages.pages_thumbnail}
                       pages_description={pages.pages_description}
+                      posts_slug={pages.posts_slug}
                     />
                   );
                 })}
