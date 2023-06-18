@@ -6,7 +6,8 @@ import Image from "next/image";
 import { FaStar, FaBookOpen } from "react-icons/fa";
 import Link from "next/link";
 import moment from "moment";
-
+import config from "../../../config/config";
+import { CSSProperties } from "react";
 export default function page({ ...props }: any) {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -20,9 +21,11 @@ export default function page({ ...props }: any) {
           id="page_thumbnail"
         >
           <div
-            style={{
-              "--image-url": `url(${props.res_page.pages_thumbnail})`,
-            }}
+            style={
+              {
+                "--image-url": `url(${config.CDN_URL}${props.res_page.pages_thumbnail})`,
+              } as CSSProperties
+            }
             className="pages_thumb_img bg-cover bg-center h-[300px]  bg-no-repeat  bg-[image:var(--image-url)]"
           ></div>
         </div>
@@ -45,28 +48,25 @@ export default function page({ ...props }: any) {
                   {props.res_page.pages_th} {props.res_page.pages_simple}
                 </p>
               </div>
-              <div className="tags">
-                <div className="tags_title my-5"></div>
-                {props.res_page.pages_tags
-                  .split(",")
-                  .map((tags: string, i: number) => {
-                    return (
-                      <Link
-                        key={i}
-                        href={`/tags/${tags}`}
-                        className="dark:bg-header_bg_menu bg-color_white  py-[8px] px-[15px] m-2 rounded-md mx-2 dark:text-color_white text-color_dark_gray hover:bg-site_color hover:text-color_white ease-out duration-300"
-                      >
-                        {tags}
-                      </Link>
-                    );
-                  })}
+              <div className="tags my-5 ">
+                {props.res_tags.map((tags: any, i: number) => {
+                  return (
+                    <Link
+                      key={i}
+                      href={`/tags/${tags.tags_slug}`}
+                      className="dark:bg-header_bg_menu  font-bold bg-color_white  py-[8px] px-[15px] m-2 rounded-md mx-2 dark:text-color_white text-color_dark_gray hover:bg-site_color dark:hover:bg-site_color hover:text-color_white ease-out duration-300"
+                    >
+                      {tags.tags_name.toUpperCase()}
+                    </Link>
+                  );
+                })}
               </div>
               <div className="back_homepage w-auto text-site_color md:gap-2 my-3 grid grid-cols-1">
                 <span className="">
                   <Link href="/">หน้าแรก</Link>
                   &nbsp;|&nbsp;
                   <Link href={`/series/${props.res_page.pages_slug}`}>
-                    อ่าน {props.res_page.pages_detail.info.EN} แปลไทย
+                    อ่าน {props.res_page.pages_th} แปลไทย
                   </Link>
                 </span>
               </div>
@@ -107,9 +107,7 @@ export default function page({ ...props }: any) {
                       //             <p className="">ตอนที่{item.posts_ep}</p>
                       //           </div>
                       //           <div className="ep_date">
-                      //             <p className="text-sm">
-                      //               {item.posts_create}
-                      //             </p>
+                      //             <p className="text-sm">{item.posts_create}</p>
                       //           </div>
                       //         </div>
                       //       </div>
@@ -129,7 +127,7 @@ export default function page({ ...props }: any) {
                               <div className="ep_text">
                                 <div className="text-xl ">
                                   <p className="">
-                                    {props.res_page.pages_detail.info.EN} แปลไทย
+                                    {props.res_page.pages_en} แปลไทย
                                     {` ตอนที่ ${item.posts_ep}`}
                                   </p>
                                 </div>
@@ -153,7 +151,7 @@ export default function page({ ...props }: any) {
           <div className="pages_deltail_info w-full md:w-3/12 flex justify-center md:justify-start flex-col">
             <div className="thumb mx-auto w-[250px] h-[350px] relative">
               <Image
-                src={`${props.res_page.pages_detail.thumbnail}`}
+                src={`${config.CDN_URL}${props.res_page.pages_thumbnail}`}
                 fill={true}
                 className="object-contain rounded-[15px] shadow-md"
                 alt="test"
@@ -161,21 +159,21 @@ export default function page({ ...props }: any) {
             </div>
             <div className="status w-full flex my-2 h-[50px]">
               <div className="type w-full  bg-pages_status_type flex items-center justify-center rounded-l-full text-center text-color_white text-2xl p-3 shadow-md">
-                {props.res_page.pages_detail.info.type}
+                {props.res_page.pages_type}
               </div>
               <div className="status_showing bg-pages_status_showing flex items-center justify-center w-full rounded-r-full text-center text-color_white text-2xl shadow-md">
-                {props.res_page.pages_detail.info.status_showing}
+                {props.res_page.pages_status_showing}
               </div>
             </div>
             <div className="star w-full h-[50px] dark:bg-pages_bg_star bg-color_white flex justify-center items-center rounded-full my-2 shadow-md">
               <div className="icon relative">
                 <FaStar className="text-pages_star text-[20px] absolute right-6 top-[3px]" />
                 <span className="text-[20px] leading-2 dark:text-color_white text-color_dark_gray font-bold">
-                  {props.res_page.pages_detail.info.star}
+                  {props.res_page.pages_star}
                 </span>
               </div>
             </div>
-            <div className="bookmark w-full h-[50px] bg-site_color flex justify-center items-center rounded-full my-2 shadow-md">
+            <div className="bookmark w-full h-[50px] bg-site_color flex justify-center items-center rounded-full my-2 shadow-md cursor-pointer">
               <div className="icon relative">
                 <FaBookOpen className="absolute top-1 right-20 text-color_white " />
                 <p className="text-color_white">อ่านย้อนหลัง</p>
@@ -183,28 +181,37 @@ export default function page({ ...props }: any) {
             </div>
             <div className="follow text-center my-2">
               <p className="dark:text-color_gray text-color_dark_gray">
-                มีผู้ติดตามจำนวน {props.res_page.pages_detail.info.follow}
+                มีผู้ติดตามจำนวน {props.res_page.pages_follow}
               </p>
             </div>
             <div className="sub w-full rounded-md dark:bg-header_bg_dark bg-color_white p-5 shadow-md">
               <ul>
                 <li>
-                  <p className="font-bold text-color_dark_gray text-2xl">
+                  <p className="font-bold text-color_dark_gray dark:text-color_gray text-2xl">
                     English
                   </p>
-                  <span> {props.res_page.pages_detail.info.EN}</span>
+                  <span className="text-color_dark_gray dark:text-color_gray">
+                    {" "}
+                    {props.res_page.pages_en}
+                  </span>
                 </li>
                 <li>
-                  <p className="font-bold text-color_dark_gray text-2xl">
+                  <p className="font-bold text-color_dark_gray dark:text-color_gray text-2xl">
                     Thai
                   </p>
-                  <span> {props.res_page.pages_detail.info.TH}</span>
+                  <span className="text-color_dark_gray dark:text-color_gray">
+                    {" "}
+                    {props.res_page.pages_th}
+                  </span>
                 </li>
                 <li>
-                  <p className="font-bold text-color_dark_gray text-2xl">
+                  <p className="font-bold text-color_dark_gray dark:text-color_gray text-2xl">
                     Total Charpter
                   </p>
-                  <span> {props.res_ep[0].posts_ep}</span>
+                  <span className="text-color_dark_gray dark:text-color_gray">
+                    {" "}
+                    {props.res_ep[0].posts_ep}
+                  </span>
                 </li>
               </ul>
             </div>
@@ -217,12 +224,13 @@ export default function page({ ...props }: any) {
 
 export async function getServerSideProps(context: any) {
   try {
-    let res = await axios_client.get(`/public/pages/${context.query.slug}`);
-    let res_data = await res.data;
-    let res_page = await res_data[0];
-    let res_ep = await res_data[1]; 
-    console.log(res_page);
-    return { props: { res_page, res_ep } };
+    let res = await axios_client.get(`public/pages/${context.query.slug}`);
+    let res_ep = await res.data.pages;
+    let res_page = await res.data.pages[0];
+    let res_tags = await res.data.tags;
+    console.log(res_tags);
+    // let res_ep = await res_data[1];
+    return { props: { res_page, res_tags, res_ep } };
   } catch (error) {
     console.log(error);
   }
