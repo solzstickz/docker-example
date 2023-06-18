@@ -47,6 +47,7 @@ export default function Home({ ...props }) {
     const endIndex = startIndex + itemsPerPage;
     const pagesToDisplay = props.pages_lastep.slice(startIndex, endIndex);
     setDisplayedPages(pagesToDisplay);
+    // console.log(displayedPages);
   }, [props.pages_lastep, currentPage, itemsPerPage]);
 
   // ฟังก์ชันเปลี่ยนหน้า
@@ -184,7 +185,7 @@ export default function Home({ ...props }) {
                   </span>
                 </h3>
               </div>
-              <div className="update_new-content grid grid-cols-5 gap-5">
+              <div className="update_new-content grid grid-cols-4 gap-10">
                 {displayedPages.map((pages: any, i: number) => {
                   return (
                     <Poster
