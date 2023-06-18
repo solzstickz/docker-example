@@ -4,9 +4,10 @@ import moment from "moment";
 import Image from "next/image";
 import config from "../config/config";
 export default function Poster({ ...props }) {
+  console.log(props.pages_slug);
   return (
     <>
-      <div className="update_new-item mx-auto flex flex-col relative max-w-[250px] hover:scale-110 transition-all ease-out delay-100 bg-color_white hover:bg-color_white  dark:text-text_color text-color_dark_gray hover:text-site_color shadow-2xl rounded-tl-md rounded-tr-md">
+      <div className="update_new-item mx-auto flex flex-col relative max-w-[250px] hover:scale-110 transition-all ease-out delay-100 bg-color_white hover:bg-color_white  dark:text-text_color text-color_dark_gray hover:text-site_color shadow-2xl rounded-md">
         <Link href={`/series/${props.pages_slug}`}>
           <div className="update_new-item-img h-[250px] w-[200px] relative  p-3 ">
             <Image
@@ -34,19 +35,26 @@ export default function Poster({ ...props }) {
           </div>
           <div className="update_new-item-title text-center h-auto relative">
             <h3 className="text-2xl  line-clamp-2">{props.pages_en}</h3>
+            <span className="text-[16px] text-color_gray">
+              {moment(props.posts_date).startOf("day").fromNow()}
+            </span>
           </div>
         </Link>
-        <div className="last_ep flex justify-around items-center">
-          <Link
-            href={`/${props.posts_slug}`}
+        <div className="last_ep flex justify-center items-center text-center w-full mb-4">
+          {/* <Link
+            href={`/${props.pages_slug}/${props.last_ep}`}
             className="text-[16px] dark:text-color_white text-color_dark_gray text-center my-2 px-3 py-1 rounded-full dark:bg-header_bg_dark  bg-color_white  hover:bg-site_color transition-all"
           >
-            ตอนที่ {props.posts_ep}
+            ตอนที่ {props.last_ep}
           </Link>
-          <span className="text-[16px] text-color_gray">
-            {moment(props.posts_date).startOf("day").fromNow()}
-          </span>
-          <h1>{props.posts_create}</h1>
+
+          <h1>{props.posts_create}</h1> */}
+          <Link
+            className=" w-5/6  text-color_white justify-between mx-auto px-4 py-2 text-xl font-medium leading-5 text-white transition-colors duration-150 bg-site_color border border-transparent rounded-lg active:bg-site_color hover:bg-site_color focus:outline-none focus:shadow-outline-bg-site_color"
+            href={`/${props.pages_slug}/${props.last_ep}`}
+          >
+            ตอนที่ 259
+          </Link>
         </div>
       </div>
     </>
