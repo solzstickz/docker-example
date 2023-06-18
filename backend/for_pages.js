@@ -16,7 +16,7 @@ async function createPagesLoop() {
       "pages_slug": pagesSlugBase + i,
       "pages_view": 0,
       "pages_status_showing": "จันทร์",
-      "pages_last_ep": 0,
+      "pages_last_ep": 1,
       "pages_en": "Somthine_wrong",
       "pages_th": "ซัมติง",
       "pages_star": "9",
@@ -24,7 +24,7 @@ async function createPagesLoop() {
       "pages_follow": 0,
       "pages_title": "Somthine_wrongSomthine_wrongSomthine_wrongSomthine_wrong",
       "pages_simple": "Somthine_wrong",
-      "pages_thumbnail": "uploads/282f400a568ea7605497ce07d6748b.gif",
+      "pages_thumbnail": "uploads_dev/Mercenary-Enrollment-206x300.webp",
       "pages_description": "Somthine_wrongSomthine_wrongSomthine_wrongSomthine_wrongSomthine_wrongSomthine_wrongSomthine_wrongSomthine_wrongSomthine_wrongSomthine_wrongSomthine_wrong",
       "pages_tags": [
         {

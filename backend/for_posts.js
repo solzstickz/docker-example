@@ -16,14 +16,14 @@ async function createPagesLoop() {
     let bodyContent = JSON.stringify({
         "posts_slug": posts_slug + i,
         "pages_slug": pagesSlugBase + i,
-        "posts_ep": 0,
+        "posts_ep": 1,
         "posts_detail": [
             {
-                "url": "uploads/14aa69dd15052ed0be877d1f9087b7.webp",
+                "url": "uploads_dev/Mercenary-Enrollment-206x300.webp",
                 "image_no": 1
             },
             {
-                "url": "uploads/d192e5b6362f0efcaef52e292b830c.webp",
+                "url": "uploads_dev/Mercenary-Enrollment-206x300.webp",
                 "image_no": 2
             }
         ]

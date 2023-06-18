@@ -36,7 +36,27 @@ module.exports = {
                           res.status(500).json({ message: "Status Mysql Posts Insert Error" });
                       } else {
                         if (result.insertId > 0){
-                          res.status(200).json({ message: "Status Posts Insert Success" });
+                          pool.query(
+                            `UPDATE pages set pages_last_update = ?, pages_last_ep = ? WHERE pages_id = ?`,
+                            [reqbody.posts_create,reqbody.posts_ep,reqbody.pages_id],
+                            async (err, result_update_last_ep) => {
+                              try {
+                                if (err) {
+                                  console.log("posts/:slug" + err);
+                                  res.status(500).json({ message: "Internal Mysql Pages Server Error" });
+                                } else {
+                                  if(result_update_last_ep.changedRows > 0){
+                                    res.status(200).json({ message: "Status Post Update Success" });
+                                  }else{
+                                    res.status(201).json({ message: "Post Update Not Found !" });
+                                  }
+                                }
+                              } catch (err) {
+                                console.log(err);
+                                res.status(500).json({ message: "Internal Server Error" });
+                              }
+                            }
+                          );
                         }else{
                           res.status(201).json({ message: "Status Posts Insert Not found" });
                         }
