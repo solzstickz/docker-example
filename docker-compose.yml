@@ -33,6 +33,24 @@ services:
     networks:
       appnetwork:
 
+  frontend:
+    container_name: frontend
+    build: ./frontend/
+    image: node:latest
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/frontend
+    working_dir: /frontend
+    depends_on:
+      - backend
+    environment:
+      - TZ=Asia/Bangkok
+    command: bash -c "npm install && npm run build && npm run start"
+    networks:
+      appnetwork:
+
   nginx:
     container_name: nginx
     image: nginx:latest
