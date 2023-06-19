@@ -5,6 +5,8 @@ import Image from "next/image";
 import axios_client from "../../config/axios_client";
 import config from "../../config/config";
 import ProgressBar from "react-progressbar-on-scroll";
+import { FaArrowLeft, FaArrowRight, FaListUl, FaTimes } from "react-icons/fa";
+import moment from "moment-timezone";
 interface post {
   posts_id: number;
   posts_slug: string;
@@ -33,8 +35,39 @@ export default function post({ ...props }) {
                 at SITE_NAME – มังงะแปลไทย
               </p>
             </div>
+            <div className="fixed top-0 left-0 h-[80px] bg-header_bg_menu z-50 w-full">
+              <div className="flex w-full justify-around items-center">
+                <div className="detail">
+                  <div className="title font-bold text-2xl dark:text-color_gray">
+                    {props.post.pages_en}
+                  </div>
+                  <div className="ep text-md dark:text-color_gray text-left">
+                    ตอนที่ {props.post.posts_ep}
+                    {""}•{""}
+                    <span>{moment(props.post.posts_create).format("LL")}</span>
+                  </div>
+                </div>
+                <div className="nav__ep flex items-center">
+                  <div className="select bg-main_bg_dark rounded-xl m-1">
+                    <FaListUl
+                      className={`text-color_white text-[40px] p-2 delay-1000 ease-out`}
+                    />
+                  </div>
+                  <div className="prv bg-main_bg_dark rounded-xl m-1">
+                    <FaArrowLeft
+                      className={`text-color_white text-[30px] p-2 delay-1000 ease-out`}
+                    />
+                  </div>
+                  <div className="next bg-main_bg_dark rounded-xl m-1">
+                    <FaArrowRight
+                      className={`text-color_white text-[30px] p-2 delay-1000 ease-out`}
+                    />
+                  </div>
+                
+                </div>
+              </div>
+            </div>
             <div className="reading relative">
-              <div className="nav_ep fixed top-0 left-0 w-full "></div>
               <div className="scroll__progress__bar">
                 <ProgressBar color="#ff4900" height={5} />
               </div>
