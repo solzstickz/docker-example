@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import Layer from "../../components/Layer";
 import Image from "next/image";
+import axios_client from "../../config/axios_client";
 interface post {
   posts_id: number;
   posts_slug: string;
@@ -55,10 +56,8 @@ export default function post({ ...props }) {
 }
 
 export async function getServerSideProps(context: any) {
-  let res = await axios.post(
-    `http://localhost:7777/posts/${context.query.post}`
-  );
-  let post = res.data[0];
+  let res_data = await axios_client.get(`public/posts/${context.query.post}`);
+  let post = await res_data.data[0];
   console.log(post);
   return {
     props: {
