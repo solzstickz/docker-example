@@ -135,7 +135,7 @@ router.get("/sitemap/posts/slug", async (req, res) => {
     console.log('found');
   } else {
   pool.query(
-    "SELECT posts.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id ORDER BY posts_id ASC;",
+    "SELECT posts.posts_slug FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id ORDER BY posts_id ASC;",
     async (err, result) => {
       try {
         if (err) {
