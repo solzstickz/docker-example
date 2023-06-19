@@ -12,6 +12,7 @@ export default function Layer({ children, ...props }: Props) {
   const [themes, setThemes] = useState("dark");
   const [nav_status, Setnav_status] = useState(false);
   const [search, setSearch] = useState("");
+  const [search_status, setSearch_status] = useState(false);
   const router = useRouter();
 
   //! scroll
@@ -66,22 +67,22 @@ export default function Layer({ children, ...props }: Props) {
       <header className="dark:bg-header_bg_dark bg-header_bg_light">
         <div className="container mx-auto flex justtify-between">
           <div className="md:w-1/4 flex items-center justify-center">
-            <div className="icon_search bg-header_bg_menu rounded-xl mx-2 md:hidden">
+            <div className="nav__bar bg-header_bg_menu rounded-xl mx-2 md:hidden">
               {nav_status ? (
                 <FaTimes
                   className={`text-color_white text-[40px] p-2 delay-1000 ease-out ${nav_status} ? 'opacity-100' : 'opacity-0'`}
                   onClick={() => {
-                    Setnav_status(false);
+                    Setnav_status(!nav_status);
                   }}
                 />
               ) : (
                 <FaBars
+                  onClick={() => {
+                    Setnav_status(!nav_status);
+                  }}
                   className={`text-color_white text-[40px] p-2 delay-1000 ease-out ${
                     nav_status ? "opacity-0" : "opacity-100"
                   }`}
-                  onClick={() => {
-                    Setnav_status(true);
-                  }}
                 />
               )}
             </div>
@@ -97,7 +98,7 @@ export default function Layer({ children, ...props }: Props) {
             } md:w-2/4 md:flex md:items-center md:justify-center top-[50px] dark:bg-header_bg_dark`}
           >
             <ul>
-              <li className="flex flex-col gap-4 mt-5">
+              <li className="flex flex-col md:block gap-4 mt-5 md:mt-0">
                 <Link
                   href="/"
                   className="bg-site_color py-[8px] px-[15px] rounded-md mx-2 dark:text-color_white text-color_white"
@@ -120,9 +121,13 @@ export default function Layer({ children, ...props }: Props) {
             </ul>
           </div>
           <div className="md:w-1/4 flex items-center justify-center ">
-            <div className="mx-3 hidden md:block relative">
+            <div
+              className={`${
+                search_status ? "fixed w-5/6 left-0" : "hidden"
+              } mx-3 md:block md:relative`}
+            >
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#000] dark:text-color_white dark:border-[#000]"
+                className="shadow appearance-none border rounded w-full md:w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#000] dark:text-color_white dark:border-[#000]"
                 id="search"
                 type="text"
                 placeholder="ค้นหา"
@@ -153,7 +158,21 @@ export default function Layer({ children, ...props }: Props) {
               />
             </div>
             <div className="icon_search bg-header_bg_menu rounded-xl mx-2 md:hidden">
-              <FaSearch className="text-color_white text-[40px] p-2" />
+              {search_status ? (
+                <FaTimes
+                  className="text-color_white text-[40px] p-2"
+                  onClick={() => {
+                    setSearch_status(!search_status);
+                  }}
+                />
+              ) : (
+                <FaSearch
+                  className="text-color_white text-[40px] p-2"
+                  onClick={() => {
+                    setSearch_status(!search_status);
+                  }}
+                />
+              )}
             </div>
           </div>
         </div>

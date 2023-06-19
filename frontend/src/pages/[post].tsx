@@ -4,6 +4,7 @@ import Layer from "../../components/Layer";
 import Image from "next/image";
 import axios_client from "../../config/axios_client";
 import config from "../../config/config";
+import ProgressBar from "react-progressbar-on-scroll";
 interface post {
   posts_id: number;
   posts_slug: string;
@@ -27,11 +28,16 @@ export default function post({ ...props }) {
             </div>
             <div className="desc my-3">
               <p className="dark:text-color_gray">
-                อ่านมังงะ มังฮวา การ์ตูนเรื่อง {props.post.pages_en} {props.post.pages_th} ตอนที่ {props.post.posts_ep}
+                อ่านมังงะ มังฮวา การ์ตูนเรื่อง {props.post.pages_en}{" "}
+                {props.post.pages_th} ตอนที่ {props.post.posts_ep}
                 at SITE_NAME – มังงะแปลไทย
               </p>
             </div>
-            <div className="reading">
+            <div className="reading relative">
+              <div className="nav_ep fixed top-0 left-0 w-full "></div>
+              <div className="scroll__progress__bar">
+                <ProgressBar color="#ff4900" height={5} />
+              </div>
               {props.post.posts_detail.map((images: any, i: number) => {
                 return (
                   <div className="relative mx-auto w-full h-auto" key={i}>
