@@ -77,7 +77,7 @@ export default function Layer({ children, ...props }: Props) {
               ) : (
                 <FaBars
                   className={`text-color_white text-[40px] p-2 delay-1000 ease-out ${
-                    nav_status ? "opacity-100" : "opacity-0"
+                    nav_status ? "opacity-0" : "opacity-100"
                   }`}
                   onClick={() => {
                     Setnav_status(true);
@@ -91,9 +91,13 @@ export default function Layer({ children, ...props }: Props) {
               <Image src="/img/logo.png" width={300} height={300} alt="logo" />
             </Link>
           </div>
-          <div className="fixed flex items-start h-full md:w-2/4 md:flex md:items-center md:justify-center">
+          <div
+            className={`${
+              nav_status ? "fixed z-[100] w-full h-full" : "hidden"
+            } md:w-2/4 md:flex md:items-center md:justify-center top-[50px] dark:bg-header_bg_dark`}
+          >
             <ul>
-              <li className="">
+              <li className="flex flex-col gap-4 mt-5">
                 <Link
                   href="/"
                   className="bg-site_color py-[8px] px-[15px] rounded-md mx-2 dark:text-color_white text-color_white"
