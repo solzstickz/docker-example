@@ -15,7 +15,7 @@ export default function tags_index({ ...props }) {
                   <span className="text-color_white"> {props.keyword}</span>
                 </h2>
               </div>
-              <div className="tags-content grid grid-cols-6">
+              <div className="update_new-content grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-10">
                 {props.tags.map((pages: any, i: number) => {
                   return (
                     <Poster

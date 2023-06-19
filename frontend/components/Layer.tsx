@@ -211,7 +211,7 @@ export default function Layer({ children, ...props }: Props) {
             มังงะที่ถูกใจ
           </Link>
         </div>
-        <div className="copyright container mx-auto w-full flex justify-center flex-col items-center">
+        <div className="copyright container mx-auto w-5/6 md:max-w-[1080px] flex justify-center flex-col items-center">
           <p className="text-text_color">
             God-Manga.com 2023 | God Manga – มังงะแปลไทย เว็บอ่านมังงะ มังฮวา
             การ์ตูนแปลไทย ออนไลน์

@@ -1,7 +1,7 @@
 import React from "react";
 import Layer from "../../../components/Layer";
 import Poster from "../../../components/Poster";
-import axios from "axios";
+import axios_client from "../../../config/axios_client";
 export default function search_index({ ...props }) {
   return (
     <Layer>
@@ -15,17 +15,29 @@ export default function search_index({ ...props }) {
                   <span className="text-color_white"> {props.keyword}</span>
                 </h2>
               </div>
-              <div className="search-content grid grid-cols-6">
+              <div className="update_new-content grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-10">
                 {props.search.map((pages: any, i: number) => {
                   return (
                     <Poster
                       key={i}
                       i={i}
+                      pages_id={pages.pages_id}
                       pages_slug={pages.pages_slug}
-                      pages_detail={pages.pages_detail}
+                      pages_view={pages.pages_view}
+                      pages_last_update={pages.pages_last_update}
+                      pages_status_showing={pages.pages_status_showing}
+                      pages_last_ep={pages.pages_last_ep}
+                      pages_en={pages.pages_en}
+                      pages_th={pages.pages_th}
+                      pages_star={pages.pages_star}
+                      pages_type={pages.pages_type}
+                      pages_follow={pages.pages_follow}
+                      pages_publish={pages.pages_publish}
+                      pages_title={pages.pages_title}
+                      pages_simple={pages.pages_simple}
+                      pages_thumbnail={pages.pages_thumbnail}
+                      pages_description={pages.pages_description}
                       posts_slug={pages.posts_slug}
-                      posts_ep={pages.posts_ep}
-                      posts_date={pages.posts_create}
                     />
                   );
                 })}
@@ -37,9 +49,9 @@ export default function search_index({ ...props }) {
     </Layer>
   );
 }
-export async function getServerSideProps(context: any) {
-  let res_lastep = await axios.post(`${process.env.API_END_POINT}last_updated`);
-  let search = await res_lastep.data;
+export async function getServerSideProps() {
+  let res = await axios_client.get(`public/last_updated`);
+  let search = await res.data;
 
   return { props: { search } };
 }

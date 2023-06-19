@@ -106,7 +106,7 @@ export default function Tags_slug({ ...props }) {
                   <span className="text-color_white"> {props.keyword}</span>
                 </h2>
               </div>
-              <div className="update_new-content grid grid-cols-4 gap-10">
+              <div className="update_new-content grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-10">
                 {displayedPages.map((pages: any, i: number) => {
                   return (
                     <Poster
