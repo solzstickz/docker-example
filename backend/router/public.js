@@ -222,16 +222,15 @@ router.get("/posts/:slug", async (req, res) => {
   pool.query(
     `SELECT * FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id WHERE posts.posts_slug = ? ;`,
     [req.params.slug],
-    async (err, result_pages) => {
+    async (err, result_posts) => {
       try {
         if (err) {
-          console.log(`public/pages/` + err);
+          console.log(`public/result_posts/` + err);
         } else {
-          if (result_pages.length === 0) {
+          if (result_posts.length === 0) {
             res.status(404).json({ message: "Page Url Not Found !" });
           } else {
-                  let full_data = ({pages:result_pages,tags:result_tags})
-                  await redis_server.set(redis_key, full_data);
+                  await redis_server.set(redis_key, result_posts);
                   let data = await redisclient.get(redis_key);
                   res.status(200).json(JSON.parse(data));   
           }
