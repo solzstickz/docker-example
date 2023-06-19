@@ -278,7 +278,7 @@ router.get("/tags/:slug", async (req, res) => {
     console.log('found');
   } else {
   pool.query(
-    "SELECT pages.*,posts.*,tags.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id INNER JOIN pages_tags ON pages.pages_id = pages_tags.pages_id INNER JOIN tags ON pages_tags.tags_id=tags.tags_id  where posts.posts_ep=pages.pages_last_ep and tags.tags_slug='action' ORDER BY pages.pages_last_update DESC;",
+    "SELECT pages.*,posts.*,tags.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id INNER JOIN pages_tags ON pages.pages_id = pages_tags.pages_id INNER JOIN tags ON pages_tags.tags_id=tags.tags_id  where posts.posts_ep=pages.pages_last_ep and tags.tags_slug=? ORDER BY pages.pages_last_update DESC;",
     [req.params.slug],
     async (err, result) => {
       try {
