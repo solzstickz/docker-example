@@ -252,10 +252,8 @@ export default function Home({ ...props }) {
   );
 }
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps() {
   let res_lastep = await axios_client.get(`public/last_updated`);
   let pages_lastep = await res_lastep.data;
-  console.log(pages_lastep);
-
   return { props: { pages_lastep } };
 }

@@ -16,7 +16,7 @@ export default function post({ ...props }) {
   return (
     <>
       <Layer>
-        <div className="container mx-auto md:max-w-[700px]">
+        {/* <div className="container mx-auto md:max-w-[700px]">
           <div className="content w-full flex justify-center flex-col text-center">
             <div className="title my-3">
               <h1 className="dark:text-color_white text-5xl font-bold">
@@ -48,21 +48,21 @@ export default function post({ ...props }) {
               })}
             </div>
           </div>
-        </div>
+        </div> */}
       </Layer>
     </>
   );
 }
 
 export async function getServerSideProps(context: any) {
-  let res = await axios.post(
-    `http://localhost:7777/posts/${context.query.post}`
-  );
-  let post = res.data[0];
-  console.log(post);
+  // let res = await axios.post(
+  //   `http://localhost:7777/posts/${context.query.post}`
+  // );
+  // let post = res.data[0];
+  // console.log(post);
   return {
     props: {
-      post,
+      // post,
     },
   };
 }
