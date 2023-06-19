@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build": "next build"
   },
   "dependencies": {
     "@types/node": "20.1.0",
+    "@types/node-cron": "^3.0.7",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
     "axios": "^1.4.0",
@@ -20,6 +21,7 @@
     "moment-timezone": "^0.5.43",
     "next": "13.4.1",
     "nextjs-progressbar": "^0.0.16",
+    "node-cron": "^3.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",
