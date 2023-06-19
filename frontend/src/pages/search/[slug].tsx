@@ -52,7 +52,7 @@ export default function search_slug({ ...props }) {
 export async function getServerSideProps(context: any) {
   try {
     let keyword = context.params.slug;
-    let res = await axios_client.get(`public/pages/${context.query.slug}`);
+    let res = await axios_client.get(`public/search/${context.query.slug}`);
     let search = await res.data;
     console.log(search);
     return { props: { search, keyword } };

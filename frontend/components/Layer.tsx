@@ -91,7 +91,7 @@ export default function Layer({ children, ...props }: Props) {
               <Image src="/img/logo.png" width={300} height={300} alt="logo" />
             </Link>
           </div>
-          <div className="hidden md:w-2/4 md:flex items-center justify-center">
+          <div className="fixed flex items-start h-full md:w-2/4 md:flex md:items-center md:justify-center">
             <ul>
               <li className="">
                 <Link
