@@ -48,13 +48,13 @@ export default function Page({ ...props }: any) {
                   {props.res_page.pages_th} {props.res_page.pages_simple}
                 </p>
               </div>
-              <div className="tags my-5 ">
+              <div className="tags my-5">
                 {props.res_tags.map((tags: any, i: number) => {
                   return (
                     <Link
                       key={i}
                       href={`/tags/${tags.tags_slug}`}
-                      className="dark:bg-header_bg_menu  font-bold bg-color_white  py-[8px] px-[15px] m-2 rounded-md mx-2 dark:text-color_white text-color_dark_gray hover:bg-site_color dark:hover:bg-site_color hover:text-color_white ease-out duration-300"
+                      className="text-center p-2 justify-center  dark:bg-header_bg_menu  font-bold bg-color_white inline-flex  m-1 rounded-md dark:text-color_white text-color_dark_gray hover:bg-site_color dark:hover:bg-site_color hover:text-color_white ease-out duration-300"
                     >
                       {tags.tags_name.toUpperCase()}
                     </Link>
