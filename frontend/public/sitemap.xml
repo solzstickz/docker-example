@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    <url>
+      <loc>https://front.skz.app/</loc>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+    </url>
+    <url>
+      <loc>https://front.skz.app/sitemap_series.xml</loc>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+    </url>
+    <url>
+      <loc>https://front.skz.app/sitemap_tags.xml</loc>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+    </url>
+  
+      <url>
+        <loc>https://front.skz.app/sitemap-posts-1.xml</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+      <url>
+        <loc>https://front.skz.app/sitemap-posts-2.xml</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+      <url>
+        <loc>https://front.skz.app/sitemap-posts-3.xml</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+      <url>
+        <loc>https://front.skz.app/sitemap-posts-4.xml</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+      <url>
+        <loc>https://front.skz.app/sitemap-posts-5.xml</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+    </urlset>
+  
