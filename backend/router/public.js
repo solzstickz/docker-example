@@ -162,14 +162,14 @@ router.get("/sitemap/posts/slug", async (req, res) => {
 });
 
 router.get("/search/:slug", async (req, res) => {
-  let redis_key = "public:/search/slug"
+  let redis_key = `public:/search/${req.params.slug}`;
   let redis_res = await redisclient.get(redis_key);
   if (redis_res) {
     res.status(200).json(JSON.parse(redis_res));
     console.log('found');
   } else {
   pool.query(
-    `SELECT pages.*,posts.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id where posts.posts_ep=pages.pages_last_ep AND pages.pages_en LIKE '%${req.params.slug}%' ORDER BY pages.pages_id ASC;`,
+    `SELECT pages.*,posts.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id where (posts.posts_ep=pages.pages_last_ep AND pages.pages_en LIKE '%${req.params.slug}%') OR (posts.posts_ep=pages.pages_last_ep AND pages.pages_th LIKE '%${req.params.slug}%') ORDER BY pages.pages_id ASC;`,
     async (err, result) => {
       try {
         if (err) {
