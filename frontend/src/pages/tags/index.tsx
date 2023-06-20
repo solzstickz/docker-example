@@ -4,7 +4,7 @@ import Poster from "../../../components/Poster";
 import axios from "axios";
 import axios_client from "../../../config/axios_client";
 import { useEffect, useState } from "react";
-export default function tags_index({ ...props }) {
+export default function Tags_index({ ...props }) {
   const [currentPage, setCurrentPage] = useState(1); // หน้าปัจจุบัน
   const [itemsPerPage, setItemsPerPage] = useState(12); // จำนวนรายการต่อหน้า
   const [totalPages, setTotalPages] = useState(0); // จำนวนหน้าทั้งหมด

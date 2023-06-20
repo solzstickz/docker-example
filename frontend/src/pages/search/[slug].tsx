@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layer from "../../../components/Layer";
 import Poster from "../../../components/Poster";
 import axios_client from "../../../config/axios_client";
-import { useEffect, useState } from "react";
-export default function search_slug({ ...props }) {
+export default function Search_slug({ ...props }) {
   const [currentPage, setCurrentPage] = useState(1); // หน้าปัจจุบัน
   const [itemsPerPage, setItemsPerPage] = useState(12); // จำนวนรายการต่อหน้า
   const [totalPages, setTotalPages] = useState(0); // จำนวนหน้าทั้งหมด
