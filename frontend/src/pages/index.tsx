@@ -88,9 +88,12 @@ export default function Home({ ...props }) {
           key={i}
           className={`${
             i === currentPage ? "bg-site_color" : "bg-header_bg_menu"
-          }  px-[10px] py-[5px] m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300`}
+          }  m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300`}
         >
-          <button className={`cursor-pointer`} onClick={() => changePage(i)}>
+          <button
+            className={`cursor-pointer  px-[10px] py-[5px]`}
+            onClick={() => changePage(i)}
+          >
             {i}
           </button>
         </li>
@@ -218,9 +221,9 @@ export default function Home({ ...props }) {
                   <div className="items-per-page">
                     <ul className="flex justify-center items-center gap-1 py-5">
                       {currentPage > 1 ? (
-                        <li className="bg-header_bg_menu  px-[10px] py-[5px] m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300">
+                        <li className="bg-header_bg_menu m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300">
                           <button
-                            className="cursor-pointer"
+                            className="cursor-pointer px-[10px] py-[5px]"
                             onClick={() => changePage(currentPage - 1)}
                             disabled={currentPage === 1}
                           >
@@ -230,9 +233,9 @@ export default function Home({ ...props }) {
                       ) : null}
                       {renderPageNumbers()}
                       {currentPage < totalPages ? (
-                        <li className="bg-header_bg_menu  px-[10px] py-[5px] m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300">
+                        <li className="bg-header_bg_menu   m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300">
                           <button
-                            className="cursor-pointer"
+                            className="cursor-pointer px-[10px] py-[5px]"
                             onClick={() => changePage(currentPage + 1)}
                             disabled={currentPage === totalPages}
                           >

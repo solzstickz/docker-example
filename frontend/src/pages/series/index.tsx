@@ -10,6 +10,7 @@ interface pages {
   pages_detail: object;
 }
 export default function index({ ...props }, pages: pages, i: number) {
+  
   return (
     <>
       <Layer>

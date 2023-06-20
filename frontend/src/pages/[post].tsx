@@ -14,13 +14,15 @@ import {
   FaAngleLeft,
   FaRegHeart,
   FaHeart,
+  FaArrowDown,
+  FaArrowUp,
+  FaAngleRight,
+  FaAngleUp,
 } from "react-icons/fa";
 import moment from "moment-timezone";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-;
-
 interface post {
   posts_id: number;
   posts_slug: string;
@@ -130,7 +132,7 @@ export default function post({ ...props }) {
                 <div className="nav__title py-2 border-b-4 border-site_color dark:text-color_white w-full">
                   <h2>Charpter List</h2>
                 </div>
-                <div className="nav__list h-[600px] overflow-x-auto">
+                <div className="nav__list h-[650px] overflow-x-auto">
                   <ul className="">
                     {Array.from({ length: 20 }).map((_, i) => (
                       <Link href={``} key={i}>
@@ -154,43 +156,52 @@ export default function post({ ...props }) {
             <div
               className={`${
                 toggle__nav ? "fixed bottom-2 left-0  z-50" : "hidden"
-              } w-screen  p-3 transition-all duration-300 ease-in-out delay-300`}
+              } w-screen  p-3 transition-all duration-300 ease-in-out delay-300 flex justify-center items-center`}
             >
-              <div className="w-full h-[50px] bg-color_dark rounded-full flex items-center justify-center shadow-xl shadow-[#434343]">
+              <div className="w-[300px] h-[50px] bg-color_dark rounded-full flex items-center justify-around shadow-xl shadow-[#434343]">
                 <div className="prev">
-                  <FaAngleLeft className="text-color_white text-[30px] p-2 delay-1000 ease-out" />
+                  <FaAngleLeft className="text-color_white text-[20px] delay-1000 ease-out" />
                 </div>
                 <div className="favorite">
                   {info.favorite ? (
                     <FaHeart
-                      className="favorite text-site_color text-[30px] p-2 delay-1000 ease-out cursor-pointer"
+                      className="favorite text-site_color text-[20px] delay-1000 ease-out cursor-pointer"
                       onClick={handleUnfavoriteClick}
                     />
                   ) : (
                     <FaRegHeart
-                      className="not_favorite text-site_color text-[30px] p-2 delay-1000 ease-out cursor-pointer"
+                      className="not_favorite text-site_color text-[20px] delay-1000 ease-out cursor-pointer"
                       onClick={handlefavoriteClick}
-                      // onClick={() => {
-                      //   setInfo({
-                      //     ...info,
-                      //     favorite: (info.favorite = false),
-                      //   });
-                      // }}
                     />
                   )}
                 </div>
                 <div className="nav__list">
                   {nav__ststus ? (
-                    <FaTimes className="text-color_white text-[30px] p-2 delay-1000 ease-out" />
+                    <FaTimes
+                      className="text-site_color text-[20px]  delay-1000 ease-out animate-pulse"
+                      onClick={() => setNav__status(!nav__ststus)}
+                    />
                   ) : (
                     <FaListUl
-                      className="text-color_white text-[30px] p-2 delay-1000 ease-out"
-                      // onClick={``}
+                      className="text-color_white text-[20px] delay-1000 ease-out"
+                      onClick={() => setNav__status(!nav__ststus)}
                     />
                   )}
                 </div>
-                <div className="top"></div>
-                <div className="next"></div>
+                <div
+                  className="top"
+                  onClick={() => {
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                >
+                  <FaAngleUp
+                    className="text-color_white text-[20px]  delay-1000 ease-out"
+                    // create function onclick scroll to top
+                  />
+                </div>
+                <div className="next">
+                  <FaAngleRight className="text-color_white text-[20px]  delay-1000 ease-out" />
+                </div>
               </div>
 
               {/* <div className="flex w-full justify-around items-center mt-3">
