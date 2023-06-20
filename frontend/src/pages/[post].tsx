@@ -20,8 +20,8 @@ import {
   FaAngleUp,
 } from "react-icons/fa";
 import moment from "moment-timezone";
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 interface post {
   posts_id: number;
@@ -33,36 +33,36 @@ interface post {
   posts_views: number;
 }
 
-export default function post({ ...props }) {
-  const [nav__ststus, setNav__status] = useState(false);
-  const [toggle__nav, setToggle__nav] = useState(true);
+export default function Post({ ...props }) {
+  const [nav_status, setNav_status] = useState(false);
+  const [nav_control, setNav_control] = useState(true);
   const [info, setInfo] = useState({
     favorite: false,
   });
 
   useEffect(() => {
-    checkfavoriteStatus();
+    const checkfavoritestatus = () => {
+      // ตรวจสอบสถานะ favorite และทำสิ่งที่ต้องการ
+      const favoriteStatus = localStorage.getItem("favorite");
+      if (favoriteStatus) {
+        const favoriteData = JSON.parse(favoriteStatus);
+        const pagesSlug = props.post.pages_slug;
+        const foundfavorite = favoriteData.find(
+          (favorite: any) => favorite.pages_slug === pagesSlug
+        );
+        if (foundfavorite) {
+          setInfo((prevInfo) => ({
+            ...prevInfo,
+            favorites: true,
+          }));
+        }
+      }
+    };
+
+    checkfavoritestatus();
   }, [props.post]);
 
-  const checkfavoriteStatus = () => {
-    const favoriteStatus = localStorage.getItem("favorite");
-    if (favoriteStatus) {
-      const favoriteData = JSON.parse(favoriteStatus);
-      const pagesSlug = props.post.pages_slug;
-      const foundfavorite = favoriteData.find(
-        (favorite: any) => favorite.pages_slug === pagesSlug
-      );
-      if (foundfavorite) {
-        console.log("favorite");
-        setInfo({
-          ...info,
-          favorite: true,
-        });
-      }
-    }
-  };
-
-  const handlefavoriteClick = () => {
+  const handlefavoriteclick = () => {
     const favoriteStatus = localStorage.getItem("favorite");
     let favoriteData = [];
 
@@ -89,7 +89,7 @@ export default function post({ ...props }) {
     });
   };
 
-  const handleUnfavoriteClick = () => {
+  const handleunfavoriteclick = () => {
     const favoriteStatus = localStorage.getItem("favorite");
     if (favoriteStatus) {
       const favoriteData = JSON.parse(favoriteStatus);
@@ -125,7 +125,7 @@ export default function post({ ...props }) {
 
             <div
               className={`${
-                nav__ststus ? "fixed" : "hidden"
+                nav_status ? "fixed" : "hidden"
               }  nav__ep flex items-start justify-center z-[30] w-[380px] h-[750px] bg-[#000]  bottom-20 right-1 rounded-2xl transition-all duration-300 ease-in-out delay-300 `}
             >
               <div className="nav__content flex flex-col w-full">
@@ -155,7 +155,7 @@ export default function post({ ...props }) {
 
             <div
               className={`${
-                toggle__nav ? "fixed bottom-2 left-0  z-50" : "hidden"
+                nav_control ? "fixed bottom-2 left-0  z-50" : "hidden"
               } w-screen  p-3 transition-all duration-300 ease-in-out delay-300 flex justify-center items-center`}
             >
               <div className="w-[300px] h-[50px] bg-color_dark rounded-full flex items-center justify-around shadow-xl shadow-[#434343]">
@@ -166,25 +166,25 @@ export default function post({ ...props }) {
                   {info.favorite ? (
                     <FaHeart
                       className="favorite text-site_color text-[20px] delay-1000 ease-out cursor-pointer"
-                      onClick={handleUnfavoriteClick}
+                      onClick={handleunfavoriteclick}
                     />
                   ) : (
                     <FaRegHeart
                       className="not_favorite text-site_color text-[20px] delay-1000 ease-out cursor-pointer"
-                      onClick={handlefavoriteClick}
+                      onClick={handlefavoriteclick}
                     />
                   )}
                 </div>
                 <div className="nav__list">
-                  {nav__ststus ? (
+                  {nav_status ? (
                     <FaTimes
                       className="text-site_color text-[20px]  delay-1000 ease-out animate-pulse"
-                      onClick={() => setNav__status(!nav__ststus)}
+                      onClick={() => setNav_status(!nav_status)}
                     />
                   ) : (
                     <FaListUl
                       className="text-color_white text-[20px] delay-1000 ease-out"
-                      onClick={() => setNav__status(!nav__ststus)}
+                      onClick={() => setNav_status(!nav_status)}
                     />
                   )}
                 </div>
@@ -245,7 +245,7 @@ export default function post({ ...props }) {
                   <div
                     className="relative mx-auto w-full h-auto"
                     key={i}
-                    onClick={() => setToggle__nav(!toggle__nav)}
+                    onClick={() => setNav_control(!nav_control)}
                   >
                     <Image
                       src={`${config.CDN_URL}${images.url}`}
