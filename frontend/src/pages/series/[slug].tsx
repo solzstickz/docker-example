@@ -32,18 +32,18 @@ export default function Page({ ...props }: any) {
 
         <div className="pages_detail relative w-full bottom-[100px] container h-100 mx-auto flex  md:col z-10 flex-col-reverse md:flex-row-reverse px-5 md:px-0 md:max-w-[1080px]">
           <div className="pages_deltail_ep w-full md:w-9/12">
-            <div className="title">
-              <h1 className="text-3xl md:text-5xl text-color_white font-bold my-5 md:my-0">
+            <div className="title w-full my-5 md:my-0 relative">
+              <h1 className="text-2xl md:text-5xl text-color_white font-bold ">
                 {props.res_page.pages_title}
               </h1>
             </div>
 
             <div className="pages_content md:mx-10 mt-[80px]">
-              <div className="story my-10 text-left dark:text-color_gray text-color_dark_gray text-2xl">
-                <h2 className="text-3xl ">
+              <div className="story my-10 text-left dark:text-color_gray text-color_dark_gray">
+                <h2 className="text-2xl ">
                   เรื่องย่อ {props.res_page.pages_en} แปลไทย{" "}
                 </h2>
-                <p>
+                <p className="text-md">
                   อ่านมังงะ {props.res_page.pages_en} {""}
                   {props.res_page.pages_th} {props.res_page.pages_simple}
                 </p>

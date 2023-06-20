@@ -5,8 +5,22 @@ import Image from "next/image";
 import axios_client from "../../config/axios_client";
 import config from "../../config/config";
 import ProgressBar from "react-progressbar-on-scroll";
-import { FaArrowLeft, FaArrowRight, FaListUl, FaTimes } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaArrowRight,
+  FaListUl,
+  FaTimes,
+  FaCaretDown,
+  FaAngleLeft,
+  FaRegHeart,
+  FaHeart,
+} from "react-icons/fa";
 import moment from "moment-timezone";
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+;
+
 interface post {
   posts_id: number;
   posts_slug: string;
@@ -18,6 +32,77 @@ interface post {
 }
 
 export default function post({ ...props }) {
+  const [nav__ststus, setNav__status] = useState(false);
+  const [toggle__nav, setToggle__nav] = useState(true);
+  const [info, setInfo] = useState({
+    favorite: false,
+  });
+
+  useEffect(() => {
+    checkfavoriteStatus();
+  }, [props.post]);
+
+  const checkfavoriteStatus = () => {
+    const favoriteStatus = localStorage.getItem("favorite");
+    if (favoriteStatus) {
+      const favoriteData = JSON.parse(favoriteStatus);
+      const pagesSlug = props.post.pages_slug;
+      const foundfavorite = favoriteData.find(
+        (favorite: any) => favorite.pages_slug === pagesSlug
+      );
+      if (foundfavorite) {
+        console.log("favorite");
+        setInfo({
+          ...info,
+          favorite: true,
+        });
+      }
+    }
+  };
+
+  const handlefavoriteClick = () => {
+    const favoriteStatus = localStorage.getItem("favorite");
+    let favoriteData = [];
+
+    if (favoriteStatus) {
+      favoriteData = JSON.parse(favoriteStatus);
+      const pagesSlug = props.post.pages_slug;
+      if (favoriteData.includes(pagesSlug)) {
+        // ถ้ามีค่าอยู่แล้วให้ลบออก
+        favoriteData = favoriteData.filter((slug: any) => slug !== pagesSlug);
+      } else {
+        // ถ้าไม่มีค่าอยู่ให้เพิ่มเข้าไป
+        favoriteData.push(props.post);
+      }
+    } else {
+      // ถ้าไม่มีค่าเลยให้เพิ่มค่าเดียวเข้าไป
+      favoriteData.push(props.post);
+    }
+
+    localStorage.setItem("favorite", JSON.stringify(favoriteData));
+
+    setInfo({
+      ...info,
+      favorite: !info.favorite,
+    });
+  };
+
+  const handleUnfavoriteClick = () => {
+    const favoriteStatus = localStorage.getItem("favorite");
+    if (favoriteStatus) {
+      const favoriteData = JSON.parse(favoriteStatus);
+      const pagesSlug = props.post.pages_slug;
+      const updatedfavoriteData = favoriteData.filter(
+        (favorite: any) => favorite.pages_slug !== pagesSlug
+      );
+      localStorage.setItem("favorite", JSON.stringify(updatedfavoriteData));
+      setInfo({
+        ...info,
+        favorite: false,
+      });
+    }
+  };
+
   return (
     <>
       <Layer>
@@ -35,8 +120,80 @@ export default function post({ ...props }) {
                 at SITE_NAME – มังงะแปลไทย
               </p>
             </div>
-            <div className="fixed top-0 left-0 h-[80px] bg-header_bg_menu z-50 w-full">
-              <div className="flex w-full justify-around items-center">
+
+            <div
+              className={`${
+                nav__ststus ? "fixed" : "hidden"
+              }  nav__ep flex items-start justify-center z-[30] w-[380px] h-[750px] bg-[#000]  bottom-20 right-1 rounded-2xl transition-all duration-300 ease-in-out delay-300 `}
+            >
+              <div className="nav__content flex flex-col w-full">
+                <div className="nav__title py-2 border-b-4 border-site_color dark:text-color_white w-full">
+                  <h2>Charpter List</h2>
+                </div>
+                <div className="nav__list h-[600px] overflow-x-auto">
+                  <ul className="">
+                    {Array.from({ length: 20 }).map((_, i) => (
+                      <Link href={``} key={i}>
+                        <li className="nav__item flex items-center justify-start gap-4 py-2 dark:text-color_white border-dashed border-b-2 border-color_gray">
+                          <div className="no w-[50px] border-e-2 border-color_gray">
+                            {i + 1}
+                          </div>
+                          <div className="ep">ตอนที่ {i + 1}</div>
+                          <div className="date">2021-09-30</div>
+                        </li>
+                      </Link>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div className="nav__footer absolute bottom-[-18px] right-6 z-30">
+                <FaCaretDown className="text-[#000] text-[40px] delay-1000 ease-out" />
+              </div>
+            </div>
+
+            <div
+              className={`${
+                toggle__nav ? "fixed bottom-2 left-0  z-50" : "hidden"
+              } w-screen  p-3 transition-all duration-300 ease-in-out delay-300`}
+            >
+              <div className="w-full h-[50px] bg-color_dark rounded-full flex items-center justify-center shadow-xl shadow-[#434343]">
+                <div className="prev">
+                  <FaAngleLeft className="text-color_white text-[30px] p-2 delay-1000 ease-out" />
+                </div>
+                <div className="favorite">
+                  {info.favorite ? (
+                    <FaHeart
+                      className="favorite text-site_color text-[30px] p-2 delay-1000 ease-out cursor-pointer"
+                      onClick={handleUnfavoriteClick}
+                    />
+                  ) : (
+                    <FaRegHeart
+                      className="not_favorite text-site_color text-[30px] p-2 delay-1000 ease-out cursor-pointer"
+                      onClick={handlefavoriteClick}
+                      // onClick={() => {
+                      //   setInfo({
+                      //     ...info,
+                      //     favorite: (info.favorite = false),
+                      //   });
+                      // }}
+                    />
+                  )}
+                </div>
+                <div className="nav__list">
+                  {nav__ststus ? (
+                    <FaTimes className="text-color_white text-[30px] p-2 delay-1000 ease-out" />
+                  ) : (
+                    <FaListUl
+                      className="text-color_white text-[30px] p-2 delay-1000 ease-out"
+                      // onClick={``}
+                    />
+                  )}
+                </div>
+                <div className="top"></div>
+                <div className="next"></div>
+              </div>
+
+              {/* <div className="flex w-full justify-around items-center mt-3">
                 <div className="detail">
                   <div className="title font-bold text-2xl dark:text-color_gray">
                     {props.post.pages_en}
@@ -65,15 +222,20 @@ export default function post({ ...props }) {
                   </div>
                 
                 </div>
-              </div>
+              </div> */}
             </div>
+
             <div className="reading relative">
               <div className="scroll__progress__bar">
                 <ProgressBar color="#ff4900" height={5} />
               </div>
               {props.post.posts_detail.map((images: any, i: number) => {
                 return (
-                  <div className="relative mx-auto w-full h-auto" key={i}>
+                  <div
+                    className="relative mx-auto w-full h-auto"
+                    key={i}
+                    onClick={() => setToggle__nav(!toggle__nav)}
+                  >
                     <Image
                       src={`${config.CDN_URL}${images.url}`}
                       alt={images.alt}
@@ -94,12 +256,20 @@ export default function post({ ...props }) {
 }
 
 export async function getServerSideProps(context: any) {
-  let res_data = await axios_client.get(`public/posts/${context.query.post}`);
-  let post = await res_data.data[0];
-  console.log(post);
-  return {
-    props: {
-      post,
-    },
-  };
+  try {
+    const { data } = await axios_client.get(
+      `public/posts/${context.query.post}`
+    );
+
+    return {
+      props: {
+        post: data[0],
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      notFound: true,
+    };
+  }
 }

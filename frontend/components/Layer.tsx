@@ -31,15 +31,15 @@ export default function Layer({ children, ...props }: Props) {
   //! scroll
 
   const set_theme = () => {
-    if (
-      localStorage.theme === "dark" ||
-      (!("theme" in localStorage) &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    // if (
+    //   localStorage.theme === "dark" ||
+    //   (!("theme" in localStorage) &&
+    //     window.matchMedia("(prefers-color-scheme: dark)").matches)
+    // ) {
+    document.documentElement.classList.add("dark");
+    // } else {
+    //   document.documentElement.classList.remove("dark");
+    // }
 
     // Whenever the user explicitly chooses light mode
     // localStorage.theme = "light";
@@ -112,10 +112,10 @@ export default function Layer({ children, ...props }: Props) {
                   รายชื่อมังงะ
                 </Link>
                 <Link
-                  href="/"
+                  href="/favorite"
                   className="dark:bg-header_bg_menu bg-color_white py-[8px] px-[15px] rounded-md mx-2 dark:text-color_white text-color_dark hover:bg-site_color hover:text-color_white ease-out duration-300"
                 >
-                  มังงะที่ถูกใจ
+                  มังงะที่ชื่นชอบ
                 </Link>
               </li>
             </ul>
@@ -254,14 +254,16 @@ export default function Layer({ children, ...props }: Props) {
         </div>
       </footer>
       {scrollPosition > 100 && (
-        <div
-          className="scroll_top fixed bottom-5 right-5 z-50 p-3 bg-site_color rounded-full flex items-center justify-center transition-all duration-300 ease-in-out delay-300"
-          onClick={() => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-        >
-          <FaArrowUp className="text-color_white text-[15px] cursor-pointer animate-bounce" />
-        </div>
+        // <div
+        //   className="scroll_top fixed bottom-5 right-5 z-50 p-3 bg-site_color rounded-full flex items-center justify-center transition-all duration-300 ease-in-out delay-300"
+        //   onClick={() => {
+        //     window.scrollTo({ top: 0, behavior: "smooth" });
+        //   }}
+        // >
+        //   <FaArrowUp className="text-color_white text-[15px] cursor-pointer animate-bounce" />
+        // </div>
+
+        <></>
       )}
     </>
   );
