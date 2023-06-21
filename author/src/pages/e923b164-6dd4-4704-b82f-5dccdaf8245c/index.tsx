@@ -17,7 +17,7 @@ import axios from "axios";
 
 const popup = require("../../../lib/popup");
 
-export default function login() {
+export default function Login() {
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
