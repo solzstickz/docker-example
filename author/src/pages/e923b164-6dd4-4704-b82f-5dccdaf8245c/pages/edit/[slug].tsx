@@ -34,7 +34,7 @@ interface Tag {
   tags_slug: string;
   tags_name: string;
 }
-export default function edit_pages({ ...props }) {
+export default function Edit_pages({ ...props }) {
   const router = useRouter();
   const [uploas_page_thumbnail, setuploas_page_thumbnail] = useState<File>();
   const [create_pages, set_create_pages] = useState<CreatePages>({
@@ -244,13 +244,14 @@ export default function edit_pages({ ...props }) {
             <input
               className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
               required
-              value={create_pages.pages_last_ep || ""}
+              value={create_pages.pages_last_ep || 0}
               name="last_ep"
               type="number"
+              step={0.1}
               onChange={(e) => {
                 set_create_pages({
                   ...create_pages,
-                  pages_last_ep: Number(e.target.value),
+                  pages_last_ep: parseFloat(e.target.value),
                 });
               }}
             />

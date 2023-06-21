@@ -19,7 +19,7 @@ type tags = {
   tags_slug: string;
 };
 
-export default function tags({ ...props }) {
+export default function Tags({ ...props }) {
   const router = useRouter();
   const [tags, setTags] = React.useState<tags[]>([]);
 
@@ -268,7 +268,7 @@ export const Table_tags = ({ data_table }: any) => {
         <DataTable
           title="Tags List"
           columns={columns}
-          data={filteredItems}
+          data={filteredItems.reverse()}
           progressPending={pending}
           pagination
           paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1

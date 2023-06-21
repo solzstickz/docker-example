@@ -369,7 +369,7 @@ export const Table_pages_posts = ({ data_table, pages_slug }: any) => {
       <div className="table_pages grid ">
         <DataTable
           title={`Pages: ${pages_slug}`}
-          columns={columns}
+          columns={columns.reverse()}
           data={filteredItems}
           progressPending={pending}
           pagination
