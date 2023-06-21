@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-
+import Head from "next/head";
 import Link from "next/link";
 import { FaMoon } from "react-icons/fa";
 import Layer from "../../components/Layer";
@@ -127,6 +127,13 @@ export default function Home({ ...props }) {
 
   return (
     <>
+    <Head>
+        <title>Shiba Manga</title>
+        <meta property="og:title" content="Shiba Manga" key="title" />
+      </Head>
+      <Head>
+        <meta property="og:title" content="Shiba Manga" key="title" />
+      </Head>
       <Layer>
         <section>
           <div className="notify w-full bg-site_color">
