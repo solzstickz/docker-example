@@ -4,7 +4,7 @@ const { config } = require("dotenv");
 require("dotenv").config();
 
 const generateAccessToken = async (username) => {
-  return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: "1800s" });
+  return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: "57600s" });
 };
 
 function authenticateToken(req, res, next) {

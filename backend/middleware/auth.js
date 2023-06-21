@@ -35,7 +35,7 @@ router.post("/create_token", async (req, res) => {
   const { username, password, api_key } = req.body;
   if (username == admin.user && password == admin.pass) {
     const token = jwt.sign({ username }, process.env.TOKEN_SECRET, {
-      expiresIn: "1800s",
+      expiresIn: "57600s",
     });
     res.cookie("access_token", token, {
         httpOnly: true,
