@@ -37,7 +37,10 @@ const uploads_pages = multer({
       } else if (file.mimetype.includes("webp")) {
         console.log("type file webp");
         cb(null, `${crypto.randomBytes(15).toString("hex")}.webp`);
-      } else {
+      } else if (file.mimetype.includes("jpg")) {
+        console.log("type file jpg");
+        cb(null, `${crypto.randomBytes(15).toString("hex")}.jpg`);
+      }else {
         cb(null, true);
       }
       // cb(null, true);

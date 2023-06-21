@@ -1,22 +1,15 @@
-const puppeteer = require("puppeteer");
-const axios = require("axios");
-const fs = require("fs");
-const path = require("path");
-
 (async () => {
-  const browser = await puppeteer.launch({ headless: false });
-  const page = await browser.newPage();
-
+  const puppeteer = require("puppeteer");
+  const fs = require("fs");
+  const path = require("path");
+  const axios = require("axios");
   const start_ep = 1;
   const end_ep = 3;
   const url =
     "https://rose-manga.com/player-who-returned-10000-years-later-%e0%b8%95%e0%b8%ad%e0%b8%99%e0%b8%97%e0%b8%b5%e0%b9%88-";
 
-  // ตรวจสอบว่าโฟลเดอร์ images ยังไม่มีอยู่
-  if (!fs.existsSync("images")) {
-    // สร้างโฟลเดอร์ images
-    fs.mkdirSync("images");
-  }
+  const browser = await puppeteer.launch({ headless: false });
+  const page = await browser.newPage();
 
   for (let episode = start_ep; episode <= end_ep; episode++) {
     const currentUrl = `${url}${episode}/`;
@@ -24,7 +17,7 @@ const path = require("path");
     await page.goto(currentUrl);
 
     try {
-      await page.waitForSelector(".reader-area img", { timeout: 60000 });
+      await page.waitForSelector(".reader-area", { timeout: 60000 });
     } catch (error) {
       console.error(`Timeout waiting for selector at URL: ${currentUrl}`);
       continue;
@@ -36,16 +29,15 @@ const path = require("path");
 
     for (let i = 0; i < imageUrls.length; i++) {
       const imageUrl = imageUrls[i];
-      const imageExtension = path.extname(imageUrl);
-      const imageFileName = `downloads/image_${i}${imageExtension}`;
-
-      try {
-        const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
-        fs.writeFileSync(imageFileName, response.data);
-        console.log(`Image ${i} downloaded!`);
-      } catch (error) {
-        console.error(`Error downloading image ${i}:`, error);
-      }
+      const response = await axios.get(imageUrl, {
+        responseType: "arraybuffer",
+      });
+      const buffer = Buffer.from(response.data, "binary");
+      const extension = path.extname(imageUrl);
+      const fileName = `image-ep${episode}-${i + 1}.webp`;
+      const filePath = path.join(__dirname, "downloads", fileName);
+      fs.writeFileSync(filePath, buffer);
+      console.log(`Downloaded ${fileName}`);
     }
   }
 
