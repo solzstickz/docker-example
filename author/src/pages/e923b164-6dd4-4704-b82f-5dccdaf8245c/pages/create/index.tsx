@@ -34,7 +34,7 @@ interface CreatePages {
   pages_tags: Tag[];
 }
 
-export default function create_pages({ ...props }) {
+export default function Create_pages({ ...props }) {
   const router = useRouter();
 
   const [uploas_page_thumbnail, setuploas_page_thumbnail] = useState<File>();

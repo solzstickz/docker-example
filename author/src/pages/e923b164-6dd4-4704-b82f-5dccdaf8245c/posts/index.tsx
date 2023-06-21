@@ -1,6 +1,6 @@
 import React from "react";
 import Layer from "../../../../components/Layer";
-export default function posts() {
+export default function Posts() {
   return (
     <>
       <Layer>

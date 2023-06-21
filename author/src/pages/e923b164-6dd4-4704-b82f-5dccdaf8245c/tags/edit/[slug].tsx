@@ -19,7 +19,7 @@ interface CreateTags {
   tags_name: string;
 }
 
-export default function create_tags({ ...props }) {
+export default function Edit_tags({ ...props }) {
   const router = useRouter();
 
   const [create_tags, set_create_tags] = useState<CreateTags>({

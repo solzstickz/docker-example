@@ -301,7 +301,7 @@ export const Table_pages = ({ data_table }: any) => {
         <DataTable
           title={`Pages Table`}
           columns={columns}
-          data={filteredItems}
+          data={filteredItems.reverse()}
           progressPending={pending}
           pagination
           paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
