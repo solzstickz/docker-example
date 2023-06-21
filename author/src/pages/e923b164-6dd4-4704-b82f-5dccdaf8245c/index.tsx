@@ -51,7 +51,7 @@ export default function login() {
           Cookies.set(
             "access_token",
             res.data.access_token,
-            { expires: 0.5 },
+            { expires: 1 },
             { HttpOnly: true }
           );
           router.push(`/${config.ADMIN_PATH}/dashboard`);

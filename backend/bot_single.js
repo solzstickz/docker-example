@@ -6,12 +6,14 @@ const axios = require("axios");
 (async () => {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
+  page.setDefaultNavigationTimeout(300000);
+
   await page.goto(
     "https://rose-manga.com/the-beginning-after-the-end-%e0%b8%95%e0%b8%ad%e0%b8%99%e0%b8%97%e0%b8%b5%e0%b9%88-175-5/"
   );
 
   try {
-    await page.waitForSelector(".reader-area", { timeout: 60000 });
+    await page.waitForSelector(".reader-area", { timeout: 300000 });
   } catch (error) {
     console.error("Timeout waiting for selector");
     await browser.close();
