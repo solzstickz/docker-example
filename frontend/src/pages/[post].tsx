@@ -35,7 +35,7 @@ interface post {
 }
 
 export default function Post({ ...props }) {
-  const [nav_status, setNav_status] = useState(false);
+  const [nav_ep, setNav_ep] = useState(false);
   const [nav_control, setNav_control] = useState(true);
   const [info, setInfo] = useState({
     favorite: false,
@@ -106,6 +106,51 @@ export default function Post({ ...props }) {
     }
   };
 
+  //! scroll
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const handleScroll = () => {
+    const position = window.pageYOffset;
+    const max_scroll = document.body.scrollHeight - window.innerHeight;
+    console.log(`max` + max_scroll);
+    setScrollPosition(position);
+    console.log(position);
+
+    switch (true) {
+      case position <= 300:
+        setNav_control(true);
+        break;
+      case position > 300 && position < max_scroll - 1000:
+        setNav_control(false);
+        setNav_ep(false);
+        break;
+      case position > max_scroll - 1000:
+        setNav_control(true);
+        console.log("max");
+        break;
+      default:
+        //
+        break;
+    }
+    // if (scrollPosition < 100) {
+    //   console.log("start");
+    //   setNav_control(true);
+    // }
+    // if (scrollPosition > 300) {
+    //   setNav_control(false);
+    // }
+    // if (scrollPosition > max_scroll - 2000) {
+    //   console.log("max");
+    // }
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+  //! scroll
+
   return (
     <>
       <Layer>
@@ -126,92 +171,97 @@ export default function Post({ ...props }) {
 
             <div
               className={`${
-                nav_status ? "fixed" : "hidden"
-              }  nav__ep flex items-start justify-center z-[30] w-[380px] h-[750px] bg-[#000]  bottom-20 right-1 rounded-2xl transition-all duration-300 ease-in-out delay-300 `}
+                nav_ep ? "fixed" : "hidden"
+              }  nav__ep flex items-start justify-center z-[30] w-[380px] h-[400px] bg-[#000] md:right-24  bottom-20 right-1 rounded-2xl transition-all duration-300 ease-in-out delay-300 `}
             >
               <div className="nav__content flex flex-col w-full">
-                <div className="nav__title py-2 border-b-4 border-site_color dark:text-color_white w-full">
+                <div className="nav__title py-2 border-b-4 border-site_color dark:text-color_white w-full relative">
                   <h2>Charpter List</h2>
+                  <FaTimes
+                    className="text-site_color text-[20px]  delay-1000 ease-out animate-pulse cursor-pointer absolute right-5 top-3"
+                    onClick={() => setNav_ep(!nav_ep)}
+                  />
                 </div>
                 <div className="nav__list h-[650px] overflow-x-auto">
                   <ul className="">
-                    {Array.from({ length: 20 }).map((_, i) => (
-                      <Link href={``} key={i}>
-                        <li className="nav__item flex items-center justify-start gap-4 py-2 dark:text-color_white border-dashed border-b-2 border-color_gray">
-                          <div className="no w-[50px] border-e-2 border-color_gray">
+                    {props.list_ep.map((item: any, i: number) => (
+                      <Link href={`${item.posts_slug}`} key={item.posts_id}>
+                        <li className="nav__item flex items-center  justify-around gap-4 py-2 dark:text-color_white border-dashed border-b-2 border-color_gray">
+                          {/* <div className="no w-[50px] border-e-2 border-color_gray">
                             {i + 1}
+                          </div> */}
+                          <div className="ep">ตอนที่ {item.posts_ep}</div>
+                          <div className="date">
+                            {moment().from(item.posts_create)}
                           </div>
-                          <div className="ep">ตอนที่ {i + 1}</div>
-                          <div className="date">2021-09-30</div>
                         </li>
                       </Link>
                     ))}
                   </ul>
                 </div>
               </div>
-              <div className="nav__footer absolute bottom-[-18px] right-6 z-30">
+              <div className="nav__footer absolute bottom-[-18px] right-6 z-30 md:hidden">
                 <FaCaretDown className="text-[#000] text-[40px] delay-1000 ease-out" />
               </div>
             </div>
 
-            <div
-              className={`${
-                nav_control ? "fixed bottom-2 left-0  z-50" : "hidden"
-              } w-screen  p-3 transition-all duration-300 ease-in-out delay-300 flex justify-center items-center`}
-            >
-              <div className="w-[300px] h-[50px] bg-color_dark rounded-full flex items-center justify-around shadow-xl shadow-[#434343]">
-                <div className="prev">
-                  <FaAngleLeft className="text-color_white text-[20px] delay-1000 ease-out" />
-                </div>
-                <div className="favorite">
-                  {info.favorite ? (
-                    <FaHeart
-                      className="favorite text-site_color text-[20px] delay-1000 ease-out cursor-pointer"
-                      onClick={handleunfavoriteclick}
+            {nav_control && (
+              <div
+                className={`fixed bottom-2 left-0  z-50 w-screen  p-3 transition-all duration-300 ease-in-out delay-300 flex justify-center items-center`}
+              >
+                <div className="w-[300px] h-[50px] bg-color_dark rounded-full flex items-center justify-around shadow-xl shadow-[#434343]">
+                  <div className="prev">
+                    <FaAngleLeft className="text-color_white text-[20px] delay-1000 ease-out" />
+                  </div>
+                  <div className="favorite">
+                    {info.favorite ? (
+                      <FaHeart
+                        className="favorite text-site_color text-[20px] delay-1000 ease-out cursor-pointer"
+                        onClick={handleunfavoriteclick}
+                      />
+                    ) : (
+                      <FaRegHeart
+                        className="not_favorite text-site_color text-[20px] delay-1000 ease-out cursor-pointer"
+                        onClick={handlefavoriteclick}
+                      />
+                    )}
+                  </div>
+                  <div className="home">
+                    <Link href={`/`}>
+                      <FaHome className="text-color_white text-[20px] delay-1000 ease-out cursor-pointer" />
+                    </Link>
+                  </div>
+
+                  <div className="nav__list">
+                    {nav_ep ? (
+                      <FaTimes
+                        className="text-site_color text-[20px]  delay-1000 ease-out animate-pulse cursor-pointer"
+                        onClick={() => setNav_ep(!nav_ep)}
+                      />
+                    ) : (
+                      <FaListUl
+                        className="text-color_white text-[20px] delay-1000 ease-out cursor-pointer"
+                        onClick={() => setNav_ep(!nav_ep)}
+                      />
+                    )}
+                  </div>
+                  <div
+                    className="top"
+                    onClick={() => {
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                  >
+                    <FaAngleUp
+                      className="text-color_white text-[20px]  delay-1000 ease-out cursor-pointer"
+                      // create function onclick scroll to top
                     />
-                  ) : (
-                    <FaRegHeart
-                      className="not_favorite text-site_color text-[20px] delay-1000 ease-out cursor-pointer"
-                      onClick={handlefavoriteclick}
-                    />
-                  )}
-                </div>
-                <div className="home">
-                  <Link href={`/`}>
-                    <FaHome className="text-color_white text-[20px] delay-1000 ease-out cursor-pointer" />
-                  </Link>
+                  </div>
+                  <div className="next">
+                    <FaAngleRight className="text-color_white text-[20px]  delay-1000 ease-out" />
+                  </div>
                 </div>
 
-                <div className="nav__list">
-                  {nav_status ? (
-                    <FaTimes
-                      className="text-site_color text-[20px]  delay-1000 ease-out animate-pulse cursor-pointer"
-                      onClick={() => setNav_status(!nav_status)}
-                    />
-                  ) : (
-                    <FaListUl
-                      className="text-color_white text-[20px] delay-1000 ease-out cursor-pointer"
-                      onClick={() => setNav_status(!nav_status)}
-                    />
-                  )}
-                </div>
-                <div
-                  className="top"
-                  onClick={() => {
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                  }}
-                >
-                  <FaAngleUp
-                    className="text-color_white text-[20px]  delay-1000 ease-out cursor-pointer"
-                    // create function onclick scroll to top
-                  />
-                </div>
-                <div className="next">
-                  <FaAngleRight className="text-color_white text-[20px]  delay-1000 ease-out" />
-                </div>
-              </div>
-
-              {/* <div className="flex w-full justify-around items-center mt-3">
+                {/* <div className="flex w-full justify-around items-center mt-3">
                 <div className="detail">
                   <div className="title font-bold text-2xl dark:text-color_gray">
                     {props.post.pages_en}
@@ -241,7 +291,8 @@ export default function Post({ ...props }) {
                 
                 </div>
               </div> */}
-            </div>
+              </div>
+            )}
 
             <div className="reading relative">
               <div className="scroll__progress__bar">
@@ -279,9 +330,15 @@ export async function getServerSideProps(context: any) {
       `public/posts/${context.query.post}`
     );
 
+    const fetch_list_ep = await axios_client.get(
+      `public/pages/${data[0].pages_slug}`
+    );
+    const list_ep = fetch_list_ep.data.pages;
+
     return {
       props: {
         post: data[0],
+        list_ep,
       },
     };
   } catch (error) {

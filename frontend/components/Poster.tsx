@@ -33,7 +33,7 @@ export default function Poster({ ...props }) {
             </div>
           </div>
           <div className="update_new-item-title text-center h-auto relative  max-w-full md:max-w-[200px]">
-            <h3 className="text-2xl  line-clamp-2">{props.pages_en}</h3>
+            <h3 className="text-2xl  line-clamp-1">{props.pages_en}</h3>
             <span className="text-[16px] text-color_gray">
               {moment(props.posts_date).startOf("day").fromNow()}
             </span>

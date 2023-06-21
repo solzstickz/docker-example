@@ -121,7 +121,7 @@ export default function Page({ ...props }: any) {
                         >
                           <Link href={`/${item.posts_slug}`}>
                             <div className={`ep_container  flex gap-5 `}>
-                              <div className="ep_icon text-2xl font-bold flex justify-center items-center dark:bg-pages_bg_bookopen bg-[#e6e6e6]   hover:bg-[#ba1f2d]  p-4 rounded-md">
+                              <div className="ep_icon text-2xl font-bold flex justify-center items-center dark:bg-pages_bg_bookopen bg-[#e6e6e6]  p-4 rounded-md">
                                 <FaBookOpen className="text-md" />
                               </div>
                               <div className="ep_text">

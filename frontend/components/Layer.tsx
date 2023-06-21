@@ -184,7 +184,7 @@ export default function Layer({ children, ...props }: Props) {
             </p>
           </div>
           <div className="banner_img w-full grid grid-cols-2 px-5">
-            <Image
+            {/* <Image
               src="/img/hotgraph88.webp"
               width={1920}
               height={500}
@@ -197,7 +197,7 @@ export default function Layer({ children, ...props }: Props) {
               height={500}
               alt="logo"
               quality={1}
-            />
+            /> */}
           </div>
         </div>
       </header>
