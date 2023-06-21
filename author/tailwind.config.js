@@ -168,5 +168,5 @@ module.exports = {
       "./src/**/*.{js,ts,jsx,tsx,mdx}",
     ],
   },
-  mode: "aot",
+  mode: "jit",
 };
