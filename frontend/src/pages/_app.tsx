@@ -5,7 +5,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <NextNProgress
-        color="#ff4900"
+        color="#6c2bd9"
         startPosition={0.3}
         stopDelayMs={200}
         height={3}

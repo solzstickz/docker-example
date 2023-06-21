@@ -1,3 +1,8 @@
 module.exports = {
-  plugins: [],
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+
+    // Add the following snippet:
+  },
 };
