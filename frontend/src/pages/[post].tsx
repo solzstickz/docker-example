@@ -172,7 +172,7 @@ export default function Post({ ...props }) {
             <div
               className={`${
                 nav_ep ? "fixed" : "hidden"
-              }  nav__ep flex items-start justify-center z-[30] w-[380px] h-[400px] bg-[#000] md:right-24  bottom-20 right-1 rounded-2xl transition-all duration-300 ease-in-out delay-300 `}
+              }  nav__ep flex items-start justify-center z-[30] w-[380px] h-[400px] border-4 border-site_color bg-color_white dark:bg-[#000] md:right-24  bottom-20 right-1 rounded-2xl transition-all duration-300 ease-in-out delay-300 `}
             >
               <div className="nav__content flex flex-col w-full">
                 <div className="nav__title py-2 border-b-4 border-site_color dark:text-color_white w-full relative">
@@ -182,7 +182,10 @@ export default function Post({ ...props }) {
                     onClick={() => setNav_ep(!nav_ep)}
                   />
                 </div>
-                <div className="nav__list h-[650px] overflow-x-auto">
+                <div
+                  className="nav__list h-[330px] overflow-x-auto"
+                  id="ep_list"
+                >
                   <ul className="">
                     {props.list_ep.map((item: any, i: number) => (
                       <Link href={`${item.posts_slug}`} key={item.posts_id}>
@@ -199,9 +202,6 @@ export default function Post({ ...props }) {
                     ))}
                   </ul>
                 </div>
-              </div>
-              <div className="nav__footer absolute bottom-[-18px] right-6 z-30 md:hidden">
-                <FaCaretDown className="text-[#000] text-[40px] delay-1000 ease-out" />
               </div>
             </div>
 
@@ -232,7 +232,7 @@ export default function Post({ ...props }) {
                     </Link>
                   </div>
 
-                  <div className="nav__list">
+                  <div className="nav__list relative">
                     {nav_ep ? (
                       <FaTimes
                         className="text-site_color text-[20px]  delay-1000 ease-out animate-pulse cursor-pointer"
@@ -244,6 +244,13 @@ export default function Post({ ...props }) {
                         onClick={() => setNav_ep(!nav_ep)}
                       />
                     )}
+                    <div
+                      className={`nav__footer ${
+                        nav_ep ? "flex" : "hidden"
+                      } absolute top-[-25px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 md:hidden`}
+                    >
+                      <FaCaretDown className="text-color_white dark:text-[#000] text-[40px] delay-1000 ease-out" />
+                    </div>
                   </div>
                   <div
                     className="top"
@@ -296,7 +303,7 @@ export default function Post({ ...props }) {
 
             <div className="reading relative">
               <div className="scroll__progress__bar">
-                <ProgressBar color="#ff4900" height={5} />
+                <ProgressBar color="#6c2bd9" height={5} />
               </div>
               {props.post.posts_detail.map((images: any, i: number) => {
                 return (

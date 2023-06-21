@@ -21,10 +21,11 @@ body {
   background-color: #343543;
 }
 #ep_list::-webkit-scrollbar-thumb {
-  background-color: #ba1f2d;
+  background-color: #6c2bd9;
   border-radius: 10px;
   width: 5px;
 }
+
 @font-face {
   font-family: "DB HelvethaicaX";
   src: url(/font/DBHelvethaicaX-55Regular.ttf);
