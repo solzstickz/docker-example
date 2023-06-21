@@ -2,6 +2,7 @@
   const puppeteer = require("puppeteer");
   const fs = require("fs");
   const path = require("path");
+  const axios = require("axios");
   const start_ep = 1;
   const end_ep = 3;
   const url =
@@ -28,10 +29,12 @@
 
     for (let i = 0; i < imageUrls.length; i++) {
       const imageUrl = imageUrls[i];
-      const response = await page.goto(imageUrl);
-      const buffer = await response.buffer();
+      const response = await axios.get(imageUrl, {
+        responseType: "arraybuffer",
+      });
+      const buffer = Buffer.from(response.data, "binary");
       const extension = path.extname(imageUrl);
-      const fileName = `image-ep${episode}-${i + 1}${extension}`;
+      const fileName = `image-ep${episode}-${i + 1}.webp`;
       const filePath = path.join(__dirname, "downloads", fileName);
       fs.writeFileSync(filePath, buffer);
       console.log(`Downloaded ${fileName}`);
