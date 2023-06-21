@@ -1,15 +1,20 @@
-(async () => {
-  const puppeteer = require("puppeteer");
-  const fs = require("fs");
-  const path = require("path");
-  const axios = require("axios");
-  const start_ep = 1;
-  const end_ep = 3;
-  const url =
-    "https://rose-manga.com/player-who-returned-10000-years-later-%e0%b8%95%e0%b8%ad%e0%b8%99%e0%b8%97%e0%b8%b5%e0%b9%88-";
+const puppeteer = require("puppeteer");
+const fs = require("fs");
+const path = require("path");
+const axios = require("axios");
+const start_ep = 6;
+const end_ep = 10;
+const url =
+  "https://rose-manga.com/revenge-of-the-iron-blooded-sword-hound-%E0%B8%95%E0%B8%AD%E0%B8%99%E0%B8%97%E0%B8%B5%E0%B9%88-";
 
+(async () => {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
+
+  // เพิ่มเวลาการนำทางเป็น 60 วินาที (60000 มิลลิวินาที)
+  // 360000 มิลลิวินาที = 6 นาที
+  // 5 นาที = 300000 มิลลิวินาที
+  page.setDefaultNavigationTimeout(300000);
 
   for (let episode = start_ep; episode <= end_ep; episode++) {
     const currentUrl = `${url}${episode}/`;
@@ -17,7 +22,7 @@
     await page.goto(currentUrl);
 
     try {
-      await page.waitForSelector(".reader-area", { timeout: 60000 });
+      await page.waitForSelector(".reader-area", { timeout: 300000 });
     } catch (error) {
       console.error(`Timeout waiting for selector at URL: ${currentUrl}`);
       continue;
