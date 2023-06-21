@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layer from "../../../components/Layer";
 import Poster from "../../../components/Poster";
 import axios_client from "../../../config/axios_client";
-import { useEffect, useState } from "react";
-export default function favorite() {
+
+export default function Favorite() {
   const [currentPage, setCurrentPage] = useState(1); // หน้าปัจจุบัน
   const [itemsPerPage, setItemsPerPage] = useState(12); // จำนวนรายการต่อหน้า
   const [totalPages, setTotalPages] = useState(0); // จำนวนหน้าทั้งหมด
@@ -37,10 +37,7 @@ export default function favorite() {
 
     // เพิ่มโค้ดด้านล่างเพื่อให้หน้าปัจจุบันแสดงตรงตามหน้าที่คลิกเลือก
     setDisplayedPages(
-     favorite.slice(
-        (pageNumber - 1) * itemsPerPage,
-        pageNumber * itemsPerPage
-      )
+      favorite.slice((pageNumber - 1) * itemsPerPage, pageNumber * itemsPerPage)
     );
   };
 
@@ -110,8 +107,8 @@ export default function favorite() {
                 <h2 className="text-3xl text-site_color">รายการที่ชื่นชอบ:</h2>
               </div>
               <div className="update_new-content grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-10">
-                {displayedPages.map((pages: any, i: number) => {
-                  return (
+                {favorite.length > 0 &&
+                  displayedPages.map((pages: any, i: number) => (
                     <Poster
                       key={i}
                       i={i}
@@ -133,8 +130,7 @@ export default function favorite() {
                       pages_description={pages.pages_description}
                       posts_slug={pages.posts_slug}
                     />
-                  );
-                })}
+                  ))}
               </div>
               <div className="pagination">
                 <div className="w-full">
