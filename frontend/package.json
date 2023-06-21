@@ -6,7 +6,8 @@
     "dev": "next dev",
     "start": "next start",
     "lint": "next lint",
-    "build": "next build"
+    "build": "next build",
+    "postbuild": "tailwindcss build -o ./path/to/output.css"
   },
   "dependencies": {
     "@types/node": "20.1.0",

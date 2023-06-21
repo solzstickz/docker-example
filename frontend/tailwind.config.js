@@ -35,5 +35,16 @@ module.exports = {
   plugins: [],
   darkMode: "class",
   important: true,
-  mode: "jit",
+  purge: {
+    // ปรับแต่งการตัดสินใจในการลบคลาสที่ไม่ถูกใช้งาน
+    enabled: true,
+    content: [
+      "./app/**/*.{js,ts,jsx,tsx,mdx}",
+      "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+      "./components/**/*.{js,ts,jsx,tsx,mdx}",
+      // Or if using `src` directory:
+      "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    ],
+  },
+  mode: "aot",
 };
