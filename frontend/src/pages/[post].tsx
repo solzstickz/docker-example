@@ -18,6 +18,7 @@ import {
   FaArrowUp,
   FaAngleRight,
   FaAngleUp,
+  FaHome,
 } from "react-icons/fa";
 import moment from "moment-timezone";
 import { useState, useEffect } from "react";
@@ -175,15 +176,21 @@ export default function Post({ ...props }) {
                     />
                   )}
                 </div>
+                <div className="home">
+                  <Link href={`/`}>
+                    <FaHome className="text-color_white text-[20px] delay-1000 ease-out cursor-pointer" />
+                  </Link>
+                </div>
+
                 <div className="nav__list">
                   {nav_status ? (
                     <FaTimes
-                      className="text-site_color text-[20px]  delay-1000 ease-out animate-pulse"
+                      className="text-site_color text-[20px]  delay-1000 ease-out animate-pulse cursor-pointer"
                       onClick={() => setNav_status(!nav_status)}
                     />
                   ) : (
                     <FaListUl
-                      className="text-color_white text-[20px] delay-1000 ease-out"
+                      className="text-color_white text-[20px] delay-1000 ease-out cursor-pointer"
                       onClick={() => setNav_status(!nav_status)}
                     />
                   )}
@@ -195,7 +202,7 @@ export default function Post({ ...props }) {
                   }}
                 >
                   <FaAngleUp
-                    className="text-color_white text-[20px]  delay-1000 ease-out"
+                    className="text-color_white text-[20px]  delay-1000 ease-out cursor-pointer"
                     // create function onclick scroll to top
                   />
                 </div>
