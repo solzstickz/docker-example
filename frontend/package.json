@@ -7,7 +7,7 @@
     "start": "next start",
     "lint": "next lint",
     "build": "next build",
-    "postbuild": "tailwindcss build -o ./path/to/output.css"
+    "postbuild": "tailwindcss build -o ./public/styles.css"
   },
   "dependencies": {
     "@types/node": "20.1.0",

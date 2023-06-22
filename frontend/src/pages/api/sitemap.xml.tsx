@@ -3,11 +3,15 @@ import { NextApiRequest, NextApiResponse } from "next";
 import fs from "fs";
 import cron from "node-cron";
 import moment from "moment-timezone";
-const MAX_URLS = 10;
+
+const MAX_URLS = 1000;
 const SITEMAP_PATH = "./public/sitemap.xml";
 const SITEMAP_TAGS_PATH = "./public/sitemap_tags.xml";
 const SITEMAP_PAGES_PATH = "./public/sitemap_series.xml";
 const SITEMAP_POSTS_PATH = "./public/sitemap-posts";
+require("dotenv").config();
+const base_url = process.env.SITE_URL;
+const base_url_api = process.env.API_URL;
 
 function createSitemapXml(urls: string[]): string {
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
@@ -37,17 +41,17 @@ function updateMainSitemap(urls: string[], count: number) {
 
   xml += `
     <url>
-      <loc>https://front.skz.app/</loc>
+      <loc>${base_url}</loc>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
     </url>
     <url>
-      <loc>https://front.skz.app/sitemap_series.xml</loc>
+      <loc>${base_url}sitemap_series.xml</loc>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
     </url>
     <url>
-      <loc>https://front.skz.app/sitemap_tags.xml</loc>
+      <loc>${base_url}sitemap_tags.xml</loc>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
     </url>
@@ -55,7 +59,7 @@ function updateMainSitemap(urls: string[], count: number) {
   for (let i = 1; i < count; i++) {
     xml += `
       <url>
-        <loc>https://front.skz.app/sitemap-posts-${i}.xml</loc>
+        <loc>${base_url}sitemap-posts-${i}.xml</loc>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
       </url>
@@ -73,21 +77,21 @@ export default async function sitemapXml(
 ) {
   try {
     const pagesResponse = await axios.get(
-      "http://localhost:7777/public/sitemap/pages/slug"
+      `${base_url_api}public/sitemap/pages/slug`
     );
     const pagesSlug = pagesResponse.data;
 
     const pages = pagesSlug.map(
-      (slug: any) => `https://front.skz.app/series/${slug.pages_slug}`
+      (slug: any) => `${base_url}/series/${slug.pages_slug}`
     );
 
     const tagsResponse = await axios.get(
-      "http://localhost:7777/public/sitemap/tags/slug"
+      `${base_url_api}public/sitemap/tags/slug`
     );
     const tagsSlug = tagsResponse.data;
 
     const tags = tagsSlug.map(
-      (slug: any) => `https://front.skz.app/tags/${slug.tags_slug}`
+      (slug: any) => `${base_url}/tags/${slug.tags_slug}`
     );
 
     const urls = [...pages, ...tags];
@@ -96,13 +100,11 @@ export default async function sitemapXml(
     updateSitemap(pages, SITEMAP_PAGES_PATH);
 
     const postsResponse = await axios.get(
-      "http://localhost:7777/public/sitemap/posts/slug"
+      `${base_url_api}public/sitemap/posts/slug`
     );
     const postsSlug = postsResponse.data;
 
-    const posts = postsSlug.map(
-      (slug: any) => `https://front.skz.app/${slug.posts_slug}`
-    );
+    const posts = postsSlug.map((slug: any) => `${base_url}${slug.posts_slug}`);
 
     let sitemapPostsXml: string[] = [];
     let count = 0;
@@ -133,9 +135,19 @@ export default async function sitemapXml(
 
     updateMainSitemap(urls, sitemap_posts);
 
-    console.log("Sitemaps Build successfully ✅");
+    console.log(
+      `Sitemaps Build successfully ✅  ${moment()
+        .tz("Asia/Bangkok")
+        .format("HH:mm:ss")}`
+    );
+    res.json({
+      message: `Update Sitemap Successfully ✅ at ${moment()
+        .tz("Asia/Bangkok")
+        .format("HH:mm:ss")}`,
+    });
   } catch (error) {
     console.error("Failed to update sitemaps:", error);
+    res.status(500).json({ error: "Failed to update sitemaps" });
   }
 }
 
@@ -143,33 +155,31 @@ export default async function sitemapXml(
 cron.schedule("* * * * *", async () => {
   try {
     const pagesResponse = await axios.get(
-      "http://localhost:7777/public/sitemap/pages/slug"
+      `${base_url_api}public/sitemap/pages/slug`
     );
     const pagesSlug = pagesResponse.data;
 
     const pages = pagesSlug.map(
-      (slug: any) => `https://front.skz.app/series/${slug.pages_slug}`
+      (slug: any) => `${base_url}series/${slug.pages_slug}`
     );
 
     const tagsResponse = await axios.get(
-      "http://localhost:7777/public/sitemap/tags/slug"
+      `${base_url_api}public/sitemap/tags/slug`
     );
     const tagsSlug = tagsResponse.data;
 
     const tags = tagsSlug.map(
-      (slug: any) => `https://front.skz.app/tags/${slug.tags_slug}`
+      (slug: any) => `${base_url}tags/${slug.tags_slug}`
     );
 
     const urls = [...pages, ...tags];
 
     const postsResponse = await axios.get(
-      "http://localhost:7777/public/sitemap/posts/slug"
+      `${base_url_api}public/sitemap/posts/slug`
     );
     const postsSlug = postsResponse.data;
 
-    const posts = postsSlug.map(
-      (slug: any) => `https://front.skz.app/post/${slug.posts_slug}`
-    );
+    const posts = postsSlug.map((slug: any) => `${base_url}${slug.posts_slug}`);
 
     let sitemapPostsXml: string[] = [];
     let count = 0;

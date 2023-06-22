@@ -6,9 +6,9 @@ import config from "../config/config";
 export default function Poster({ ...props }) {
   return (
     <>
-      <div className="update_new-item  mx-auto flex flex-col relative  max-w-full md:max-w-[230px] hover:scale-110 transition-all ease-out delay-100 bg-color_white hover:bg-color_white  dark:text-text_color text-color_dark_gray hover:text-site_color shadow-2xl rounded-md">
+      <div className="update_new-item  mx-auto flex flex-col relative  min-w-full md:max-w-[230px] hover:scale-110 transition-all ease-out delay-100 bg-color_white hover:bg-color_white  dark:text-text_color text-color_dark_gray hover:text-site_color shadow-2xl rounded-md">
         <Link href={`/series/${props.pages_slug}`}>
-          <div className="update_new-item-img max-w-full h-[250px]  md:w-[200px] relative  p-3 mx-auto ">
+          <div className="update_new-item-img min-w-full h-[250px]  md:w-[200px] relative  p-3 mx-auto ">
             <Image
               src={`${config.CDN_URL}${props.pages_thumbnail}`}
               fill={true}
