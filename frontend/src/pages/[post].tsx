@@ -5,6 +5,8 @@ import Image from "next/image";
 import axios_client from "../../config/axios_client";
 import config from "../../config/config";
 import ProgressBar from "react-progressbar-on-scroll";
+const popup = require("../../lib/popup");
+
 import {
   FaArrowLeft,
   FaArrowRight,
@@ -22,7 +24,7 @@ import {
 } from "react-icons/fa";
 import moment from "moment-timezone";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 import Link from "next/link";
 interface post {
   posts_id: number;
@@ -40,6 +42,16 @@ export default function Post({ ...props }) {
   const [info, setInfo] = useState({
     favorite: false,
   });
+  const [currentPostIndex, setCurrentPostIndex] = useState(props.current_post);
+  const [maxPosts, setMaxPosts] = useState(props.list_ep.length);
+  const [minPosts, setMinPosts] = useState(() => props.list_ep[0].posts_ep);
+  const router = useRouter();
+
+  //!test
+
+  useEffect(() => {
+    // console.log(props.list_ep[1].posts_slug);
+  }, []);
 
   useEffect(() => {
     const checkfavoritestatus = () => {
@@ -62,6 +74,66 @@ export default function Post({ ...props }) {
 
     checkfavoritestatus();
   }, [props.post]);
+
+  //! scroll
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const handleScroll = () => {
+    const position = window.pageYOffset;
+    const max_scroll = document.body.scrollHeight - window.innerHeight;
+    setScrollPosition(position);
+
+    switch (true) {
+      case position <= 300:
+        setNav_control(true);
+        break;
+      case position > 300 && position < max_scroll - 1000:
+        setNav_control(false);
+        setNav_ep(false);
+        break;
+      case position > max_scroll - 1000:
+        setNav_control(true);
+        break;
+      default:
+        //
+        break;
+    }
+    // if (scrollPosition < 100) {
+    //   console.log("start");
+    //   setNav_control(true);
+    // }
+    // if (scrollPosition > 300) {
+    //   setNav_control(false);
+    // }
+    // if (scrollPosition > max_scroll - 2000) {
+    //   console.log("max");
+    // }
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+  //! scroll
+
+  //!set favorite
+  useEffect(() => {
+    const pagesSlug = props.post.pages_slug;
+    const favoriteStatus = localStorage.getItem("favorite");
+    if (favoriteStatus) {
+      const favoriteData = JSON.parse(favoriteStatus);
+      const foundfavorite = favoriteData.find(
+        (favorite: any) => favorite.pages_slug === pagesSlug
+      );
+      if (foundfavorite) {
+        setInfo((prevInfo) => ({
+          ...prevInfo,
+          favorite: true,
+        }));
+      }
+    }
+  }, []);
 
   const handlefavoriteclick = () => {
     const favoriteStatus = localStorage.getItem("favorite");
@@ -105,52 +177,37 @@ export default function Post({ ...props }) {
       });
     }
   };
+  //!
 
-  //! scroll
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const handleScroll = () => {
-    const position = window.pageYOffset;
-    const max_scroll = document.body.scrollHeight - window.innerHeight;
-    console.log(`max` + max_scroll);
-    setScrollPosition(position);
-    console.log(position);
-
-    switch (true) {
-      case position <= 300:
-        setNav_control(true);
-        break;
-      case position > 300 && position < max_scroll - 1000:
-        setNav_control(false);
-        setNav_ep(false);
-        break;
-      case position > max_scroll - 1000:
-        setNav_control(true);
-        console.log("max");
-        break;
-      default:
-        //
-        break;
+  const goToNextPost = () => {
+    if (currentPostIndex < maxPosts - 1) {
+      const nextPostIndex = currentPostIndex + 1;
+      const nextPostSlug = props.list_ep[nextPostIndex].posts_slug;
+      setCurrentPostIndex(nextPostIndex);
+      router.push(`/${nextPostSlug}`); // ไปหน้าต่อไป
+    } else {
+      // ถ้าเป็นโพสต์สุดท้ายในลิสต์
+      const htmlContent = `
+      <img src="/img/logo.png" alt="logo" width="100%" height="100%">
+      <p className="text-2xl">โปรดติดตามตอนต่อไปที่ ${config.SITE_NAME}</p>
+      <p>สามารถติดตาม ${props.post.pages_en} ได้ทุกวัน ${props.post.pages_status_showing}</p>
+    `;
+      popup.message(htmlContent);
     }
-    // if (scrollPosition < 100) {
-    //   console.log("start");
-    //   setNav_control(true);
-    // }
-    // if (scrollPosition > 300) {
-    //   setNav_control(false);
-    // }
-    // if (scrollPosition > max_scroll - 2000) {
-    //   console.log("max");
-    // }
   };
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll, { passive: true });
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-  //! scroll
-
+  const goToPrevPost = () => {
+    if (currentPostIndex == 0) {
+      // ถ้าเป็นโพสต์แรกในลิสต์
+      const routerSeries = `/series/${props.post.pages_slug}`;
+      router.push(routerSeries); // ไปหน้า series:slug
+    } else {
+      const prevPostIndex = currentPostIndex - 1;
+      const prevPostSlug = props.list_ep[prevPostIndex].posts_slug;
+      setCurrentPostIndex(prevPostIndex);
+      router.push(`/${prevPostSlug}`); // ไปหน้าก่อนหน้า
+    }
+  };
   return (
     <>
       <Layer>
@@ -211,7 +268,10 @@ export default function Post({ ...props }) {
               >
                 <div className="w-[300px] h-[50px] bg-color_dark rounded-full flex items-center justify-around shadow-xl shadow-[#434343]">
                   <div className="prev">
-                    <FaAngleLeft className="text-color_white text-[20px] delay-1000 ease-out" />
+                    <FaAngleLeft
+                      className="text-color_white text-[20px] delay-1000 ease-out cursor-pointer"
+                      onClick={goToPrevPost}
+                    />
                   </div>
                   <div className="favorite">
                     {info.favorite ? (
@@ -264,7 +324,10 @@ export default function Post({ ...props }) {
                     />
                   </div>
                   <div className="next">
-                    <FaAngleRight className="text-color_white text-[20px]  delay-1000 ease-out" />
+                    <FaAngleRight
+                      className="text-color_white text-[20px]  delay-1000 ease-out cursor-pointer"
+                      onClick={goToNextPost}
+                    />
                   </div>
                 </div>
 
@@ -342,10 +405,17 @@ export async function getServerSideProps(context: any) {
     );
     const list_ep = fetch_list_ep.data.pages;
 
+    const current_reverse = list_ep.reverse();
+    const current_post = current_reverse.findIndex(
+      (item: any) => item.posts_slug === context.query.post
+    );
+
+    console.log(current_post);
     return {
       props: {
         post: data[0],
         list_ep,
+        current_post,
       },
     };
   } catch (error) {

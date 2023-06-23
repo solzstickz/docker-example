@@ -30,6 +30,7 @@ module.exports = {
       color_Manhwa: "#5ab0ff",
       color_Manga: "#ff5a5a",
       color_Novel: "#ffdd73",
+      color_red: "#c81e1e",
     },
   },
   plugins: [],
