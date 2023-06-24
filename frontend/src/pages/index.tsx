@@ -189,7 +189,7 @@ export default function Home({ ...props }) {
             <div className="update_new w-full ">
               <div className="update_new-title">
                 <h3 className="text-3xl text-site_color">
-                  SITE_NAME{" "}
+                  {config.SITE_NAME }{" "}
                   <span className="dark:text-color_white text-color_dark_gray">
                     อัพเดทล่าสุด
                   </span>

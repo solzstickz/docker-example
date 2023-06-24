@@ -157,9 +157,9 @@ export default function Favorite() {
                 {favorite.length > 0 ? (
                   displayedPages.map((pages: any, i: number) => (
                     <div className="relative" key={pages.pages_slug}>
-                      <div className="update_new-item  mx-auto flex flex-col relative  min-w-full md:max-w-[230px] hover:scale-110 transition-all ease-out delay-100 bg-color_white hover:bg-color_white  dark:text-text_color text-color_dark_gray hover:text-site_color shadow-2xl rounded-md">
+                      <div className="update_new-item  mx-auto flex flex-col relative  min-w-full md:max-w-[230px] hover:scale-105 transition-all ease-out delay-100  dark:text-text_color text-color_dark_gray hover:text-site_color shadow-2xl rounded-md hover:border-none">
                         <Link href={`/series/${pages.pages_slug}`}>
-                          <div className="update_new-item-img min-w-full h-[250px]  md:w-[200px] relative  p-3 mx-auto ">
+                          <div className="update_new-item-img min-w-full h-[250px]  md:w-[200px] relative mx-auto">
                             <Image
                               src={`${config.CDN_URL}${pages.pages_thumbnail}`}
                               fill={true}
@@ -183,7 +183,7 @@ export default function Favorite() {
                               </p>
                             </div>
                           </div>
-                          <div className="update_new-item-title text-center h-auto relative md:max-w-[200px]">
+                          <div className="update_new-item-title text-center h-auto relative md:max-w-[200px] mx-auto">
                             <h3 className="text-2xl font-bold line-clamp-1">
                               {pages.pages_en}
                             </h3>
@@ -194,23 +194,24 @@ export default function Favorite() {
                             </span>
                           </div>
                         </Link>
-                        <div className="last_ep flex justify-center items-center text-center w-full mb-4">
+                        <div className="last_ep flex flex-col justify-center items-center text-center w-full mb-4">
                           <Link
                             className=" w-5/6  text-color_white justify-between mx-auto px-4 py-2 text-xl font-medium leading-5 text-white transition-colors duration-150 bg-site_color rounded-lg active:bg-site_color hover:bg-site_color focus:outline-none focus:shadow-outline-bg-site_color"
                             href={`/${pages.posts_slug}`}
                           >
                             ตอนที่ {pages.pages_last_ep}
                           </Link>
+                          <div
+                            className="flex justify-center items-center text-center w-full my-4"
+                            onClick={() =>
+                              handleUnfavoriteClick(pages.pages_slug)
+                            }
+                          >
+                            <button className=" w-5/6  text-color_white justify-between mx-auto px-4 py-2 text-xl font-medium leading-5 text-white transition-colors duration-150 bg-color_red rounded-lg active:bg-color_red hover:bg-color_red focus:outline-none focus:shadow-outline-bg-color_red">
+                              ลบ
+                            </button>
+                          </div>
                         </div>
-                      </div>
-
-                      <div
-                        className="flex justify-center items-center text-center w-full my-4"
-                        onClick={() => handleUnfavoriteClick(pages.pages_slug)}
-                      >
-                        <button className=" w-5/6  text-color_white justify-between mx-auto px-4 py-2 text-xl font-medium leading-5 text-white transition-colors duration-150 bg-color_red rounded-lg active:bg-color_red hover:bg-color_red focus:outline-none focus:shadow-outline-bg-color_red">
-                          Unfavorite
-                        </button>
                       </div>
                     </div>
                   ))
