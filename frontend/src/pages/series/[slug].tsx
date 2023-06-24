@@ -78,7 +78,7 @@ export default function Page({ ...props }: any) {
     <Layer>
       <div className="page relative">
         <div
-          className="pages_thumb relative z-0   overflow-hidden page_thumbnail"
+          className="pages_thumb relative z-0  overflow-hidden page_thumbnail"
           id="page_thumbnail"
         >
           <div
@@ -209,7 +209,7 @@ export default function Page({ ...props }: any) {
             </div>
           </div>
 
-          <div className="pages_deltail_info w-full md:w-3/12 flex justify-center md:justify-start flex-col">
+          <div className="pages_deltail_info w-full md:w-3/12 flex justify-center items-center md:justify-start flex-col">
             <div className="thumb mx-auto w-[250px] h-[350px] relative">
               <Image
                 src={`${config.CDN_URL}${props.res_page.pages_thumbnail}`}

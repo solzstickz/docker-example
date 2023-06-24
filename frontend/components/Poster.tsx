@@ -4,13 +4,11 @@ import moment from "moment";
 import Image from "next/image";
 import config from "../config/config";
 export default function Poster({ ...props }) {
-
-
   return (
     <>
-      <div className="update_new-item  mx-auto flex flex-col relative  min-w-full md:max-w-[230px] hover:scale-110 transition-all ease-out delay-100 bg-color_white hover:bg-color_white  dark:text-text_color text-color_dark_gray hover:text-site_color shadow-2xl rounded-md">
+      <div className="update_new-item  mx-auto flex flex-col relative  min-w-full md:max-w-[230px] hover:scale-105 transition-all ease-out delay-100  dark:text-text_color text-color_dark_gray hover:text-site_color shadow-2xl rounded-md hover:border-none">
         <Link href={`/series/${props.pages_slug}`}>
-          <div className="update_new-item-img min-w-full h-[250px]  md:w-[200px] relative  p-3 mx-auto ">
+          <div className="update_new-item-img min-w-full h-[250px]  md:w-[200px] relative mx-auto">
             <Image
               src={`${config.CDN_URL}${props.pages_thumbnail}`}
               fill={true}
@@ -34,7 +32,7 @@ export default function Poster({ ...props }) {
               </p>
             </div>
           </div>
-          <div className="update_new-item-title text-center h-auto relative md:max-w-[200px]">
+          <div className="update_new-item-title text-center h-auto relative md:max-w-[200px] mx-auto">
             <h3 className="text-2xl font-bold line-clamp-1">
               {props.pages_en}
             </h3>
@@ -51,7 +49,6 @@ export default function Poster({ ...props }) {
             ตอนที่ {props.pages_last_ep}
           </Link>
         </div>
-       
       </div>
     </>
   );

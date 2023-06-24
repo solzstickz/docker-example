@@ -4,7 +4,8 @@ const config = {
   API_URL: "http://localhost:7777/",
   CDN_URL: "https://sv1.skz.app/",
   SITE_URL: "https://frontend.skz.app/",
-  SITE_NAME: "SUSHI MANGA",
+  SITE_NAME: "Shiba MANGA",
+  SITE_DOMAIN: "ShibaManga.com",
 };
 
 export default config;

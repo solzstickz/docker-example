@@ -42,14 +42,12 @@ export default function Post({ ...props }) {
   const [info, setInfo] = useState({
     favorite: false,
   });
-  const [currentPostIndex, setCurrentPostIndex] = useState(props.current_post);
+  const [currentPostIndex, setCurrentPostIndex] = useState(props.post.posts_ep);
   const [maxPosts, setMaxPosts] = useState(props.list_ep.length);
   const [minPosts, setMinPosts] = useState(() => props.list_ep[0].posts_ep);
   const router = useRouter();
 
   //!test
-
-
 
   useEffect(() => {
     const checkfavoritestatus = () => {
@@ -95,7 +93,6 @@ export default function Post({ ...props }) {
         //
         break;
     }
- 
   };
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -168,6 +165,11 @@ export default function Post({ ...props }) {
   };
   //!
 
+  //! update current post index
+  useEffect(() => {
+    setCurrentPostIndex(props.current_post);
+  }, [router.query.post]);
+
   const goToNextPost = () => {
     if (currentPostIndex < maxPosts - 1) {
       const nextPostIndex = currentPostIndex + 1;
@@ -196,6 +198,21 @@ export default function Post({ ...props }) {
       setCurrentPostIndex(prevPostIndex);
       router.push(`/${prevPostSlug}`); // ไปหน้าก่อนหน้า
     }
+  };
+
+  const ep_list = () => {
+    let charp_ep = props.list_ep.map((item: any, i: number) => (
+      <Link href={`${item.posts_slug}`} key={item.posts_id}>
+        <li className="nav__item flex items-center  justify-around gap-4 py-2 dark:text-color_white border-dashed border-b-2 border-color_gray">
+          {/* <div className="no w-[50px] border-e-2 border-color_gray">
+                            {i + 1}
+                          </div> */}
+          <div className="ep">ตอนที่ {item.posts_ep}</div>
+          <div className="date">{moment().from(item.posts_create)}</div>
+        </li>
+      </Link>
+    ));
+    return charp_ep.reverse();
   };
   return (
     <>
@@ -232,21 +249,7 @@ export default function Post({ ...props }) {
                   className="nav__list h-[330px] overflow-x-auto"
                   id="ep_list"
                 >
-                  <ul className="">
-                    {props.list_ep.map((item: any, i: number) => (
-                      <Link href={`${item.posts_slug}`} key={item.posts_id}>
-                        <li className="nav__item flex items-center  justify-around gap-4 py-2 dark:text-color_white border-dashed border-b-2 border-color_gray">
-                          {/* <div className="no w-[50px] border-e-2 border-color_gray">
-                            {i + 1}
-                          </div> */}
-                          <div className="ep">ตอนที่ {item.posts_ep}</div>
-                          <div className="date">
-                            {moment().from(item.posts_create)}
-                          </div>
-                        </li>
-                      </Link>
-                    ))}
-                  </ul>
+                  <ul className="">{ep_list()}</ul>
                 </div>
               </div>
             </div>
@@ -394,7 +397,7 @@ export async function getServerSideProps(context: any) {
     );
     const list_ep = fetch_list_ep.data.pages;
 
-    const current_reverse = list_ep.reverse();
+    const current_reverse = fetch_list_ep.data.pages.reverse();
     const current_post = current_reverse.findIndex(
       (item: any) => item.posts_slug === context.query.post
     );

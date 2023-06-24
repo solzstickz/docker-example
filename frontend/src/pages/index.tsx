@@ -48,13 +48,11 @@ export default function Home({ ...props }) {
     const endIndex = startIndex + itemsPerPage;
     const pagesToDisplay = props.pages_lastep.slice(startIndex, endIndex);
     setDisplayedPages(pagesToDisplay);
-
   }, [props.pages_lastep, currentPage, itemsPerPage]);
 
   // ฟังก์ชันเปลี่ยนหน้า
   const changePage = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-
 
     // เพิ่มโค้ดด้านล่างเพื่อให้หน้าปัจจุบันแสดงตรงตามหน้าที่คลิกเลือก
     setDisplayedPages(
@@ -127,7 +125,7 @@ export default function Home({ ...props }) {
 
   return (
     <>
-    <Head>
+      <Head>
         <title>Shiba Manga</title>
         <meta property="og:title" content="Shiba Manga" key="title" />
       </Head>
@@ -142,9 +140,9 @@ export default function Home({ ...props }) {
             </p>
           </div>
         </section>
-        <section className="container mx-auto md:max-w-[1080px]">
+        <section className="container mx-auto md:max-w-[1080px] px-3">
           <section>
-            <div className="poppular w-full ">
+            <div className="poppular w-full my-5">
               <div className="poppular-title">
                 <h2 className="text-3xl text-site_color">
                   Poppular{" "}
@@ -153,36 +151,37 @@ export default function Home({ ...props }) {
                   </span>
                 </h2>
               </div>
-              <div className="poppular-content grid grid-cols-6">
-                {/* {props.pages.map((pages: any, i: number) => {
-                    return (
-                      <div
-                        className="poppular-item mx-auto flex col relative max-w-[160px] "
-                        key={i}
-                      >
-                        <Link href={`/series/${pages.pages_slug}`}>
-                          <div className="poppular-item-img h-[220px] w-[160px] relative">
-                            <Image
-                              src={`${config.CDN_URL}` + pages.pages_thumbnail}
-                              fill={true}
-                              className="mx-auto rounded-md"
-                              alt={pages.pages_title}
-                            />
-                            <div className="poppular-status absolute w-[40px] h-[20px] bg-site_color shadow-2xl rounded-tl-md rounded-br-md">
-                              <p className="text-[16px] text-color_white text-center pt-[2px]">
-                                HIT
-                              </p>
-                            </div>
+              <div className="poppular-content grid grid-cols-3 md:0grid-cols-6">
+                {props.poppular.map((pages: any, i: number) => {
+                  return (
+                    <div
+                      className="poppular-item mx-auto flex col relative max-w-[160px] hover:animate-pulse"
+                      key={i}
+                    >
+                      <Link href={`/series/${pages.pages_slug}`}>
+                        <div className="poppular-item-img h-[220px] w-[160px] relative shadow-md">
+                          <Image
+                            src={`${config.CDN_URL}` + pages.pages_thumbnail}
+                            fill={true}
+                            className="mx-auto rounded-md shadow-md"
+                            alt={pages.pages_title}
+                          />
+
+                          <div className="poppular-status absolute w-[30px] h-[40px] left-5 bg-site_color shadow-2xl rounded-b-md">
+                            <p className="text-2xl text-color_white text-center font-bold p-1">
+                              {i + 1}
+                            </p>
                           </div>
-                          <div className="poppular-item-title text-center h-auto relative">
-                            <h3 className="text-2xl dark:text-text_color text-dark_gray line-clamp-2">
-                              {pages.pages_title}
-                            </h3>
-                          </div>
-                        </Link>
-                      </div>
-                    );
-                  })} */}
+                        </div>
+                        <div className="poppular-item-title text-center h-auto relative">
+                          <h3 className="text-2xl dark:text-text_color text-dark_gray line-clamp-1">
+                            {pages.pages_title}
+                          </h3>
+                        </div>
+                      </Link>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </section>
@@ -196,7 +195,7 @@ export default function Home({ ...props }) {
                   </span>
                 </h3>
               </div>
-              <div className="update_new-content grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-10 px-1">
+              <div className="update_new-content grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-10 px-1">
                 {displayedPages.map((pages: any, i: number) => {
                   return (
                     <Poster
@@ -264,6 +263,8 @@ export default function Home({ ...props }) {
 
 export async function getServerSideProps() {
   let res_lastep = await axios_client.get(`public/last_updated`);
+  let fetch_poppular = await axios_client.get(`public/tags/popular`);
   let pages_lastep = await res_lastep.data;
-  return { props: { pages_lastep } };
+  let poppular = await fetch_poppular.data;
+  return { props: { pages_lastep, poppular } };
 }

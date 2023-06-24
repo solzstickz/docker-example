@@ -4,6 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 import { FaMoon, FaSearch, FaBars, FaTimes, FaArrowUp } from "react-icons/fa";
 import { useRouter } from "next/router";
+import config from "../config/config";
 
 interface Props {
   children?: React.ReactNode;
@@ -237,15 +238,15 @@ export default function Layer({ children, ...props }: Props) {
         </div>
         <div className="copyright container mx-auto w-5/6 md:max-w-[1080px] flex justify-center flex-col items-center">
           <p className="text-text_color">
-            God-Manga.com 2023 | God Manga – มังงะแปลไทย เว็บอ่านมังงะ มังฮวา
-            การ์ตูนแปลไทย ออนไลน์
+            {config.SITE_DOMAIN} 2023 | {config.SITE_NAME} – มังงะแปลไทย
+            เว็บอ่านมังงะ มังฮวา การ์ตูนแปลไทย ออนไลน์
           </p>
           <Image src="/img/discord.webp" width={300} height={300} alt="logo" />
           <p className="text-text_color text-2xl font-bold">
-            God-manga เว็บ อ่านมังงะแปลไทย อ่านการ์ตูนแปลไทย 24 ชั่วโมง
+            {config.SITE_NAME} เว็บ อ่านมังงะแปลไทย อ่านการ์ตูนแปลไทย 24 ชั่วโมง
           </p>
           <p className="text-center text-text_color text-xl my-3">
-            เว็บ God-manga God-manga เว็บอ่านมังงะแปลไทย มังฮวาแปลไทย
+            เว็บ {config.SITE_NAME} เว็บอ่านมังงะแปลไทย มังฮวาแปลไทย
             มังฮาวแปลไทย การ์ตูนแปลไทย อ่านนิยาย การ์ตูนจีน การ์ตูนญี่ปุ่น
             อ่านฟรี 24 ชั่วโมง อัพเดตตลอด อ่าน Magic emperror อ่าน The Great
             Mage Returns After 4000 Years อ่าน Nano machine อ่าน True Education
