@@ -9,6 +9,7 @@ import Poster from "../../components/Poster";
 import axios_client from "../../config/axios_client";
 import axios from "axios";
 import config from "../../config/config";
+import { NextSeo } from "next-seo";
 
 interface pages_lastupdate {
   pages_id: number;
@@ -125,13 +126,9 @@ export default function Home({ ...props }) {
 
   return (
     <>
-      <Head>
-        <title>Shiba Manga</title>
-        <meta property="og:title" content="Shiba Manga" key="title" />
-      </Head>
-      <Head>
-        <meta property="og:title" content="Shiba Manga" key="title" />
-      </Head>
+      <NextSeo
+        
+        />
       <Layer>
         <section>
           <div className="notify w-full bg-site_color">
@@ -189,7 +186,7 @@ export default function Home({ ...props }) {
             <div className="update_new w-full ">
               <div className="update_new-title">
                 <h3 className="text-3xl text-site_color">
-                  {config.SITE_NAME }{" "}
+                  {config.SITE_NAME}{" "}
                   <span className="dark:text-color_white text-color_dark_gray">
                     อัพเดทล่าสุด
                   </span>

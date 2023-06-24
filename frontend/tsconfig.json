@@ -18,6 +18,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "som_thine.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "som_thine.js", "seo.config.ts"],
   "exclude": ["node_modules"]
 }
