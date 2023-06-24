@@ -42,12 +42,30 @@ router.post("/", async (req, res) => {
 router.post('/uploads/posts',uploads.uploads_posts, async function (req, res) {
   console.log('File uploaded successfully.');
   let jsonimg = [];
+  let insert_to_db = [];
   for(i in req.files){
     let name = await `uploads/${req.files[i].key}`
    await jsonimg.push({'url':name,'image_no':Number(i)+1});
+   await insert_to_db.push([name])
   }
-  console.log(jsonimg);
-  await res.status(200).json(jsonimg);
+  console.log(insert_to_db);
+  pool.query(`INSERT INTO img_found (url) values ?`,[insert_to_db], async (err, result_img_found) => {
+    try {
+      if (err) {
+        console.log("Status Mysql Insert Error",err);
+        res.status(500).json({ message: "Status Mysql Insert img_found Error" });
+      }else{
+        if (result_img_found.insertId > 0){
+          await res.status(200).json(jsonimg);
+        }else{
+          res.status(201).json({ message: "Status Insert img_found Error" });
+        }
+      }
+    }catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  })
 });
 
 //! domain.com/pages/uploads/delete
