@@ -4,12 +4,12 @@ const path = require("path");
 const axios = require("axios");
 
 const start_ep = 1;
-const end_ep = 1085;
+const end_ep = 5;
 const url =
-  "https://god-manga.com/one-piece-%E0%B8%95%E0%B8%AD%E0%B8%99%E0%B8%97%E0%B8%B5%E0%B9%88";
+  "https://rose-manga.com/pathfinder-%E0%B8%95%E0%B8%AD%E0%B8%99%E0%B8%97%E0%B8%B5%E0%B9%88-";
 
-const pages_slug = "one-piece";
-const posts_slug = "one-piece-ตอนที่";
+const pages_slug = "pathfinder";
+const posts_slug = "pathfinder-ตอนที่-";
 
 const uploadUrl = "http://localhost:7777/posts/uploads/posts";
 const createUrl = "http://localhost:7777/posts/create/post";

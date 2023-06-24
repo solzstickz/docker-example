@@ -3,16 +3,77 @@ import { useRouter } from "next/router";
 import Layer from "../../../components/Layer";
 import axios_client from "../../../config/axios_client";
 import Image from "next/image";
-import { FaStar, FaBookOpen } from "react-icons/fa";
+import { FaStar, FaBookOpen, FaRegHeart, FaHeart } from "react-icons/fa";
 import Link from "next/link";
 import moment from "moment";
 import config from "../../../config/config";
 import { CSSProperties } from "react";
 export default function Page({ ...props }: any) {
-  const [loading, setLoading] = useState(true);
+  const [info, setInfo] = useState({
+    favorite: false,
+  });
+
+  //! set favorite
   useEffect(() => {
-    setLoading(false);
+    const pagesSlug = props.res_page.pages_slug;
+    const favoriteStatus = localStorage.getItem("favorite");
+    if (favoriteStatus) {
+      const favoriteData = JSON.parse(favoriteStatus);
+      const foundfavorite = favoriteData.find(
+        (favorite: any) => favorite.pages_slug === pagesSlug
+      );
+      if (foundfavorite) {
+        setInfo((prevInfo) => ({
+          ...prevInfo,
+          favorite: true,
+        }));
+      }
+    }
   }, []);
+
+  const handlefavoriteclick = () => {
+    const favoriteStatus = localStorage.getItem("favorite");
+    let favoriteData = [];
+
+    if (favoriteStatus) {
+      favoriteData = JSON.parse(favoriteStatus);
+      const pagesSlug = props.res_page.pages_slug;
+      if (favoriteData.includes(pagesSlug)) {
+        // ถ้ามีค่าอยู่แล้วให้ลบออก
+        favoriteData = favoriteData.filter((slug: any) => slug !== pagesSlug);
+      } else {
+        // ถ้าไม่มีค่าอยู่ให้เพิ่มเข้าไป
+        favoriteData.push(props.res_page);
+      }
+    } else {
+      // ถ้าไม่มีค่าเลยให้เพิ่มค่าเดียวเข้าไป
+      favoriteData.push(props.res_page);
+    }
+
+    localStorage.setItem("favorite", JSON.stringify(favoriteData));
+
+    setInfo({
+      ...info,
+      favorite: !info.favorite,
+    });
+  };
+
+  const handleunfavoriteclick = () => {
+    const favoriteStatus = localStorage.getItem("favorite");
+    if (favoriteStatus) {
+      const favoriteData = JSON.parse(favoriteStatus);
+      const pagesSlug = props.res_page.pages_slug;
+      const updatedfavoriteData = favoriteData.filter(
+        (favorite: any) => favorite.pages_slug !== pagesSlug
+      );
+      localStorage.setItem("favorite", JSON.stringify(updatedfavoriteData));
+      setInfo({
+        ...info,
+        favorite: false,
+      });
+    }
+  };
+  //!
   return (
     <Layer>
       <div className="page relative">
@@ -174,11 +235,33 @@ export default function Page({ ...props }: any) {
               </div>
             </div>
             <div className="bookmark w-full h-[50px] bg-site_color flex justify-center items-center rounded-full my-2 shadow-md cursor-pointer">
-              <div className="icon relative">
-                <FaBookOpen className="absolute top-1 right-20 text-color_white " />
-                <p className="text-color_white">อ่านย้อนหลัง</p>
-              </div>
+              {info.favorite ? (
+                <>
+                  <div
+                    className="icon w-full flex justify-center items-center gap-3"
+                    onClick={handleunfavoriteclick}
+                  >
+                    <FaHeart className="favorite  text-color_white" />
+
+                    <p className="text-color_white text-left">UnFollow</p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div
+                    className="icon w-full flex justify-center items-center gap-3"
+                    onClick={handlefavoriteclick}
+                  >
+                    <FaRegHeart className="not_favorite  text-color_white" />
+
+                    <p className="text-color_white text-left">Follow</p>
+                  </div>
+                </>
+              )}
+              {/* <FaBookOpen className="absolute top-1 right-20 text-color_white " />
+                <p className="text-color_white">อ่านย้อนหลัง</p> */}
             </div>
+
             <div className="follow text-center my-2">
               <p className="dark:text-color_gray text-color_dark_gray">
                 มีผู้ติดตามจำนวน {props.res_page.pages_follow}
@@ -228,7 +311,7 @@ export async function getServerSideProps(context: any) {
     let res_ep = await res.data.pages;
     let res_page = await res.data.pages[0];
     let res_tags = await res.data.tags;
-    console.log(res_tags);
+ 
     // let res_ep = await res_data[1];
     return { props: { res_page, res_tags, res_ep } };
   } catch (error) {

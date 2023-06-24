@@ -64,13 +64,14 @@ export default function Layer({ children, ...props }: Props) {
   }, []);
   return (
     <>
+      {/* <div className="fixed top-0 left-0 overlay w-screen h-screen bg-color_gray"></div> */}
       <header className="dark:bg-header_bg_dark bg-header_bg_light">
-        <div className="container mx-auto flex justtify-between">
+        <div className="container mx-auto flex justtify-between relative">
           <div className="md:w-1/4 flex items-center justify-center">
             <div className="nav__bar bg-header_bg_menu rounded-xl mx-2 md:hidden">
               {nav_status ? (
                 <FaTimes
-                  className={`text-color_white text-[40px] p-2 delay-1000 ease-out ${nav_status} ? 'opacity-100' : 'opacity-0'`}
+                  className={`text-color_white text-[40px] p-2 delay-1000 ease-out animate-pulse ${nav_status} ? 'opacity-100' : 'opacity-0'`}
                   onClick={() => {
                     Setnav_status(!nav_status);
                   }}
@@ -94,40 +95,40 @@ export default function Layer({ children, ...props }: Props) {
           </div>
           <div
             className={`${
-              nav_status ? "fixed z-[100] w-full h-full" : "hidden"
-            } md:w-2/4 md:flex md:items-center md:justify-center top-[50px] dark:bg-header_bg_dark`}
+              nav_status ? "absolute z-[100] w-full h-[400px]" : "hidden"
+            } md:w-2/4 md:flex md:items-center md:justify-center top-[73px] dark:bg-header_bg_dark  bg-header_bg_light `}
           >
             <ul>
               <li className="flex flex-col md:block gap-4 mt-5 md:mt-0">
                 <Link
                   href="/"
-                  className="bg-site_color py-[8px] px-[15px] rounded-md mx-2 dark:text-color_white text-color_white"
+                  className="bg-site_color py-[8px] px-[15px] rounded-md mx-2 dark:text-color_white text-color_white shadow-md"
                 >
                   หน้าแรก
                 </Link>
                 <Link
                   href="/"
-                  className="dark:bg-header_bg_menu bg-color_white py-[8px] px-[15px] rounded-md mx-2 dark:text-color_white text-color_dark hover:bg-site_color hover:text-color_white ease-out duration-300"
+                  className="dark:bg-header_bg_menu bg-color_white py-[8px] px-[15px] rounded-md mx-2 dark:text-color_white text-color_dark hover:bg-site_color hover:text-color_white ease-out duration-300 shadow-md"
                 >
                   รายชื่อมังงะ
                 </Link>
                 <Link
                   href="/favorite"
-                  className="dark:bg-header_bg_menu bg-color_white py-[8px] px-[15px] rounded-md mx-2 dark:text-color_white text-color_dark hover:bg-site_color hover:text-color_white ease-out duration-300"
+                  className="dark:bg-header_bg_menu bg-color_white py-[8px] px-[15px] rounded-md mx-2 dark:text-color_white text-color_dark hover:bg-site_color hover:text-color_white ease-out duration-300 shadow-md"
                 >
                   มังงะที่ชื่นชอบ
                 </Link>
               </li>
             </ul>
           </div>
-          <div className="md:w-1/4 flex items-center justify-center ">
+          <div className="md:w-1/4 flex justify-end  items-center md:justify-center">
             <div
               className={`${
                 search_status ? "fixed w-5/6 left-0" : "hidden"
               } mx-3 md:block md:relative`}
             >
               <input
-                className="shadow appearance-none border rounded w-full md:w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#000] dark:text-color_white dark:border-[#000]"
+                className="appearance-none border rounded w-full md:w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#000] dark:text-color_white dark:border-[#000]"
                 id="search"
                 type="text"
                 placeholder="ค้นหา"
@@ -144,7 +145,7 @@ export default function Layer({ children, ...props }: Props) {
                 className={`absolute top-1/2 right-0 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer ${
                   search === ""
                     ? "text-color_gray"
-                    : "text-color_white animate-pulse ease-out delay-1000"
+                    : "text-color_gray dark:text-color_white animate-pulse ease-out delay-1000"
                 }`}
                 onClick={() => {
                   router.push(`/search/${search}`);
@@ -153,21 +154,21 @@ export default function Layer({ children, ...props }: Props) {
             </div>
             <div className="bg-site_color rounded-xl">
               <FaMoon
-                className="text-color_white text-[40px] p-2"
+                className="text-color_white text-[40px] p-2 shadow-md  rounded-xl"
                 onClick={change_theme}
               />
             </div>
             <div className="icon_search bg-header_bg_menu rounded-xl mx-2 md:hidden">
               {search_status ? (
                 <FaTimes
-                  className="text-color_white text-[40px] p-2"
+                  className="text-color_white text-[40px] p-2 shadow-md"
                   onClick={() => {
                     setSearch_status(!search_status);
                   }}
                 />
               ) : (
                 <FaSearch
-                  className="text-color_white text-[40px] p-2"
+                  className="text-color_white text-[40px] p-2 shadow-md"
                   onClick={() => {
                     setSearch_status(!search_status);
                   }}
