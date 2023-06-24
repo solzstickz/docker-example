@@ -35,7 +35,25 @@ router.post("/:slug", async (req, res) => {
 router.post('/uploads/pages',uploads.uploads_pages, function (req, res, next) {
   console.log('File uploaded successfully.');
   const path = `uploads/${req.files[0].key}`
-  res.status(200).json({url:`${path}`});
+  if(path.length > 8) {
+    pool.query(`INSERT INTO img_found (url) values (?)`,path, async (err, result_img_found) => {
+      try {
+        if (err) {
+          console.log("Status Mysql Insert Error",err);
+          res.status(500).json({ message: "Status Mysql Insert img_found Error" });
+        }else{
+          if (result_img_found.insertId > 0){
+            res.status(200).json({url:`${path}`});
+          }else{
+            res.status(201).json({ message: "Status Insert img_found Error" });
+          }
+        }
+      }catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
+      }
+    });
+  }
 });
 
 // router.post(
