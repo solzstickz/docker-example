@@ -12,7 +12,7 @@ export default function Search_index({ ...props }) {
   useEffect(() => {
     // คำนวณจำนวนหน้าทั้งหมด
     const total = Math.ceil(props.search.length / itemsPerPage);
-    console.log(props.search.length);
+  
     setTotalPages(total);
   }, [props.search, itemsPerPage]);
 
@@ -22,13 +22,13 @@ export default function Search_index({ ...props }) {
     const endIndex = startIndex + itemsPerPage;
     const pagesToDisplay = props.search.slice(startIndex, endIndex);
     setDisplayedPages(pagesToDisplay);
-    // console.log(displayedPages);
+ 
   }, [props.search, currentPage, itemsPerPage]);
 
   // ฟังก์ชันเปลี่ยนหน้า
   const changePage = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    console.log(currentPage);
+   
 
     // เพิ่มโค้ดด้านล่างเพื่อให้หน้าปัจจุบันแสดงตรงตามหน้าที่คลิกเลือก
     setDisplayedPages(

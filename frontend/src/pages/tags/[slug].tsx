@@ -21,13 +21,13 @@ export default function Tags_slug({ ...props }) {
     const endIndex = startIndex + itemsPerPage;
     const pagesToDisplay = props.tags.slice(startIndex, endIndex);
     setDisplayedPages(pagesToDisplay);
-    // console.log(displayedPages);
+
   }, [props.tags, currentPage, itemsPerPage]);
 
   // ฟังก์ชันเปลี่ยนหน้า
   const changePage = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    console.log(currentPage);
+
 
     // เพิ่มโค้ดด้านล่างเพื่อให้หน้าปัจจุบันแสดงตรงตามหน้าที่คลิกเลือก
     setDisplayedPages(

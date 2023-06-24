@@ -49,9 +49,7 @@ export default function Post({ ...props }) {
 
   //!test
 
-  useEffect(() => {
-    // console.log(props.list_ep[1].posts_slug);
-  }, []);
+
 
   useEffect(() => {
     const checkfavoritestatus = () => {
@@ -97,16 +95,7 @@ export default function Post({ ...props }) {
         //
         break;
     }
-    // if (scrollPosition < 100) {
-    //   console.log("start");
-    //   setNav_control(true);
-    // }
-    // if (scrollPosition > 300) {
-    //   setNav_control(false);
-    // }
-    // if (scrollPosition > max_scroll - 2000) {
-    //   console.log("max");
-    // }
+ 
   };
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });

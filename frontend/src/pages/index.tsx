@@ -38,7 +38,7 @@ export default function Home({ ...props }) {
   useEffect(() => {
     // คำนวณจำนวนหน้าทั้งหมด
     const total = Math.ceil(props.pages_lastep.length / itemsPerPage);
-    console.log(props.pages_lastep.length);
+
     setTotalPages(total);
   }, [props.pages_lastep, itemsPerPage]);
 
@@ -48,13 +48,13 @@ export default function Home({ ...props }) {
     const endIndex = startIndex + itemsPerPage;
     const pagesToDisplay = props.pages_lastep.slice(startIndex, endIndex);
     setDisplayedPages(pagesToDisplay);
-    // console.log(displayedPages);
+
   }, [props.pages_lastep, currentPage, itemsPerPage]);
 
   // ฟังก์ชันเปลี่ยนหน้า
   const changePage = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    console.log(currentPage);
+
 
     // เพิ่มโค้ดด้านล่างเพื่อให้หน้าปัจจุบันแสดงตรงตามหน้าที่คลิกเลือก
     setDisplayedPages(

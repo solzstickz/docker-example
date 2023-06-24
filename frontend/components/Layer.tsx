@@ -128,7 +128,7 @@ export default function Layer({ children, ...props }: Props) {
               } mx-3 md:block md:relative`}
             >
               <input
-                className="shadow appearance-none border rounded w-full md:w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#000] dark:text-color_white dark:border-[#000]"
+                className="appearance-none border rounded w-full md:w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#000] dark:text-color_white dark:border-[#000]"
                 id="search"
                 type="text"
                 placeholder="ค้นหา"
@@ -145,7 +145,7 @@ export default function Layer({ children, ...props }: Props) {
                 className={`absolute top-1/2 right-0 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer ${
                   search === ""
                     ? "text-color_gray"
-                    : "text-color_white animate-pulse ease-out delay-1000"
+                    : "text-color_gray dark:text-color_white animate-pulse ease-out delay-1000"
                 }`}
                 onClick={() => {
                   router.push(`/search/${search}`);
@@ -154,21 +154,21 @@ export default function Layer({ children, ...props }: Props) {
             </div>
             <div className="bg-site_color rounded-xl">
               <FaMoon
-                className="text-color_white text-[40px] p-2"
+                className="text-color_white text-[40px] p-2 shadow-md  rounded-xl"
                 onClick={change_theme}
               />
             </div>
             <div className="icon_search bg-header_bg_menu rounded-xl mx-2 md:hidden">
               {search_status ? (
                 <FaTimes
-                  className="text-color_white text-[40px] p-2"
+                  className="text-color_white text-[40px] p-2 shadow-md"
                   onClick={() => {
                     setSearch_status(!search_status);
                   }}
                 />
               ) : (
                 <FaSearch
-                  className="text-color_white text-[40px] p-2"
+                  className="text-color_white text-[40px] p-2 shadow-md"
                   onClick={() => {
                     setSearch_status(!search_status);
                   }}

@@ -60,6 +60,6 @@ export default function index({ ...props }, pages: pages, i: number) {
 export async function getServerSideProps(context: any) {
   let res = await axios.post("http://localhost:7777/pages/");
   let res_pages = await res.data;
-  console.log(res_pages);
+
   return { props: { res_pages } };
 }
