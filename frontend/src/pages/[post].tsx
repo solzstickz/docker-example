@@ -387,7 +387,7 @@ export default function Post({ ...props }) {
               {props.post.posts_detail.map((images: any, i: number) => {
                 return (
                   <div
-                    className="relative mx-auto w-full h-full"
+                    className="relative mx-auto w-full h-full cursor-pointer"
                     key={i}
                     onClick={() => setNav_control(!nav_control)}
                   >
@@ -395,9 +395,9 @@ export default function Post({ ...props }) {
                       src={`${config.CDN_URL}${images.url}`}
                       alt={images.alt}
                       width={1000}
-                      height={1000}
+                      height={1500}
                       // priority={true}
-                      quality={1}
+                      quality={100}
                     />
                   </div>
                 );
