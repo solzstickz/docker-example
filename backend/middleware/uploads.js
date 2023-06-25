@@ -73,7 +73,7 @@ const uploads_posts = multer({
       //use Date.now() for unique file keys
     },
   }),
-}).array("uploads_posts_images", 100);
+}).array("uploads_posts_images", 150);
 //!!!! Config Max File Size
 const uploads_posts_delete = (keyname, req, res) => {
   const params = {
