@@ -3,6 +3,7 @@ const aws = require("aws-sdk");
 const multer = require("multer");
 const crypto = require("crypto");
 const multerS3 = require("multer-s3");
+const pool = require("../config/mysql");
 // var storage = multer.diskStorage({
 //   destination: function (req, file, cb) {
 //     cb(null, "./uploads");
@@ -75,7 +76,7 @@ const uploads_posts = multer({
   }),
 }).array("uploads_posts_images", 150);
 //!!!! Config Max File Size
-const uploads_posts_delete = (keyname, req, res) => {
+const uploads_posts_delete = (keyname, req, res,delete_to_db) => {
   const params = {
     Bucket: "uploads-storage",
     Delete: {
@@ -91,9 +92,27 @@ const uploads_posts_delete = (keyname, req, res) => {
       console.log("ไม่พบไฟล์ที่ต้องการลบ");
       return res.status(201).json({ message: "Not Found File deleted" });
     } else {
-      return res.status(200).json({ message: "File deleted successfully" });
+      pool.query(`UPDATE img_found set type = 0 WHERE url in (?)`,[delete_to_db], async (err, result_img_found) => {
+        try {
+          if (err) {
+            console.log("Status Mysql Insert Error",err);
+            res.status(500).json({ message: "Status Mysql Update img_found Error" });
+          }else{
+            if (result_img_found.affectedRows > 0){
+              res.status(200).json({ message : "Status Update Success"});
+            }else{
+              res.status(201).json({ message: "Status Update img_found Error" });
+            }
+          }
+        }catch (err) {
+          console.log(err);
+          res.status(500).json({ message: "Internal Server Error" });
+        }
+      })
+      // return res.status(200).json({ message: "File deleted successfully" });
     }
   });
+  console.log(params.Delete.Objects);
 };
 
 const uploads = {
