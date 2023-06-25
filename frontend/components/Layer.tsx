@@ -243,7 +243,15 @@ export default function Layer({ children, ...props }: Props) {
             {config.SITE_DOMAIN} 2023 | {config.SITE_NAME} – มังงะแปลไทย
             เว็บอ่านมังงะ มังฮวา การ์ตูนแปลไทย ออนไลน์
           </p>
-          <Image src="/img/discord.webp" width={300} height={300} alt="logo" />
+          <div className="discord w-auto h-auto">
+            <Image
+              src="/img/discord.webp"
+              width={100}
+              height={100}
+              alt="Discord Logo"
+              style={{ width: "auto" }}
+            />
+          </div>
           <p className="text-text_color text-2xl font-bold">
             {config.SITE_NAME} เว็บ อ่านมังงะแปลไทย อ่านการ์ตูนแปลไทย 24 ชั่วโมง
           </p>
