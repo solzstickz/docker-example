@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const moment = require('moment-timezone');
 const pool = require("../config/mysql");
+const uploads = require("../middleware/uploads");
 require("dotenv").config();
 
 
@@ -36,7 +37,24 @@ module.exports = {
                         res.status(500).json({ message: "Status Mysql Insert Pages_tags Error" });
                       }else{
                         if (result_pages_tags.insertId > 0){
-                          res.status(200).json({ message : "Status Insert Success"});
+                          let data_img = { fk_pages_posts_id:result.insertId,type:1,description:`slug->>${reqbody_pages.pages_slug}->>pages_thumbnail_date->>${reqbody_pages.pages_last_update}`};
+                          pool.query(`UPDATE img_found set ? WHERE url = ?`,[data_img,reqbody_pages.pages_thumbnail], async (err, result_img_found) => {
+                            try {
+                              if (err) {
+                                console.log("Status Mysql Insert Error",err);
+                                res.status(500).json({ message: "Status Mysql Update img_found Error" });
+                              }else{
+                                if (result_img_found.affectedRows > 0){
+                                  res.status(200).json({ message : "Status Update Success"});
+                                }else{
+                                  res.status(201).json({ message: "Status Update img_found Error" });
+                                }
+                              }
+                            }catch (err) {
+                              console.log(err);
+                              res.status(500).json({ message: "Internal Server Error" });
+                            }
+                          })
                         }else{
                           res.status(201).json({ message: "Status Insert Pages_tags Error" });
                         }
@@ -119,7 +137,24 @@ module.exports = {
                         res.status(500).json({ message: "Status Delete pages Error" });
                       } else {
                         if (result_pages.affectedRows > 0){
-                          res.status(200).json({ message : "Status Delete Pages Success"});
+                          pool.query(`UPDATE img_found set type = 0 WHERE fk_pages_posts_id = ?`,[data_value], async (err, result_img_found) => {
+                            try {
+                              if (err) {
+                                console.log("Status Mysql Insert Error",err);
+                                res.status(500).json({ message: "Status Mysql Update img_found Error" });
+                              }else{
+                                if (result_img_found.affectedRows > 0){
+                                  // await uploads.uploads_posts_delete(keyname,req,res);
+                                  res.status(200).json({ message : "Status Update Success"});
+                                }else{
+                                  res.status(201).json({ message: "Status Update img_found Error" });
+                                }
+                              }
+                            }catch (err) {
+                              console.log(err);
+                              res.status(500).json({ message: "Internal Server Error" });
+                            }
+                          })
                         }else {
                           res.status(201).json({ message : "Status Delete Pages Not Found"});
                         }
@@ -172,7 +207,24 @@ module.exports = {
                          res.status(500).json({ message: "Status Mysql Insert Pages_tags Error" });
                        }else{
                          if (result_pages_tags_insert.insertId > 0){
-                           res.status(200).json({ message : "Status Insert Pages_tags Success"});
+                          let data_img = { fk_pages_posts_id:pages_id,type:1,description:`slug->>${reqbody_pages.pages_slug}->>pages_thumbnail_date->>${reqbody_pages.pages_last_update}`};
+                          pool.query(`UPDATE img_found set ? WHERE url = ?`,[data_img,reqbody_pages.pages_thumbnail], async (err, result_img_found) => {
+                            try {
+                              if (err) {
+                                console.log("Status Mysql Insert Error",err);
+                                res.status(500).json({ message: "Status Mysql Update img_found Error" });
+                              }else{
+                                if (result_img_found.affectedRows > 0){
+                                  res.status(200).json({ message : "Status Update Success"});
+                                }else{
+                                  res.status(201).json({ message: "Status Update img_found Error" });
+                                }
+                              }
+                            }catch (err) {
+                              console.log(err);
+                              res.status(500).json({ message: "Internal Server Error" });
+                            }
+                          })
                          }else{
                            res.status(201).json({ message: "Status Insert Pages_tags Error" });
                          }
