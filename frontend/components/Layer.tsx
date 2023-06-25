@@ -93,7 +93,14 @@ export default function Layer({ children, ...props }: Props) {
           </div>
           <div className="w-auto md:w-1/4">
             <Link href="/">
-              <Image src="/img/logo.png" width={300} height={300} alt="logo" />
+              <Image
+                src="/img/logo.png"
+                width={300}
+                height={300}
+                alt="logo"
+                priority={true}
+                quality={100}
+              />
             </Link>
           </div>
           <div

@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://frontend.skz.app/series/revenge-of-the-iron-blooded-sword-hound</loc>
+    <loc>https://frontend.skz.app/series/Pathfinder</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://frontend.skz.app/series/The-Player-Hides-His-Past</loc>
+    <loc>https://frontend.skz.app/series/chronicles-of-the-demon-faction</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://frontend.skz.app/series/I-Stole-the-Number-One-Ranker-Soul</loc>
+    <loc>https://frontend.skz.app/series/chronicles-of-the-martial-gods-return</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://frontend.skz.app/series/one-piece</loc>
+    <loc>https://frontend.skz.app/series/reincarnation-of-the-strongest-sword-god</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/damn-reincarnation</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
