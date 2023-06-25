@@ -7,8 +7,8 @@ export default function Poster({ ...props }) {
   return (
     <>
       <div className="items px-1">
-        <Link href={`/series/${props.pages_slug}`}>
-          <div className="update_new-item flex flex-col relative mx-auto min-w-[160px] md:max-w-[200px] hover:animate-pulse transition-all ease-out delay-300  dark:text-text_color text-color_dark_gray hover:text-site_color shadow-2xl rounded-md hover:border-none">
+        <div className="update_new-item flex flex-col relative mx-auto min-w-[160px] md:max-w-[200px] hover:animate-pulse transition-all ease-out delay-300  dark:text-text_color text-color_dark_gray hover:text-site_color shadow-2xl rounded-md hover:border-none">
+          <Link href={`/series/${props.pages_slug}`}>
             <div className="update_new-item-img min-h-[230px] md:w-[200px] md:h-[280px] w-full relative">
               <Image
                 src={`${config.CDN_URL}${props.pages_thumbnail}`}
@@ -41,16 +41,16 @@ export default function Poster({ ...props }) {
                 {moment(props.posts_date).startOf("day").fromNow()}
               </span>
             </div>
-            <div className="last_ep flex justify-center items-center text-center w-full mb-4">
-              <Link
-                className=" w-5/6  text-color_white justify-between mx-auto px-4 py-2 text-xl font-medium leading-5 text-white transition-colors duration-150 bg-site_color rounded-lg active:bg-site_color hover:bg-site_color focus:outline-none focus:shadow-outline-bg-site_color"
-                href={`/${props.posts_slug}`}
-              >
-                ตอนที่ {props.pages_last_ep}
-              </Link>
-            </div>
+          </Link>
+          <div className="last_ep flex justify-center items-center text-center w-full mb-4">
+            <Link
+              className=" w-5/6  text-color_white justify-between mx-auto px-4 py-2 text-xl font-medium leading-5 text-white transition-colors duration-150 bg-site_color rounded-lg active:bg-site_color hover:bg-site_color focus:outline-none focus:shadow-outline-bg-site_color"
+              href={`/${props.posts_slug}`}
+            >
+              ตอนที่ {props.pages_last_ep}
+            </Link>
           </div>
-        </Link>
+        </div>
       </div>
     </>
   );
