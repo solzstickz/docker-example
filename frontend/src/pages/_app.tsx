@@ -20,6 +20,7 @@ const SEOConfig: NextSeoProps = {
     site: "",
     cardType: "summary_large_image",
   },
+  
 };
 
 export default function App({ Component, pageProps }: AppProps) {

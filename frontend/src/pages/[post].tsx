@@ -170,12 +170,56 @@ export default function Post({ ...props }) {
     setCurrentPostIndex(props.current_post);
   }, [router.query.post]);
 
-  const goToNextPost = () => {
+  const NextButton = () => {
+    const nextPostIndex = currentPostIndex + 1;
+    const nextPost = props.list_ep[nextPostIndex];
+
+    if (nextPost) {
+      const nextPostSlug = nextPost.posts_slug;
+      // setCurrentPostIndex(nextPostIndex);
+      return (
+        <Link href={`/${nextPostSlug}`}>
+          <FaAngleRight className="text-color_white text-[20px]  delay-1000 ease-out cursor-pointer" />
+        </Link>
+      );
+    } else {
+      return (
+        <div onClick={CheckNextPost}>
+          <FaAngleRight className="text-color_white text-[20px]  delay-1000 ease-out cursor-pointer" />
+        </div>
+      );
+    }
+
+    // กรณีที่ไม่มีโพสต์ถัดไป
+  };
+  const PrevButton = () => {
+    if (currentPostIndex === 0) {
+      // ถ้าเป็นโพสต์แรกในลิสต์
+      return (
+        <Link href={`/series/${props.post.pages_slug}`}>
+          <FaAngleLeft className="text-color_white text-[20px]  delay-1000 ease-out cursor-pointer" />
+        </Link>
+      );
+    } else {
+      const prevPostIndex = currentPostIndex - 1;
+      const prevPostSlug = props.list_ep[prevPostIndex];
+      if (prevPostSlug) {
+        const nextPostSlug = prevPostSlug.posts_slug;
+        return (
+          <Link href={`/${nextPostSlug}`}>
+            <FaAngleLeft className="text-color_white text-[20px]  delay-1000 ease-out cursor-pointer" />
+          </Link>
+        );
+      }
+      return (
+        <Link href={`/${prevPostSlug}`}>
+          <FaAngleLeft className="text-color_white text-[20px]  delay-1000 ease-out cursor-pointer" />
+        </Link>
+      );
+    }
+  };
+  const CheckNextPost = () => {
     if (currentPostIndex < maxPosts - 1) {
-      const nextPostIndex = currentPostIndex + 1;
-      const nextPostSlug = props.list_ep[nextPostIndex].posts_slug;
-      setCurrentPostIndex(nextPostIndex);
-      router.push(`/${nextPostSlug}`); // ไปหน้าต่อไป
     } else {
       // ถ้าเป็นโพสต์สุดท้ายในลิสต์
       const htmlContent = `
@@ -184,19 +228,6 @@ export default function Post({ ...props }) {
       <p>สามารถติดตาม ${props.post.pages_en} ได้ทุกวัน ${props.post.pages_status_showing}</p>
     `;
       popup.message(htmlContent);
-    }
-  };
-
-  const goToPrevPost = () => {
-    if (currentPostIndex == 0) {
-      // ถ้าเป็นโพสต์แรกในลิสต์
-      const routerSeries = `/series/${props.post.pages_slug}`;
-      router.push(routerSeries); // ไปหน้า series:slug
-    } else {
-      const prevPostIndex = currentPostIndex - 1;
-      const prevPostSlug = props.list_ep[prevPostIndex].posts_slug;
-      setCurrentPostIndex(prevPostIndex);
-      router.push(`/${prevPostSlug}`); // ไปหน้าก่อนหน้า
     }
   };
 
@@ -259,12 +290,7 @@ export default function Post({ ...props }) {
                 className={`fixed bottom-2 left-0  z-50 w-screen  p-3 transition-all duration-300 ease-in-out delay-300 flex justify-center items-center`}
               >
                 <div className="w-[300px] h-[50px] bg-color_dark rounded-full flex items-center justify-around shadow-xl shadow-[#434343]">
-                  <div className="prev">
-                    <FaAngleLeft
-                      className="text-color_white text-[20px] delay-1000 ease-out cursor-pointer"
-                      onClick={goToPrevPost}
-                    />
-                  </div>
+                  <div className="prev">{PrevButton()}</div>
                   <div className="favorite">
                     {info.favorite ? (
                       <FaHeart
@@ -315,12 +341,7 @@ export default function Post({ ...props }) {
                       // create function onclick scroll to top
                     />
                   </div>
-                  <div className="next">
-                    <FaAngleRight
-                      className="text-color_white text-[20px]  delay-1000 ease-out cursor-pointer"
-                      onClick={goToNextPost}
-                    />
-                  </div>
+                  <div className="next">{NextButton()}</div>
                 </div>
 
                 {/* <div className="flex w-full justify-around items-center mt-3">

@@ -126,9 +126,7 @@ export default function Home({ ...props }) {
 
   return (
     <>
-      <NextSeo
-        
-        />
+      <NextSeo />
       <Layer>
         <section>
           <div className="notify w-full bg-site_color">
@@ -148,7 +146,7 @@ export default function Home({ ...props }) {
                   </span>
                 </h2>
               </div>
-              <div className="poppular-content grid grid-cols-3 md:0grid-cols-6">
+              <div className="poppular-content grid grid-cols-3 md:grid-cols-6">
                 {props.poppular.map((pages: any, i: number) => {
                   return (
                     <div
@@ -156,7 +154,7 @@ export default function Home({ ...props }) {
                       key={i}
                     >
                       <Link href={`/series/${pages.pages_slug}`}>
-                        <div className="poppular-item-img h-[220px] w-[160px] relative shadow-md">
+                        <div className="poppular-item-img h-[150px] w-[110px] md:h-[220px] md:w-[160px] relative shadow-md">
                           <Image
                             src={`${config.CDN_URL}` + pages.pages_thumbnail}
                             fill={true}
@@ -192,7 +190,7 @@ export default function Home({ ...props }) {
                   </span>
                 </h3>
               </div>
-              <div className="update_new-content grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-10 px-1">
+              <div className="update_new-content grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-10">
                 {displayedPages.map((pages: any, i: number) => {
                   return (
                     <Poster

@@ -132,7 +132,7 @@ export default function Page({ ...props }: any) {
                 </span>
               </div>
               <div className="ep my-3">
-                <div className="ep_img relative w-full h-[100px] md:w-[400px] md:h-[100px]">
+                <div className="ep_img relative w-full h-[120px] md:w-[400px] md:h-[130px]">
                   <Image
                     src="/img/logo.png"
                     className=""
