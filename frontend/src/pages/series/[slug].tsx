@@ -29,7 +29,7 @@ export default function Page({ ...props }: any) {
         }));
       }
     }
-  }, []);
+  }, [props.res_page.pages_slug]);
 
   const handlefavoriteclick = () => {
     const favoriteStatus = localStorage.getItem("favorite");

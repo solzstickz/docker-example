@@ -160,12 +160,13 @@ export default function Favorite() {
                       <div className="items px-1">
                         <Link href={`/series/${pages.pages_slug}`}>
                           <div className="update_new-item flex flex-col relative mx-auto min-w-[160px] md:max-w-[200px] hover:animate-pulse transition-all ease-out delay-300  dark:text-text_color text-color_dark_gray hover:text-site_color shadow-2xl rounded-md hover:border-none">
-                            <div className="update_new-item-img min-h-[230px] md:w-[200px] md:h-[280px] w-full relative">
+                            <div className="update_new-item-img min-h-[230px] max-h-[230px] overflow-hidden md:w-[200px] md:h-[280px] w-full relative">
                               <Image
                                 src={`${config.CDN_URL}${pages.pages_thumbnail}`}
-                                fill={true}
                                 className="mx-auto rounded-tl-md rounded-tr-md"
-                                quality={1}
+                                quality={100}
+                                width={1000}
+                                height={1000}
                                 alt={pages.pages_title}
                               />
                               <div
@@ -196,7 +197,7 @@ export default function Favorite() {
                             </div>
                             <div className="last_ep flex justify-center items-center text-center w-full mb-4">
                               <Link
-                                className=" w-5/6  text-color_white justify-between mx-auto px-4 py-2 text-xl font-medium leading-5 text-white transition-colors duration-150 bg-site_color rounded-lg active:bg-site_color hover:bg-site_color focus:outline-none focus:shadow-outline-bg-site_color"
+                                className=" w-5/6  text-color_white justify-between mx-auto px-1 py-2 text-md font-medium leading-5  transition-colors duration-150 bg-site_color rounded-lg active:bg-site_color hover:bg-site_color focus:outline-none focus:shadow-outline-bg-site_color"
                                 href={`/series/${pages.pages_slug}`}
                               >
                                 รับชมได้ทุกวัน {pages.pages_status_showing}
@@ -210,7 +211,7 @@ export default function Favorite() {
                             handleUnfavoriteClick(pages.pages_slug)
                           }
                         >
-                          <button className=" w-5/6  text-color_white justify-between mx-auto px-4 py-2 text-xl font-medium leading-5 text-white transition-colors duration-150 bg-color_red rounded-lg active:bg-color_red hover:bg-color_red focus:outline-none focus:shadow-outline-bg-color_red">
+                          <button className=" w-5/6  text-color_white justify-between mx-auto px-1 py-2 text-xl font-medium leading-5  transition-colors duration-150 bg-color_red rounded-lg active:bg-color_red hover:bg-color_red focus:outline-none focus:shadow-outline-bg-color_red">
                             ลบ
                           </button>
                         </div>
