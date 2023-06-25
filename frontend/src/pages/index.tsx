@@ -150,19 +150,21 @@ export default function Home({ ...props }) {
                 {props.poppular.map((pages: any, i: number) => {
                   return (
                     <div
-                      className="poppular-item mx-auto flex col relative max-w-[160px] hover:animate-pulse"
+                      className="poppular-item mx-auto flex col relative ] max-w-[160px] hover:animate-pulse"
                       key={i}
                     >
                       <Link href={`/series/${pages.pages_slug}`}>
-                        <div className="poppular-item-img h-[150px] w-[110px] md:h-[220px] md:w-[160px] relative shadow-md">
+                        <div className="poppular-item-img h-[150px] w-[110px] md:h-[220px] md:w-[160px] relative shadow-md overflow-hidden">
                           <Image
                             src={`${config.CDN_URL}` + pages.pages_thumbnail}
-                            fill={true}
+                            quality={100}
+                            width={1000}
+                            height={1000}
                             className="mx-auto rounded-md shadow-md"
                             alt={pages.pages_title}
                           />
 
-                          <div className="poppular-status absolute w-[30px] h-[40px] left-5 bg-site_color shadow-2xl rounded-b-md">
+                          <div className="poppular-status absolute w-[30px] h-[40px] top-0 left-5 bg-site_color shadow-2xl rounded-b-md">
                             <p className="text-2xl text-color_white text-center font-bold p-1">
                               {i + 1}
                             </p>

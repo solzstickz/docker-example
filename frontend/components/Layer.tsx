@@ -32,20 +32,20 @@ export default function Layer({ children, ...props }: Props) {
   //! scroll
 
   const set_theme = () => {
-    // if (
-    //   localStorage.theme === "dark" ||
-    //   (!("theme" in localStorage) &&
-    //     window.matchMedia("(prefers-color-scheme: dark)").matches)
-    // ) {
-    document.documentElement.classList.add("dark");
-    // } else {
-    //   document.documentElement.classList.remove("dark");
-    // }
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
 
     // Whenever the user explicitly chooses light mode
     // localStorage.theme = "light";
 
-    // // Whenever the user explicitly chooses dark mode
+    // Whenever the user explicitly chooses dark mode
     // localStorage.theme = "dark";
 
     // Whenever the user explicitly chooses to respect the OS preference
@@ -55,9 +55,11 @@ export default function Layer({ children, ...props }: Props) {
     if (themes === "dark") {
       setThemes("light");
       document.documentElement.classList.remove("dark");
+      localStorage.theme = "light";
     } else {
       setThemes("dark");
       document.documentElement.classList.add("dark");
+      localStorage.theme = "dark";
     }
   };
   useEffect(() => {
@@ -91,7 +93,14 @@ export default function Layer({ children, ...props }: Props) {
           </div>
           <div className="w-auto md:w-1/4">
             <Link href="/">
-              <Image src="/img/logo.png" width={300} height={300} alt="logo" />
+              <Image
+                src="/img/logo.png"
+                width={300}
+                height={300}
+                alt="logo"
+                priority={true}
+                quality={100}
+              />
             </Link>
           </div>
           <div
@@ -241,7 +250,15 @@ export default function Layer({ children, ...props }: Props) {
             {config.SITE_DOMAIN} 2023 | {config.SITE_NAME} – มังงะแปลไทย
             เว็บอ่านมังงะ มังฮวา การ์ตูนแปลไทย ออนไลน์
           </p>
-          <Image src="/img/discord.webp" width={300} height={300} alt="logo" />
+          <div className="discord w-auto h-auto">
+            <Image
+              src="/img/discord.webp"
+              width={100}
+              height={100}
+              alt="Discord Logo"
+              style={{ width: "auto" }}
+            />
+          </div>
           <p className="text-text_color text-2xl font-bold">
             {config.SITE_NAME} เว็บ อ่านมังงะแปลไทย อ่านการ์ตูนแปลไทย 24 ชั่วโมง
           </p>

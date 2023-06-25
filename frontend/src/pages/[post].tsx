@@ -26,15 +26,6 @@ import moment from "moment-timezone";
 import { useState, useEffect } from "react";
 import { Router, useRouter } from "next/router";
 import Link from "next/link";
-interface post {
-  posts_id: number;
-  posts_slug: string;
-  pages_id: number;
-  posts_ep: number;
-  posts_detail: {};
-  posts_create: Date;
-  posts_views: number;
-}
 
 export default function Post({ ...props }) {
   const [nav_ep, setNav_ep] = useState(false);
@@ -42,7 +33,7 @@ export default function Post({ ...props }) {
   const [info, setInfo] = useState({
     favorite: false,
   });
-  const [currentPostIndex, setCurrentPostIndex] = useState(props.post.posts_ep);
+  const [currentPostIndex, setCurrentPostIndex] = useState(props.current_post);
   const [maxPosts, setMaxPosts] = useState(props.list_ep.length);
   const [minPosts, setMinPosts] = useState(() => props.list_ep[0].posts_ep);
   const router = useRouter();
@@ -119,7 +110,7 @@ export default function Post({ ...props }) {
         }));
       }
     }
-  }, []);
+  }, [props.post]);
 
   const handlefavoriteclick = () => {
     const favoriteStatus = localStorage.getItem("favorite");
@@ -168,7 +159,7 @@ export default function Post({ ...props }) {
   //! update current post index
   useEffect(() => {
     setCurrentPostIndex(props.current_post);
-  }, [router.query.post]);
+  }, [props.current_post]);
 
   const NextButton = () => {
     const nextPostIndex = currentPostIndex + 1;
@@ -387,7 +378,7 @@ export default function Post({ ...props }) {
               {props.post.posts_detail.map((images: any, i: number) => {
                 return (
                   <div
-                    className="relative mx-auto w-full h-full"
+                    className="relative mx-auto w-full h-full cursor-pointer"
                     key={i}
                     onClick={() => setNav_control(!nav_control)}
                   >
@@ -395,9 +386,9 @@ export default function Post({ ...props }) {
                       src={`${config.CDN_URL}${images.url}`}
                       alt={images.alt}
                       width={1000}
-                      height={1000}
+                      height={1500}
                       // priority={true}
-                      quality={1}
+                      quality={100}
                     />
                   </div>
                 );

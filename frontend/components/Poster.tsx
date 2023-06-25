@@ -7,14 +7,15 @@ export default function Poster({ ...props }) {
   return (
     <>
       <div className="items px-1">
-        <div className="update_new-item flex flex-col relative mx-auto min-w-[160px] md:max-w-[200px] hover:animate-pulse transition-all ease-out delay-300  dark:text-text_color text-color_dark_gray hover:text-site_color shadow-2xl rounded-md hover:border-none">
+        <div className="update_new-item flex flex-col relative mx-auto   md:max-w-[200px] hover:animate-pulse transition-all ease-out delay-300  dark:text-text_color text-color_dark_gray hover:text-site_color shadow-2xl rounded-md hover:border-none">
           <Link href={`/series/${props.pages_slug}`}>
-            <div className="update_new-item-img min-h-[230px] md:w-[200px] md:h-[280px] w-full relative">
+            <div className="update_new-item-img min-h-[230px] max-h-[230px] overflow-hidden md:w-[200px] md:h-[280px] w-full relative">
               <Image
                 src={`${config.CDN_URL}${props.pages_thumbnail}`}
-                fill={true}
                 className="mx-auto rounded-tl-md rounded-tr-md"
-                quality={1}
+                quality={100}
+                width={1000}
+                height={1000}
                 alt={props.pages_title}
               />
               <div
