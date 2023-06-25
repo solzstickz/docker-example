@@ -184,7 +184,7 @@ export default function Post({ ...props }) {
       );
     } else {
       return (
-        <div onClick={CheckNextPost}>
+        <div onClick={goToNextPost}>
           <FaAngleRight className="text-color_white text-[20px]  delay-1000 ease-out cursor-pointer" />
         </div>
       );
@@ -192,6 +192,20 @@ export default function Post({ ...props }) {
 
     // กรณีที่ไม่มีโพสต์ถัดไป
   };
+
+  const goToNextPost = () => {
+    if (currentPostIndex < maxPosts - 1) {
+    } else {
+      // ถ้าเป็นโพสต์สุดท้ายในลิสต์
+      const htmlContent = `
+      <img src="/img/logo.png" alt="logo" width="100%" height="100%">
+      <p className="text-2xl">โปรดติดตามตอนต่อไปที่ ${config.SITE_NAME}</p>
+      <p>สามารถติดตาม ${props.post.pages_en} ได้ทุกวัน ${props.post.pages_status_showing}</p>
+    `;
+      popup.message(htmlContent);
+    }
+  };
+
   const PrevButton = () => {
     if (currentPostIndex === 0) {
       // ถ้าเป็นโพสต์แรกในลิสต์
@@ -218,18 +232,6 @@ export default function Post({ ...props }) {
       );
     }
   };
-  const CheckNextPost = () => {
-    if (currentPostIndex < maxPosts - 1) {
-    } else {
-      // ถ้าเป็นโพสต์สุดท้ายในลิสต์
-      const htmlContent = `
-      <img src="/img/logo.png" alt="logo" width="100%" height="100%">
-      <p className="text-2xl">โปรดติดตามตอนต่อไปที่ ${config.SITE_NAME}</p>
-      <p>สามารถติดตาม ${props.post.pages_en} ได้ทุกวัน ${props.post.pages_status_showing}</p>
-    `;
-      popup.message(htmlContent);
-    }
-  };
 
   const ep_list = () => {
     let charp_ep = props.list_ep.map((item: any, i: number) => (
@@ -245,6 +247,7 @@ export default function Post({ ...props }) {
     ));
     return charp_ep.reverse();
   };
+
   return (
     <>
       <Layer>
@@ -384,17 +387,17 @@ export default function Post({ ...props }) {
               {props.post.posts_detail.map((images: any, i: number) => {
                 return (
                   <div
-                    className="relative mx-auto w-full h-auto"
+                    className="relative mx-auto w-full h-full"
                     key={i}
                     onClick={() => setNav_control(!nav_control)}
                   >
                     <Image
                       src={`${config.CDN_URL}${images.url}`}
                       alt={images.alt}
-                      width={100}
-                      height={100}
-                      layout="responsive"
-                      objectFit="contain"
+                      width={1000}
+                      height={1000}
+                      // priority={true}
+                      quality={1}
                     />
                   </div>
                 );

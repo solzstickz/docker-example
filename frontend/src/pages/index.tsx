@@ -131,7 +131,7 @@ export default function Home({ ...props }) {
         <section>
           <div className="notify w-full bg-site_color">
             <p className="text-center text-3xl text-color_white">
-              {config.SITE_NAME} อ่านการ์ตูนออนไลน์ อ่านมังงะ มัง งะ อ่านการ์ตูน
+              {config.SITE_NAME} อ่านการ์ตูนออนไลน์ อ่านมังงะ
             </p>
           </div>
         </section>
