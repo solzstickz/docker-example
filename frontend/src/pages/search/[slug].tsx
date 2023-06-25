@@ -109,7 +109,7 @@ export default function Search_slug({ ...props }) {
                   <span className="text-color_white"> {props.keyword}</span>
                 </h2>
               </div>
-              <div className="update_new-content grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-10">
+              <div className="update_new-content grid grid-cols-2  md:grid-cols-3 gap-1  lg:grid-cols-5">
                 {props.search.map((pages: any, i: number) => {
                   return (
                     <Poster

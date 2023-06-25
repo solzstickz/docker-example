@@ -23,13 +23,11 @@ export default function Tags_index({ ...props }) {
     const endIndex = startIndex + itemsPerPage;
     const pagesToDisplay = props.tags.slice(startIndex, endIndex);
     setDisplayedPages(pagesToDisplay);
-
   }, [props.tags, currentPage, itemsPerPage]);
 
   // ฟังก์ชันเปลี่ยนหน้า
   const changePage = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-
 
     // เพิ่มโค้ดด้านล่างเพื่อให้หน้าปัจจุบันแสดงตรงตามหน้าที่คลิกเลือก
     setDisplayedPages(
@@ -111,7 +109,7 @@ export default function Tags_index({ ...props }) {
                   <span className="text-color_white"> {props.keyword}</span>
                 </h2>
               </div>
-              <div className="update_new-content grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-10">
+              <div className="update_new-content grid grid-cols-2  md:grid-cols-3 gap-1  lg:grid-cols-5">
                 {props.tags.map((pages: any, i: number) => {
                   return (
                     <Poster

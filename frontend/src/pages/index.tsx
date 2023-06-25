@@ -131,7 +131,7 @@ export default function Home({ ...props }) {
         <section>
           <div className="notify w-full bg-site_color">
             <p className="text-center text-3xl text-color_white">
-              ยินดีต้อนรับเข้าสู่เว็บไซต์
+              {config.SITE_NAME} อ่านการ์ตูนออนไลน์ อ่านมังงะ มัง งะ อ่านการ์ตูน
             </p>
           </div>
         </section>
@@ -146,7 +146,7 @@ export default function Home({ ...props }) {
                   </span>
                 </h2>
               </div>
-              <div className="poppular-content grid grid-cols-3 md:grid-cols-6">
+              <div className="poppular-content grid grid-cols-3 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
                 {props.poppular.map((pages: any, i: number) => {
                   return (
                     <div
@@ -190,7 +190,7 @@ export default function Home({ ...props }) {
                   </span>
                 </h3>
               </div>
-              <div className="update_new-content grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-10">
+              <div className="update_new-content grid grid-cols-2  md:grid-cols-3 gap-1  lg:grid-cols-5">
                 {displayedPages.map((pages: any, i: number) => {
                   return (
                     <Poster
