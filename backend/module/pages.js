@@ -3,20 +3,26 @@ const router = express.Router();
 const moment = require('moment-timezone');
 const pool = require("../config/mysql");
 const uploads = require("../middleware/uploads");
+const found_slug = require('./found_slug');
 require("dotenv").config();
 
 
 
 module.exports = {
     async create_pages(req,res) {
+        const check_slug = await found_slug.found_pages_slug(req.body.pages_slug);
+        console.log(check_slug);
         let reqbody_tags = await req.body.pages_tags;
         let reqbody_pages = await req.body;
         console.log(reqbody_pages);
         delete reqbody_pages.pages_tags;
-        const formatdatetime = "YYYY-MM-DD HH:mm:ss"
-        const formatdateyear = "YYYY"
+        const formatdatetime = "YYYY-MM-DD HH:mm:ss";
+        const formatdateyear = "YYYY";
         reqbody_pages.pages_last_update = moment().tz('Asia/Bangkok').format(formatdatetime);
         reqbody_pages.pages_publish = moment().tz('Asia/Bangkok').format(formatdateyear);
+        if(check_slug.status == true){
+          res.status(201).json({ message: "Pages already exist" });
+        }else{
           pool.query(`INSERT INTO pages set ?`,[reqbody_pages], async (err, result) => {
             try {
               if (err) {
@@ -45,7 +51,7 @@ module.exports = {
                                 res.status(500).json({ message: "Status Mysql Update img_found Error" });
                               }else{
                                 if (result_img_found.affectedRows > 0){
-                                  res.status(200).json({ message : "Status Update Success"});
+                                  res.status(200).json({ message : "Status Insert Success"});
                                 }else{
                                   res.status(201).json({ message: "Status Update img_found Error" });
                                 }
@@ -73,6 +79,7 @@ module.exports = {
               res.status(500).json({ message: "Internal Server Error" });
             }
           });
+        }
     },
 
     async slug_pages(req,res){
@@ -173,6 +180,8 @@ module.exports = {
     },
 
     async edit_pages(req,res){
+        const check_slug = await found_slug.found_pages_slug(req.body.pages_slug);
+        console.log(check_slug);
         let reqbody_tags = await req.body.pages_tags;
         let reqbody_pages = await req.body;
         const pages_id = await reqbody_pages.pages_id;
@@ -182,6 +191,9 @@ module.exports = {
         delete reqbody_pages.pages_tags;
         reqbody_pages.pages_last_update = moment().tz('Asia/Bangkok').format(formatdatetime);
         reqbody_pages.pages_publish = moment().tz('Asia/Bangkok').format(formatdateyear);
+        if(check_slug.status == true && check_slug.pages_id != pages_id){
+          res.status(201).json({ message: "Pages already exist" });
+        }else{
           pool.query(`UPDATE pages set ? WHERE pages_id = ?`,[reqbody_pages,pages_id], async (err, result_pages) => {
             try {
               if (err) {
@@ -246,6 +258,7 @@ module.exports = {
               res.status(500).json({ message: "Internal Server Error" });
             }
           });
+        }
     }
 
 };

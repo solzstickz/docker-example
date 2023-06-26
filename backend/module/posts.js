@@ -2,11 +2,17 @@ const express = require("express");
 const router = express.Router();
 const moment = require("moment-timezone");
 const pool = require("../config/mysql");
+const found_slug = require('./found_slug');
 require("dotenv").config();
 
 module.exports = {
   async create_posts(req, res) {
     let reqbody = await req.body;
+    const check_slug = await found_slug.found_posts_slug(req.body.posts_slug);
+    console.log(check_slug);
+    if(check_slug.status === true) {
+      res.status(201).json({ message: "Posts already exist" });
+    }else{
     const pages_slug = req.body.pages_slug;
     const posts_detail = req.body.posts_detail;
     delete reqbody.pages_slug;
@@ -146,115 +152,122 @@ module.exports = {
         }
       }
     );
+    }
   },
   async edit_posts(req, res) {
     let data = await req.body;
     const posts_id = await data.posts_id;
-    const formatdatetime = "YYYY-MM-DD HH:mm:ss";
-    const posts_detail = req.body.posts_detail;
-    data.posts_create = moment().tz("Asia/Bangkok").format(formatdatetime);
-    for (i in data.posts_detail) {
-      let alt = `${data.posts_slug}-ตอนที่-${data.posts_ep}-${data.posts_detail[i].image_no}`;
-      data.posts_detail[i].alt = alt;
-    }
-    data.posts_detail = JSON.stringify(data.posts_detail);
-    delete data.posts_id;
-    pool.query(
-      `UPDATE posts set ? WHERE posts_id = ?`,
-      [data, posts_id],
-      async (err, result) => {
-        try {
-          if (err) {
-            console.log("posts/:slug" + err);
-            res
-              .status(500)
-              .json({ message: "Internal Mysql Posts Server Error" });
-          } else {
-            if (result.changedRows > 0) {
-              console.log("Status Update Posts Success");
-              pool.query(
-                `UPDATE pages set pages_last_update = ?, pages_last_ep = ? WHERE pages_id = ?`,
-                [data.posts_create, data.posts_ep, data.pages_id],
-                async (err, result) => {
-                  try {
-                    if (err) {
-                      console.log("posts/:slug" + err);
-                      res
-                        .status(500)
-                        .json({ message: "Internal Mysql Pages Server Error" });
-                    } else {
-                      if (result.changedRows > 0) {
-                          let countcheck = 0;
-                          console.log(posts_detail.length);
-                          for(x in posts_detail){
-                            let data_for = {
-                              fk_pages_posts_id: posts_id,
-                              type: 2,
-                              description: `slug->>${data.posts_slug}->>posts_image_รูปที่_${posts_detail[x].image_no}_date->>${data.posts_create}`,
-                            };
-                            console.log(data_for);
-                            pool.query(
-                              `UPDATE img_found set ? WHERE url = ?`,
-                              [data_for, posts_detail[x].url],
-                              async (err, result_img_found) => {
-                                try {
-                                  if (err) {
-                                    console.log(
-                                      "Status Mysql Insert Error",
-                                      err
-                                    );
-                                    res.status(500).json({
-                                      message:
-                                        "Status Mysql Update img_found Error",
-                                    });
-                                  } else {
-                                    countcheck ++;
-                                    if (
-                                      result_img_found.affectedRows > 0
-                                    ) {
-                                      if (countcheck == posts_detail.length) {
-                                        res
-                          .status(200)
-                          .json({ message: "Status Posts Update Success" });
-                                      }
-                                    } else {
-                                      res.status(201).json({
-                                        message:
-                                          "Status Update img_found Error",
-                                      });
-                                    }
-                                  }
-                                } catch (err) {
-                                  console.log(err);
-                                  res.status(500).json({
-                                    message: "Internal Server Error",
-                                  });
-                                }
-                              }
-                            );
-                          }
-                      } else {
-                        res
-                          .status(201)
-                          .json({ message: "Pages Update Not Found !" });
-                      }
-                    }
-                  } catch (err) {
-                    console.log(err);
-                    res.status(500).json({ message: "Internal Server Error" });
-                  }
-                }
-              );
-            } else {
-              res.status(201).json({ message: "Posts Url Not Found !" });
-            }
-          }
-        } catch (err) {
-          console.log(err);
-          res.status(500).json({ message: "Internal Server Error" });
-        }
+    const check_slug = await found_slug.found_posts_slug(data.posts_slug);
+    console.log(check_slug);
+    if(check_slug.status == true && check_slug.posts_id != posts_id) {
+      res.status(201).json({ message: "Posts already exist" });
+    }else{
+      const formatdatetime = "YYYY-MM-DD HH:mm:ss";
+      const posts_detail = req.body.posts_detail;
+      data.posts_create = moment().tz("Asia/Bangkok").format(formatdatetime);
+      for (i in data.posts_detail) {
+        let alt = `${data.posts_slug}-ตอนที่-${data.posts_ep}-${data.posts_detail[i].image_no}`;
+        data.posts_detail[i].alt = alt;
       }
-    );
+      data.posts_detail = JSON.stringify(data.posts_detail);
+      delete data.posts_id;
+      pool.query(
+        `UPDATE posts set ? WHERE posts_id = ?`,
+        [data, posts_id],
+        async (err, result) => {
+          try {
+            if (err) {
+              console.log("posts/:slug" + err);
+              res
+                .status(500)
+                .json({ message: "Internal Mysql Posts Server Error" });
+            } else {
+              if (result.changedRows > 0) {
+                console.log("Status Update Posts Success");
+                pool.query(
+                  `UPDATE pages set pages_last_update = ?, pages_last_ep = ? WHERE pages_id = ?`,
+                  [data.posts_create, data.posts_ep, data.pages_id],
+                  async (err, result) => {
+                    try {
+                      if (err) {
+                        console.log("posts/:slug" + err);
+                        res
+                          .status(500)
+                          .json({ message: "Internal Mysql Pages Server Error" });
+                      } else {
+                        if (result.changedRows > 0) {
+                            let countcheck = 0;
+                            console.log(posts_detail.length);
+                            for(x in posts_detail){
+                              let data_for = {
+                                fk_pages_posts_id: posts_id,
+                                type: 2,
+                                description: `slug->>${data.posts_slug}->>posts_image_รูปที่_${posts_detail[x].image_no}_date->>${data.posts_create}`,
+                              };
+                              console.log(data_for);
+                              pool.query(
+                                `UPDATE img_found set ? WHERE url = ?`,
+                                [data_for, posts_detail[x].url],
+                                async (err, result_img_found) => {
+                                  try {
+                                    if (err) {
+                                      console.log(
+                                        "Status Mysql Insert Error",
+                                        err
+                                      );
+                                      res.status(500).json({
+                                        message:
+                                          "Status Mysql Update img_found Error",
+                                      });
+                                    } else {
+                                      countcheck ++;
+                                      if (
+                                        result_img_found.affectedRows > 0
+                                      ) {
+                                        if (countcheck == posts_detail.length) {
+                                          res
+                            .status(200)
+                            .json({ message: "Status Posts Update Success" });
+                                        }
+                                      } else {
+                                        res.status(201).json({
+                                          message:
+                                            "Status Update img_found Error",
+                                        });
+                                      }
+                                    }
+                                  } catch (err) {
+                                    console.log(err);
+                                    res.status(500).json({
+                                      message: "Internal Server Error",
+                                    });
+                                  }
+                                }
+                              );
+                            }
+                        } else {
+                          res
+                            .status(201)
+                            .json({ message: "Pages Update Not Found !" });
+                        }
+                      }
+                    } catch (err) {
+                      console.log(err);
+                      res.status(500).json({ message: "Internal Server Error" });
+                    }
+                  }
+                );
+              } else {
+                res.status(201).json({ message: "Posts Url Not Found !" });
+              }
+            }
+          } catch (err) {
+            console.log(err);
+            res.status(500).json({ message: "Internal Server Error" });
+          }
+        }
+      );
+    }
   },
   async delete_posts(req, res) {
     let posts_id = req.params.slug;
