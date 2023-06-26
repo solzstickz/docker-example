@@ -71,7 +71,7 @@ export default function Layer({ children, ...props }: Props) {
       <header className="dark:bg-header_bg_dark bg-header_bg_light">
         <div className="container mx-auto flex justtify-between relative">
           <div className="md:w-1/4 flex items-center justify-center">
-            <div className="nav__bar bg-header_bg_menu rounded-xl mx-2 md:hidden">
+            <div className="nav__bar bg-header_bg_menu rounded-xl mx-2 md:block lg:hidden">
               {nav_status ? (
                 <FaTimes
                   className={`text-color_white text-[40px] p-2 delay-1000 ease-out animate-pulse ${nav_status} ? 'opacity-100' : 'opacity-0'`}
@@ -106,10 +106,10 @@ export default function Layer({ children, ...props }: Props) {
           <div
             className={`${
               nav_status ? "absolute z-[100] w-full h-[400px]" : "hidden"
-            } md:w-2/4 md:flex md:items-center md:justify-center top-[73px] dark:bg-header_bg_dark  bg-header_bg_light `}
+            } lg:flex lg:items-center top-[73px] md:top-[60px] dark:bg-header_bg_dark  bg-header_bg_light `}
           >
             <ul>
-              <li className="flex flex-col md:block gap-4 mt-5 md:mt-0">
+              <li className="flex flex-col lg:flex-row gap-4 mt-5 md:mt-0">
                 <Link
                   href="/"
                   className="bg-site_color py-[8px] px-[15px] rounded-md mx-2 dark:text-color_white text-color_white shadow-md"
@@ -189,11 +189,11 @@ export default function Layer({ children, ...props }: Props) {
         </div>
 
         <div className="banner container mx-auto">
-          <div className="notify w-full bg-site_color">
+          {/* <div className="notify w-full bg-site_color">
             <p className="text-center text-3xl text-color_white">
               ยินดีต้อนรับเข้าสู่เว็บไซต์
             </p>
-          </div>
+          </div> */}
           <div className="banner_img w-full grid grid-cols-2 px-5">
             {/* <Image
               src="/img/hotgraph88.webp"
@@ -245,12 +245,15 @@ export default function Layer({ children, ...props }: Props) {
             มังงะที่ถูกใจ
           </Link>
         </div>
-        <div className="copyright container mx-auto w-5/6 md:max-w-[1080px] flex justify-center flex-col items-center">
+        <div className="copyright container mx-auto w-5/6 md:max-w-[1080px] flex justify-center flex-col items-center text-center">
           <p className="text-text_color">
-            {config.SITE_DOMAIN} 2023 | {config.SITE_NAME} – มังงะแปลไทย
-            เว็บอ่านมังงะ มังฮวา การ์ตูนแปลไทย ออนไลน์
+            เว็บไซต์อ่านการ์ตูนออนไลน์ ที่รวบรวมการ์ตูนและมังงะจากทั่วโลก
+            ไม่ว่าจะเป็นมังงะญี่ปุ่น การ์ตูนเกาหลี มังงะเกาหลี มังฮวา Manhwa
+            มังฮัว และมังงะจีน ซึ่งสามารถอ่านได้ทุกหมวดหมู่ ทุกแนวตั้งแต่
+            ต่างโลก เกิดใหม่ ระบบ แฟนตาซี เวทมนตร์ ดราม่า Yaoi Isekai BL
+            โรแมนติก จอมยุทธ์ มูริม และอื่นๆอีกมากมาย
           </p>
-          <div className="discord w-auto h-auto">
+          {/* <div className="discord w-auto h-auto">
             <Image
               src="/img/discord.webp"
               width={100}
@@ -258,17 +261,31 @@ export default function Layer({ children, ...props }: Props) {
               alt="Discord Logo"
               style={{ width: "auto" }}
             />
-          </div>
+          </div> */}
+          <h3 className="text-text_color text-2xl font-bold">
+            {config.SITE_NAME} อ่านการ์ตูนแปลไทย
+            ที่มั่นใจได้ว่าคุณภาพดีและอัพเดทตอนใหม่ก่อนใคร
+          </h3>
+          <p className="text-center text-text_color text-xl my-3">
+            Shiba Manga ยังมีการอัพเดทตอนใหม่ๆก่อนใคร
+            ทำให้ผู้อ่านไม่พลาดเรื่องราวสำคัญได้
+            เนื่องจากไม่ต้องลงแอพพลิเคชั่นหรือซื้อเหรียญ
+            ผู้อ่านสามารถอ่านได้ฟรีตลอด 24 ชั่วโมง
+            ไม่ว่าคุณจะเป็นผู้ชื่นชอบการ์ตูนและมังงะแนวใด ที่ Shiba Manga
+            จะมีเรื่องราวให้คุณได้อ่านทุกเรื่อง ไม่ว่าจะเป็น Naruto, One Piece,
+            Attack on Titan, Fairy Tail, Bleach, Dragon Ball, My Hero Academia,
+            Demon Slayer: Kimetsu no Yaiba และอีกมากมาย
+          </p>
           <p className="text-text_color text-2xl font-bold">
-            {config.SITE_NAME} เว็บ อ่านมังงะแปลไทย อ่านการ์ตูนแปลไทย 24 ชั่วโมง
+            อ่านการ์ตูนแปลไทย
+            ด้วยเว็บอ่านการ์ตูนยอดนิยมที่มีทีมงานคุณภาพแปลภาษาไทย
           </p>
           <p className="text-center text-text_color text-xl my-3">
-            เว็บ {config.SITE_NAME} เว็บอ่านมังงะแปลไทย มังฮวาแปลไทย
-            มังฮาวแปลไทย การ์ตูนแปลไทย อ่านนิยาย การ์ตูนจีน การ์ตูนญี่ปุ่น
-            อ่านฟรี 24 ชั่วโมง อัพเดตตลอด อ่าน Magic emperror อ่าน The Great
-            Mage Returns After 4000 Years อ่าน Nano machine อ่าน True Education
-            อ่าน Escort Warrior อ่าน one piece อ่าน พงศวดารภูเทพ อ่าน peerless
-            dad อ่านได้ทั้ง คอมพิวเตอร์ มือถือ android iphone ทุกระบบ
+            สุดท้ายนี้
+            การ์ตูนทั้งหมดบนเว็บไซต์นี้เป็นเพียงตัวอย่างของการ์ตูนต้นฉบับเท่านั้น
+            อาจมีข้อผิดพลาดด้านภาษา ชื่อตัวละคร และเนื้อเรื่องมากมาย
+            สำหรับเวอร์ชันดั้งเดิม โปรดซื้อการ์ตูนหากมีให้บริการในเมืองของคุณ
+            หรือไม่ก็มาอ่านฟรี
           </p>
         </div>
       </footer>

@@ -26,7 +26,7 @@ import moment from "moment-timezone";
 import { useState, useEffect } from "react";
 import { Router, useRouter } from "next/router";
 import Link from "next/link";
-
+import { NextSeo } from "next-seo";
 export default function Post({ ...props }) {
   const [nav_ep, setNav_ep] = useState(false);
   const [nav_control, setNav_control] = useState(true);
@@ -241,20 +241,26 @@ export default function Post({ ...props }) {
 
   return (
     <>
+      <NextSeo
+        title={`${props.post.pages_en} ตอนที่ ${props.post.posts_ep} - ${config.SITE_NAME}`}
+        description={`อ่านมังงะ มังฮวา การ์ตูนเรื่อง ${props.post.pages_en} ${props.post.pages_th} ตอนที่ ${props.post.posts_ep} at ${config.SITE_NAME} – มังงะแปลไทย`}
+      />
+
       <Layer>
         <div className="container mx-auto md:max-w-[700px]">
           <div className="content w-full flex justify-center flex-col text-center">
             <div className="title my-3">
-              <h1 className="dark:text-color_white text-5xl font-bold">
-                {props.post.pages_en} ตอนที่ {props.post.posts_ep}
+              <h1 className="dark:text-color_white text-4xl md:text-5xl font-bold">
+                {props.post.pages_en} ตอนที่{" "}
+                {props.post.posts_ep}
               </h1>
             </div>
             <div className="desc my-3">
-              <p className="dark:text-color_gray">
+              <h2 className="dark:text-color_gray px-3">
                 อ่านมังงะ มังฮวา การ์ตูนเรื่อง {props.post.pages_en}{" "}
                 {props.post.pages_th} ตอนที่ {props.post.posts_ep}
-                at SITE_NAME – มังงะแปลไทย
-              </p>
+                at {config.SITE_NAME} – มังงะแปลไทย
+              </h2>
             </div>
 
             <div

@@ -130,9 +130,10 @@ export default function Home({ ...props }) {
       <Layer>
         <section>
           <div className="notify w-full bg-site_color">
-            <p className="text-center text-3xl text-color_white">
-              {config.SITE_NAME} อ่านการ์ตูนออนไลน์ อ่านมังงะ
-            </p>
+            <h1 className="text-center text-3xl text-color_white">
+              เว็บอ่านมังงะ อ่านการ์ตูนแปลไทย อัปเดตตอนล่าสุดใหม่ก่อนใครที่นี่{" "}
+              {config.SITE_NAME}
+            </h1>
           </div>
         </section>
         <section className="container mx-auto md:max-w-[1080px] px-3">
