@@ -10,6 +10,10 @@ const admin = {
   user: "Superuser",
   pass: "Skzqqwwee44$$",
 };
+const author = {
+  user: "Abatukumm",
+  pass: "cadb53c2-f0b2-463c-8af5-68a8641b8571"
+}
 router.get("/", async (req, res) => {});
 
 // router.post("/create_token", async (req, res) => {

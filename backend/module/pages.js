@@ -137,7 +137,7 @@ module.exports = {
                         res.status(500).json({ message: "Status Delete pages Error" });
                       } else {
                         if (result_pages.affectedRows > 0){
-                          pool.query(`UPDATE img_found set type = 0 WHERE fk_pages_posts_id = ?`,[data_value], async (err, result_img_found) => {
+                          pool.query(`UPDATE img_found set type = 0 WHERE fk_pages_posts_id = ? and type = 1`,[data_value], async (err, result_img_found) => {
                             try {
                               if (err) {
                                 console.log("Status Mysql Insert Error",err);
@@ -145,9 +145,9 @@ module.exports = {
                               }else{
                                 if (result_img_found.affectedRows > 0){
                                   // await uploads.uploads_posts_delete(keyname,req,res);
-                                  res.status(200).json({ message : "Status Update Success"});
+                                  res.status(200).json({ message : "Status Update img_found Success"});
                                 }else{
-                                  res.status(201).json({ message: "Status Update img_found Error" });
+                                  res.status(201).json({ message: "Status Update img_found not found" });
                                 }
                               }
                             }catch (err) {

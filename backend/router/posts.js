@@ -72,12 +72,13 @@ router.post('/uploads/posts',uploads.uploads_posts, async function (req, res) {
 router.post('/uploads/delete', async function (req, res) {
   const data = await req.body; 
   let keyname = []
+  let delete_to_db = [];
   for(i in data){
     let name =  data[i].url;
-    keyname.push({Key:name})
+    await keyname.push({Key:name})
+    await delete_to_db.push(name)
   }
-  await console.log(keyname);
-  await uploads.uploads_posts_delete(keyname,req,res);
+  await uploads.uploads_posts_delete(keyname,req,res,delete_to_db);
 });
 
 //! domain.com/pages/create/posts
@@ -119,25 +120,7 @@ router.post("/edit/post", async (req, res) => {
 
 //! domain.com/pages/:slug
 router.post("/delete/:slug", async (req, res) => {
-  let posts_id = req.params.slug;
-  console.log(posts_id);
-  pool.query(`DELETE FROM posts where posts_slug in (?)`,[posts_id], async (err, result) => {
-    try {
-      if (err) {
-        console.log("Status Delete pages Error",err);
-        res.status(500).json({ message: "Status Delete Posts Error" });
-      } else {
-        if (result.affectedRows > 0){
-          res.status(200).json({ message : "Status Delete Posts Success"});
-        }else {
-          res.status(201).json({ message : "Status Delete Posts Not Found"});
-        }
-      }
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: "Internal Server Pages Error" });
-    }
-  });
+  await posts.delete_posts(req, res)
 });
 
 
