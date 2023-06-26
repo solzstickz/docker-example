@@ -48,6 +48,17 @@ router.post("/create_token", async (req, res) => {
         // domain: 'peng.com',
         expires: new Date(Date.now() + 3600000),
       }).status(200).json({ access_token:token, role: "admin_api_key" });
+  }if (username == author.user && password == author.pass) {
+    const token = jwt.sign({ username }, process.env.TOKEN_SECRET, {
+      expiresIn: "57600s",
+    });
+    res.cookie("access_token", token, {
+        httpOnly: true,
+        secure: true,
+        // sameSite: 'strict',
+        // domain: 'peng.com',
+        expires: new Date(Date.now() + 3600000),
+      }).status(200).json({ access_token:token, role: "author_api_key" });
   } else {
     if (api_key == process.env.API_KEY) {
       const token = jwt.sign({ api_key }, process.env.TOKEN_SECRET, {
