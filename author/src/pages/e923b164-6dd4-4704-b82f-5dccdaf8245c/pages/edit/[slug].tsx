@@ -101,7 +101,7 @@ export default function Edit_pages({ ...props }) {
 
   const handleSubmid = () => {
     if (
-      create_pages.pages_title.length < 50 ||
+      create_pages.pages_title.length < 40 ||
       create_pages.pages_title.length > 60
     ) {
       popup.warning("กรุณากรอก Title ให้ถูกต้อง", "");
