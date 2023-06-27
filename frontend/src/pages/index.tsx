@@ -119,35 +119,26 @@ export default function Home({ ...props }) {
     return pageNumbers;
   };
 
-  const handleAddToHomeScreen = () => {
-    if (window.matchMedia("(display-mode: standalone)").matches) {
-      // ผู้ใช้เปิดแอปพลิเคชันจากหน้าโฮมสกรีนแล้ว
-      // ให้ทำตามตัวอย่างที่คุณต้องการ เช่นแสดงข้อความแจ้งเตือนว่า "You're already using the app"
-      console.log("You're already using the app");
-    } else if (window.navigator.standalone === false) {
-      // แสดงตัวเลือกให้ผู้ใช้เพิ่มแอปพลิเคชันลงในหน้าโฮมสกรีน
-      // ตัวอย่างเช่นแสดงปุ่มหรือแสดงข้อความแจ้งเตือน
-      const prompt = confirm(
-        "Do you want to add this app to your home screen?"s
-      );
-      if (prompt) {
-        // ทำการลงทะเบียน Service Worker (หากยังไม่ได้ลงทะเบียน)
-        if ("serviceWorker" in navigator) {
-          navigator.serviceWorker.register("/sw.js");
-        }
-        // เพิ่มลิงก์สร้าง shortcut ของแอปพลิเคชัน
-        const link = document.createElement("link");
-        link.rel = "manifest";
-        link.href = "/manifest.json"; // ระบุ URL ของไฟล์ manifest.json
-        document.head.appendChild(link);
-      }
-    }
-  };
+  // useEffect(() => {
+  //   if ("serviceWorker" in navigator) {
+  //     // Register a service worker hosted at the root of the
+  //     // site using the default scope.
+  //     navigator.serviceWorker.register("/sw.js").then(
+  //       function (registration) {
+  //         console.log("Service worker registration succeeded:", registration);
+  //       },
+  //       /*catch*/ function (error) {
+  //         console.log("Service worker registration failed:", error);
+  //       }
+  //     );
+  //   } else {
+  //     console.log("Service workers are not supported.");
+  //   }
+  // }, []);
 
   return (
     <>
       <NextSeo />
-      <button onClick={handleAddToHomeScreen}> WORKER</button>
       <Layer>
         <section>
           <div className="notify w-full bg-site_color">
