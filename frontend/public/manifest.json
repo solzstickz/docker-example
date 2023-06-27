@@ -2,6 +2,7 @@
   "name": "9tallmanga",
   "short_name": "9tallmanga",
   "description": "9tallmanga เว็บแปล ",
+  "start_url": "/",
   "icons": [
     {
       "src": "/img/icon.png",
