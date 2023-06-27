@@ -31,7 +31,8 @@
     "sharp": "^0.32.1",
     "sweetalert2": "^11.7.12",
     "sweetalert2-react-content": "^5.0.7",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "workbox-precaching": "^7.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",

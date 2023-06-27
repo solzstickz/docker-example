@@ -4,7 +4,7 @@ import fs from "fs";
 import cron from "node-cron";
 import moment from "moment-timezone";
 
-const MAX_URLS = 100;
+const MAX_URLS = 1000;
 const SITEMAP_PATH = "./public/sitemap.xml";
 const SITEMAP_TAGS_PATH = "./public/sitemap_tags.xml";
 const SITEMAP_PAGES_PATH = "./public/sitemap_series.xml";
