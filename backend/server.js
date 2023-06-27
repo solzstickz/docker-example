@@ -31,9 +31,9 @@ const public = require("./router/public");
 //! middleware - token.authenticateToken
 app.use("/uploads", express.static("uploads"));
 app.use("/pages", token.authenticateToken, pages);
-app.use("/posts", posts);
-app.use("/tags", tags);
-app.use("/search", search);
+app.use("/posts", token.authenticateToken, posts);
+app.use("/tags", token.authenticateToken, tags);
+app.use("/search", token.authenticateToken, search);
 app.use("/public", public);
 
 app.use("/auth", auth);
