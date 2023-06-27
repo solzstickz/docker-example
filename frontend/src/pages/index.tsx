@@ -6,6 +6,7 @@ import Poster from "../../components/Poster";
 import axios_client from "../../config/axios_client";
 import config from "../../config/config";
 import { NextSeo } from "next-seo";
+
 interface pages_lastupdate {
   pages_id: number;
   pages_slug: string;
@@ -119,8 +120,7 @@ export default function Home({ ...props }) {
     return pageNumbers;
   };
 
-
-
+ 
   return (
     <>
       <NextSeo />
