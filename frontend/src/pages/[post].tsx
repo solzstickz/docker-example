@@ -251,8 +251,7 @@ export default function Post({ ...props }) {
           <div className="content w-full flex justify-center flex-col text-center">
             <div className="title my-3">
               <h1 className="dark:text-color_white text-4xl md:text-5xl font-bold">
-                {props.post.pages_en} ตอนที่{" "}
-                {props.post.posts_ep}
+                {props.post.pages_en} ตอนที่ {props.post.posts_ep}
               </h1>
             </div>
             <div className="desc my-3">
@@ -266,7 +265,7 @@ export default function Post({ ...props }) {
             <div
               className={`${
                 nav_ep ? "fixed" : "hidden"
-              }  nav__ep flex items-start justify-center z-[30] w-[380px] h-[400px] border-4 border-site_color bg-color_white dark:bg-[#000] md:right-24  bottom-20 right-1 rounded-2xl transition-all duration-300 ease-in-out delay-300 `}
+              }  nav__ep flex items-start justify-center z-[30] w-screen h-[400px] border-4 border-site_color bg-color_white dark:bg-[#000] md:right-24  bottom-20 right-0 rounded-2xl transition-all duration-300 ease-in-out delay-300 `}
             >
               <div className="nav__content flex flex-col w-full">
                 <div className="nav__title py-2 border-b-4 border-site_color dark:text-color_white w-full relative">

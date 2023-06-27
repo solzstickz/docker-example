@@ -1,17 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://frontend.skz.app/tags/popular</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://frontend.skz.app/tags/action</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://frontend.skz.app/tags/adventure</loc>
+    <loc>https://frontend.skz.app/tags/drama</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://frontend.skz.app/tags/fantasy</loc>
+    <loc>https://frontend.skz.app/tags/isekai</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/tags/sport</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/tags/lovecomedy</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -21,7 +36,17 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://frontend.skz.app/tags/popular</loc>
+    <loc>https://frontend.skz.app/tags/school-life</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/tags/fantasy</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/tags/comedy</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

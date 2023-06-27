@@ -16,6 +16,18 @@
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
     </url>
-  
+
+      <url>
+        <loc>https://frontend.skz.app/sitemap-posts-1.xml</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+      <url>
+        <loc>https://frontend.skz.app/sitemap-posts-2.xml</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
     </urlset>
   

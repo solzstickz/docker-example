@@ -1,27 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://frontend.skz.app/series/Pathfinder</loc>
+    <loc>https://frontend.skz.app/series/revenge-of-the-iron-blooded-sword-hound</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://frontend.skz.app/series/chronicles-of-the-demon-faction</loc>
+    <loc>https://frontend.skz.app/series/chainsaw-man</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://frontend.skz.app/series/chronicles-of-the-martial-gods-return</loc>
+    <loc>https://frontend.skz.app/series/one-piece</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://frontend.skz.app/series/reincarnation-of-the-strongest-sword-god</loc>
+    <loc>https://frontend.skz.app/series/hachinan-tte-sore-wa-nai-deshou</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://frontend.skz.app/series/damn-reincarnation</loc>
+    <loc>https://frontend.skz.app/series/return-of-the-flowery-mountain-sect</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/solo-leveling</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/my-hero-academia</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/dorei-tensei-sono-dorei-saikyou-no-moto-ouji-ni-tsuki</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/jigokuraku</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/existence</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/jujutsu-kaisen</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/blue-lock</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/level-up-with-skills</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/control-player</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/start-bound-to-monkey-king</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/the-unique-legend</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/watashi-no-arika</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
