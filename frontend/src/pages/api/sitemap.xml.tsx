@@ -56,7 +56,7 @@ function updateMainSitemap(urls: string[], count: number) {
       <priority>0.8</priority>
     </url>
   `;
-  for (let i = 1; i < count; i++) {
+  for (let i = 1; i <= count; i++) {
     xml += `
       <url>
         <loc>${base_url}sitemap-posts-${i}.xml</loc>

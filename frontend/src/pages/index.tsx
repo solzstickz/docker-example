@@ -1,16 +1,11 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import Head from "next/head";
 import Link from "next/link";
-import { FaMoon } from "react-icons/fa";
 import Layer from "../../components/Layer";
-import moment from "moment";
 import Poster from "../../components/Poster";
 import axios_client from "../../config/axios_client";
-import axios from "axios";
 import config from "../../config/config";
 import { NextSeo } from "next-seo";
-
 interface pages_lastupdate {
   pages_id: number;
   pages_slug: string;

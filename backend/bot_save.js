@@ -3,16 +3,15 @@ const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
 
-const start_ep = 6;
-const end_ep = 55;
-const url =
-  "https://rose-manga.com/damn-reincarnation-%E0%B8%95%E0%B8%AD%E0%B8%99%E0%B8%97%E0%B8%B5%E0%B9%88-";
+const start_ep = 1;
+const end_ep = 189;
+const url = "https://www.oremanga.net/jujutsu-kaisen/jujutsu-kaisen-";
 
-const pages_slug = "damn-reincarnation";
+const pages_slug = "jujutsu-kaise";
 
 const posts_slug = `${pages_slug}-ตอนที่-`;
-const uploadUrl = "http://localhost:7777/posts/uploads/posts";
-const createUrl = "http://localhost:7777/posts/create/post";
+const uploadUrl = "https://load.skz.app/posts/uploads/posts";
+const createUrl = "https://load.skz.app/posts/create/post";
 
 const downloadDirectory = path.join(__dirname, "downloads");
 

@@ -1,3 +1,5 @@
 const axios = require("axios");
-axios.defaults.baseURL = "http://localhost:7777/";
+const config = require("./config");
+require('dotenv').config();
+axios.defaults.baseURL = process.env.API_URL;
 export default axios;
