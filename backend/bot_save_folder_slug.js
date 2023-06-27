@@ -64,7 +64,7 @@ async function saveToEndpoint(ep, imageUrls) {
       continue;
     }
 
-    const imageUrls = await page.$$eval(".reader-area canvas", (images) => {
+    const imageUrls = await page.$$eval(".reader-area img", (images) => {
       return images.map((img) => img.src);
     });
 
