@@ -29,7 +29,7 @@ function MySearchSelect({ onSelectedTagsChange, edit_value }: SearchTagsProps) {
 
   const fetchData = async () => {
     try {
-      const response = await axios_client.post<Tag[]>(`/tags/`);
+      const response = await axios_client.post<Tag[]>(`tags/`);
       setTags(response.data);
       setFilteredTags(response.data);
     } catch (error) {
@@ -62,8 +62,7 @@ function MySearchSelect({ onSelectedTagsChange, edit_value }: SearchTagsProps) {
 
   const handleTagSelect = (tag: Tag) => {
     if (selectedTags.map((t) => t.tags_id).includes(tag.tags_id)) {
-
-      popup.warning("Tag already selected")
+      popup.warning("Tag already selected");
     } else {
       const updatedTags = [...selectedTags, tag];
       setSelectedTags(updatedTags);

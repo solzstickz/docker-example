@@ -1,15 +1,13 @@
 /** @type {import('next').NextConfig} */
 
-
 const withPWA = require("next-pwa")({
   dest: "public",
-  disable: process.env.NODE_ENV === "development",
   register: true,
   sw: "/sw.js",
 });
 
 module.exports = withPWA({
-  reactStrictMode: false,
+  reactStrictMode: true,
 
   images: {
     minimumCacheTTL: 60,
@@ -25,7 +23,6 @@ module.exports = withPWA({
     ],
   },
 });
-
 
 // const nextConfig = {
 //   reactStrictMode: false,

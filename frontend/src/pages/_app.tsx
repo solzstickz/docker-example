@@ -5,7 +5,7 @@ import { DefaultSeo } from "next-seo";
 import { NextSeoProps } from "next-seo/lib/types";
 import Head from "next/head";
 import config from "../../config/config";
-import { useEffect, useState } from "react";
+
 
 const SEOConfig: NextSeoProps = {
   title: `${config.SITE_NAME} อ่านมังงะแปลไทย เว็บอ่านการ์ตูนออนไลน์ Manhua`,
@@ -49,23 +49,6 @@ const SEOConfig: NextSeoProps = {
 };
 
 export default function App({ Component, pageProps }: AppProps) {
-  useEffect(() => {
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker
-          .register("/sw.js")
-          .then((registration) => {
-            console.log("Service Worker registered: ", registration);
-          })
-          .catch((registrationError) => {
-            console.log(
-              "Service Worker registration failed: ",
-              registrationError
-            );
-          });
-      });
-    }
-  }, []);
   return (
     <>
       <Head>
@@ -122,7 +105,6 @@ export default function App({ Component, pageProps }: AppProps) {
           color="#5bbad5"
         />
         <link rel="shortcut icon" href="/favicon.ico" />
-     
 
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:url" content="https://yourdomain.com" />
@@ -150,6 +132,7 @@ export default function App({ Component, pageProps }: AppProps) {
         height={3}
         showOnShallow={true}
       />
+
       <DefaultSeo {...SEOConfig} />
       <Component {...pageProps} />
     </>
