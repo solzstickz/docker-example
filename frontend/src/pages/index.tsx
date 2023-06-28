@@ -260,5 +260,11 @@ export async function getServerSideProps() {
   let fetch_poppular = await axios_client.get(`public/tags/popular`);
   let pages_lastep = await res_lastep.data;
   let poppular = await fetch_poppular.data;
-  return { props: { pages_lastep, poppular } };
+  return {
+    props: {
+      pages_lastep,
+      poppular,
+      revalidate: 60, // เคลือนย้ายคีย์ revalidate ไปอยู่ภายใต้คีย์ props
+    },
+  };
 }

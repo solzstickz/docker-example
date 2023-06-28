@@ -100,7 +100,6 @@ export default function Layer({ children, ...props }: Props) {
                 height={300}
                 alt="logo"
                 priority={true}
-                quality={100}
               />
             </Link>
           </div>
