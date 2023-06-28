@@ -600,10 +600,6 @@ video {
   right: 0px !important;
 }
 
-.right-1 {
-  right: 0.25rem !important;
-}
-
 .right-20 {
   right: 5rem !important;
 }
@@ -856,10 +852,6 @@ video {
 
 .w-\[30px\] {
   width: 30px !important;
-}
-
-.w-\[380px\] {
-  width: 380px !important;
 }
 
 .w-\[40px\] {
