@@ -14,7 +14,7 @@ export default function Poster({ ...props }) {
                 src={`${config.CDN_URL}${props.pages_thumbnail}`}
                 className="mx-auto rounded-tl-md rounded-tr-md"
                 fill
-                sizes="100vw"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 priority={true}
                 alt={props.pages_title}
               />
@@ -39,7 +39,7 @@ export default function Poster({ ...props }) {
                 {props.pages_en}
               </p>
               <span className="text-[16px] text-color_gray">
-                {dayjs(props.pages_last_update).toNow()}
+                {dayjs(props.pages_last_update).fromNow()}
                 {/* {dayjs("2023-06-28T07:18:58.000Z").startOf("day").fromNow()} */}
               </span>
             </div>

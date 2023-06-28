@@ -156,7 +156,8 @@ export default function Home({ ...props }) {
                           <Image
                             src={`${config.CDN_URL}` + pages.pages_thumbnail}
                             fill
-                            sizes="100vw"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            priority={true}
                             className="mx-auto rounded-md shadow-md"
                             alt={pages.pages_title}
                           />
