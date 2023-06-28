@@ -6,6 +6,7 @@ import Poster from "../../components/Poster";
 import axios_client from "../../config/axios_client";
 import config from "../../config/config";
 import { NextSeo } from "next-seo";
+import dayjs from "../../lib/dayjsUtils";
 
 interface pages_lastupdate {
   pages_id: number;
@@ -28,7 +29,7 @@ interface pages_lastupdate {
 
 export default function Home({ ...props }) {
   const [currentPage, setCurrentPage] = useState(1); // หน้าปัจจุบัน
-  const [itemsPerPage, setItemsPerPage] = useState(12); // จำนวนรายการต่อหน้า
+  const [itemsPerPage, setItemsPerPage] = useState(10); // จำนวนรายการต่อหน้า
   const [totalPages, setTotalPages] = useState(0); // จำนวนหน้าทั้งหมด
   const [displayedPages, setDisplayedPages] = useState([]); // รายการหน้าที่จะแสดงในหน้าปัจจุบัน
 
@@ -120,7 +121,6 @@ export default function Home({ ...props }) {
     return pageNumbers;
   };
 
- 
   return (
     <>
       <NextSeo />
@@ -144,7 +144,7 @@ export default function Home({ ...props }) {
                   </span>
                 </h2>
               </div>
-              <div className="poppular-content grid grid-cols-3 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
+              <div className="poppular-content grid grid-cols-3 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
                 {props.poppular.map((pages: any, i: number) => {
                   return (
                     <div
@@ -156,8 +156,8 @@ export default function Home({ ...props }) {
                           <Image
                             src={`${config.CDN_URL}` + pages.pages_thumbnail}
                             quality={100}
-                            width={1000}
-                            height={1000}
+                            width={300}
+                            height={300}
                             className="mx-auto rounded-md shadow-md"
                             alt={pages.pages_title}
                           />

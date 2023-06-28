@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Layer from "../../../components/Layer";
-import Poster from "../../../components/Poster";
-import axios_client from "../../../config/axios_client";
 import config from "../../../config/config";
 import Image from "next/image";
 import Link from "next/link";
-import moment from "moment";
+import dayjs from "../../../lib/dayjsUtils";
 
 type PostDetail = {
   alt: string;
@@ -50,7 +48,7 @@ type Page = {
 
 export default function Favorite() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(12);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   const [displayedPages, setDisplayedPages] = useState<Page[]>([]);
   const [favorite, setFavorite] = useState<Page[]>([]);
@@ -189,11 +187,6 @@ export default function Favorite() {
                               <h3 className="text-2xl font-bold line-clamp-1">
                                 {pages.pages_en}
                               </h3>
-                              <span className="text-[16px] text-color_gray">
-                                {moment(pages.posts_date)
-                                  .startOf("day")
-                                  .fromNow()}
-                              </span>
                             </div>
                             <div className="last_ep flex justify-center items-center text-center w-full mb-4">
                               <Link

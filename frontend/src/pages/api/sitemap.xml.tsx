@@ -2,7 +2,7 @@ import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import fs from "fs";
 import cron from "node-cron";
-import moment from "moment-timezone";
+import dayjs from "../../../lib/dayjsUtils";
 
 const MAX_URLS = 1000;
 const SITEMAP_PATH = "./public/sitemap.xml";
@@ -135,15 +135,9 @@ export default async function sitemapXml(
 
     updateMainSitemap(urls, sitemap_posts);
 
-    console.log(
-      `Sitemaps Build successfully ✅  ${moment()
-        .tz("Asia/Bangkok")
-        .format("HH:mm:ss")}`
-    );
+    console.log(`Sitemaps Build successfully ✅  ${dayjs().toNow(true)}`);
     res.json({
-      message: `Update Sitemap Successfully ✅ at ${moment()
-        .tz("Asia/Bangkok")
-        .format("HH:mm:ss")}`,
+      message: `Update Sitemap Successfully ✅ at ${dayjs().toNow(true)}`,
     });
   } catch (error) {
     console.error("Failed to update sitemaps:", error);
@@ -213,9 +207,8 @@ cron.schedule("* * * * *", async () => {
     updateSitemap(pages, SITEMAP_PAGES_PATH);
 
     console.log(
-      `Sitemaps updated CronJob successfully ✅ at ${moment()
-        .tz("Asia/Bangkok")
-        .format("HH:mm:ss")}`
+      `Sitemaps updated CronJob successfully ✅ at ${dayjs().toNow(true)}
+        `
     );
   } catch (error) {
     console.error("Failed to update sitemaps:", error);

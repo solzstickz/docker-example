@@ -1,6 +1,6 @@
 import React, { use, useState } from "react";
 import Link from "next/link";
-import moment from "moment";
+import dayjs from "../lib/dayjsUtils";
 import Image from "next/image";
 import config from "../config/config";
 export default function Poster({ ...props }) {
@@ -14,8 +14,9 @@ export default function Poster({ ...props }) {
                 src={`${config.CDN_URL}${props.pages_thumbnail}`}
                 className="mx-auto rounded-tl-md rounded-tr-md"
                 quality={100}
-                width={1000}
-                height={1000}
+                width={300}
+                height={300}
+                priority={true}
                 alt={props.pages_title}
               />
               <div
@@ -39,7 +40,8 @@ export default function Poster({ ...props }) {
                 {props.pages_en}
               </p>
               <span className="text-[16px] text-color_gray">
-                {moment(props.posts_date).startOf("day").fromNow()}
+                {dayjs(props.pages_last_update).toNow()}
+                {/* {dayjs("2023-06-28T07:18:58.000Z").startOf("day").fromNow()} */}
               </span>
             </div>
           </Link>
