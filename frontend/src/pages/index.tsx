@@ -155,7 +155,6 @@ export default function Home({ ...props }) {
                         <div className="poppular-item-img h-[150px] w-[110px] md:h-[220px] md:w-[160px] relative shadow-md overflow-hidden">
                           <Image
                             src={`${config.CDN_URL}` + pages.pages_thumbnail}
-                            quality={100}
                             width={300}
                             height={300}
                             className="mx-auto rounded-md shadow-md"
@@ -169,8 +168,8 @@ export default function Home({ ...props }) {
                           </div>
                         </div>
                         <div className="poppular-item-title text-center h-auto relative">
-                          <h3 className="text-2xl dark:text-text_color text-dark_gray line-clamp-1">
-                            {pages.pages_title}
+                          <h3 className="text-2xl dark:text-text_color text-dark_gray line-clamp-1 font-bold">
+                            {pages.pages_en}
                           </h3>
                         </div>
                       </Link>
