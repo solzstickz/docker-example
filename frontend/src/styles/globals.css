@@ -35,3 +35,10 @@ body {
   font-display: swap;
   color: white !important;
 }
+
+#ep_list li a:visited {
+  color: #6c2bd9;
+}
+#ep_list ul a:visited {
+  color: #6c2bd9;
+}

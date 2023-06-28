@@ -179,7 +179,10 @@ export default function Page({ ...props }: any) {
                           key={index}
                           className="dark:bg-header_bg_dark dark:text-color_gray  bg-color_white m-2 p-2 rounded-md dark:hover:bg-site_color dark:hover:text-color_white hover:bg-site_color hover:text-color_white shadow-md"
                         >
-                          <Link href={`/${item.posts_slug}`}>
+                          <Link
+                            href={`/${item.posts_slug}`}
+                            title={`อ่าน ${props.res_page.pages_th} ตอนที่ ${item.posts_ep} แปลไทย`}
+                          >
                             <div className={`ep_container  flex gap-5 `}>
                               <div className="ep_icon text-2xl font-bold flex justify-center items-center dark:bg-pages_bg_bookopen bg-[#e6e6e6]  p-4 rounded-md">
                                 <FaBookOpen className="text-md" />
@@ -193,7 +196,7 @@ export default function Page({ ...props }: any) {
                                 </div>
                                 <div className="ep_date">
                                   <p className="text-sm">
-                                    {dayjs(item.posts_create).format('LL')}
+                                    {dayjs(item.posts_create).format("LL")}
                                   </p>
                                 </div>
                               </div>
