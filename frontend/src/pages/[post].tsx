@@ -184,7 +184,7 @@ export default function Post({ ...props }) {
       const htmlContent = `
       <img src="/img/logo.png" alt="logo" width="100%" height="100%">
       <p className="text-2xl">โปรดติดตามตอนต่อไปที่ ${config.SITE_NAME}</p>
-      <p>สามารถติดตาม ${props.post.pages_en} ได้ทุกวัน ${props.post.pages_status_showing}</p>
+      <p>สามารถติดตาม ${props.post.pages_en} ได้ทุก ${props.post.pages_status_showing}</p>
     `;
       popup.message(htmlContent);
     }
