@@ -5,8 +5,6 @@ import { DefaultSeo } from "next-seo";
 import { NextSeoProps } from "next-seo/lib/types";
 import Head from "next/head";
 import config from "../../config/config";
-
-import { useEffect } from "react";
 const SEOConfig: NextSeoProps = {
   title: `${config.SITE_NAME} อ่านมังงะแปลไทย เว็บอ่านการ์ตูนออนไลน์ Manhua`,
   description: `${config.SITE_NAME} เว็บอ่านการ์ตูนออนไลน์ อ่านมังงะฟรี มังงะใหม่ เกาหลี จีน มังงะ18+ Manhwa เกาหลี Manga ญี่ปุ่น แปลไทยล่าสุด การ์ตูนอัพเดทใหม่ทุกวัน 24 ชม.`,
@@ -20,7 +18,7 @@ const SEOConfig: NextSeoProps = {
         url: `${config.SITE_URL}img/logo_sqare.png`,
         width: 800,
         height: 600,
-        alt: "Shiba Mangga",
+        alt: `${config.SITE_NAME}`,
       },
     ],
   },
@@ -52,8 +50,6 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"></script>
-
         <meta charSet="utf-8" />
         <meta name="theme-color" content="#6c2bd9" />
         <meta name="msapplication-TileColor" content="#6c2bd9" />

@@ -1,11 +1,10 @@
-import React, { use, useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import Layer from "../../../components/Layer";
 import axios_client from "../../../config/axios_client";
 import Image from "next/image";
 import { FaStar, FaBookOpen, FaRegHeart, FaHeart } from "react-icons/fa";
 import Link from "next/link";
-import moment from "moment";
+import dayjs from "../../../lib/dayjsUtils";
 import config from "../../../config/config";
 import { CSSProperties } from "react";
 export default function Page({ ...props }: any) {
@@ -194,7 +193,7 @@ export default function Page({ ...props }: any) {
                                 </div>
                                 <div className="ep_date">
                                   <p className="text-sm">
-                                    {moment(item.posts_create).format("LL")}
+                                    {dayjs(item.posts_create).format('LL')}
                                   </p>
                                 </div>
                               </div>

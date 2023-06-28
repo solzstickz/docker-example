@@ -1,11 +1,10 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Link from "next/link";
 import { FaMoon, FaSearch, FaBars, FaTimes, FaArrowUp } from "react-icons/fa";
 import { useRouter } from "next/router";
 import config from "../config/config";
-
+import Script from "next/script";
 interface Props {
   children?: React.ReactNode;
 }
@@ -65,8 +64,10 @@ export default function Layer({ children, ...props }: Props) {
   useEffect(() => {
     set_theme();
   }, []);
+
   return (
     <>
+      <Script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" />
       {/* <div className="fixed top-0 left-0 overlay w-screen h-screen bg-color_gray"></div> */}
       <header className="dark:bg-header_bg_dark bg-header_bg_light">
         <div className="container mx-auto flex justtify-between relative">
@@ -267,11 +268,11 @@ export default function Layer({ children, ...props }: Props) {
             ที่มั่นใจได้ว่าคุณภาพดีและอัพเดทตอนใหม่ก่อนใคร
           </h3>
           <p className="text-center text-text_color text-xl my-3">
-            Shiba Manga ยังมีการอัพเดทตอนใหม่ๆก่อนใคร
+            {config.SITE_NAME} ยังมีการอัพเดทตอนใหม่ๆก่อนใคร
             ทำให้ผู้อ่านไม่พลาดเรื่องราวสำคัญได้
             เนื่องจากไม่ต้องลงแอพพลิเคชั่นหรือซื้อเหรียญ
             ผู้อ่านสามารถอ่านได้ฟรีตลอด 24 ชั่วโมง
-            ไม่ว่าคุณจะเป็นผู้ชื่นชอบการ์ตูนและมังงะแนวใด ที่ Shiba Manga
+            ไม่ว่าคุณจะเป็นผู้ชื่นชอบการ์ตูนและมังงะแนวใด ที่ {config.SITE_NAME}
             จะมีเรื่องราวให้คุณได้อ่านทุกเรื่อง ไม่ว่าจะเป็น Naruto, One Piece,
             Attack on Titan, Fairy Tail, Bleach, Dragon Ball, My Hero Academia,
             Demon Slayer: Kimetsu no Yaiba และอีกมากมาย

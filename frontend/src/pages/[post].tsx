@@ -1,30 +1,24 @@
 import React from "react";
-import axios from "axios";
 import Layer from "../../components/Layer";
 import Image from "next/image";
 import axios_client from "../../config/axios_client";
 import config from "../../config/config";
 import ProgressBar from "react-progressbar-on-scroll";
 const popup = require("../../lib/popup");
-
+import dayjs from "../../lib/dayjsUtils";
 import {
-  FaArrowLeft,
-  FaArrowRight,
   FaListUl,
   FaTimes,
   FaCaretDown,
   FaAngleLeft,
   FaRegHeart,
   FaHeart,
-  FaArrowDown,
-  FaArrowUp,
   FaAngleRight,
   FaAngleUp,
   FaHome,
 } from "react-icons/fa";
-import moment from "moment-timezone";
 import { useState, useEffect } from "react";
-import { Router, useRouter } from "next/router";
+("next/router");
 import Link from "next/link";
 import { NextSeo } from "next-seo";
 export default function Post({ ...props }) {
@@ -36,7 +30,6 @@ export default function Post({ ...props }) {
   const [currentPostIndex, setCurrentPostIndex] = useState(props.current_post);
   const [maxPosts, setMaxPosts] = useState(props.list_ep.length);
   const [minPosts, setMinPosts] = useState(() => props.list_ep[0].posts_ep);
-  const router = useRouter();
 
   //!test
 
@@ -232,7 +225,7 @@ export default function Post({ ...props }) {
                             {i + 1}
                           </div> */}
           <div className="ep">ตอนที่ {item.posts_ep}</div>
-          <div className="date">{moment().from(item.posts_create)}</div>
+          <div className="date"> {dayjs(item.posts_create).format("LL")}</div>
         </li>
       </Link>
     ));
