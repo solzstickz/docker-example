@@ -70,7 +70,7 @@ async function saveToEndpoint(ep, imageUrls) {
         responseType: "arraybuffer",
       });
       const buffer = Buffer.from(response.data, "binary");
-      const fileName = `image-ep${episode}-${i + 1}.webp`;
+      const fileName = `${i + 1}.webp`;
       const filePath = path.join(episodeDirectory, fileName);
       fs.writeFileSync(filePath, buffer);
       console.log(`Downloaded ${fileName}`);
@@ -78,7 +78,17 @@ async function saveToEndpoint(ep, imageUrls) {
 
     const files = fs.readdirSync(episodeDirectory);
     const formData = new FormData();
+
+    // เรียงลำดับไฟล์โดยใช้ฟังก์ชันเปรียบเทียบที่กำหนดขึ้น
+    files.sort((a, b) => {
+      const regex = /(\d+)/; // รูปแบบที่ใช้ในการค้นหาเลข
+      const aNumber = parseInt(a.match(regex)[0], 10); // แปลงเลขในชื่อไฟล์เป็นตัวเลขจำนวนเต็ม
+      const bNumber = parseInt(b.match(regex)[0], 10);
+      return aNumber - bNumber; // เปรียบเทียบตัวเลข
+    });
+
     for (const file of files) {
+      console.log(file);
       const fileData = fs.readFileSync(path.join(episodeDirectory, file));
       const blob = new Blob([fileData], { type: "image/webp" });
       formData.append("uploads_posts_images", blob, file);

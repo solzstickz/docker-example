@@ -16,7 +16,11 @@ function sendWebhookMessage(message) {
     .then(response => {
       console.log('Webhook message sent:', response.data);
       rl.question('Enter a new message: ', (answer) => {
-        sendWebhookMessage(answer);
+        if (answer.toLowerCase() === 'exit') {
+          rl.close();
+        } else {
+          sendWebhookMessage(answer);
+        }
       });
     })
     .catch(error => {
@@ -26,5 +30,9 @@ function sendWebhookMessage(message) {
 }
 
 rl.question('Enter a message: ', (answer) => {
-  sendWebhookMessage(answer);
+  if (answer.toLowerCase() === 'exit') {
+    rl.close();
+  } else {
+    sendWebhookMessage(answer);
+  }
 });

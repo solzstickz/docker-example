@@ -25,7 +25,7 @@ const uploads_pages = multer({
   storage: multerS3({
     s3: s3,
     acl: "public-read",
-    bucket: "uploads-storage/uploads",
+    bucket: "uploads-storage-image/uploads",
     contentType: multerS3.AUTO_CONTENT_TYPE,
     key: function (req, file, cb) {
       console.log(file.mimetype);
@@ -54,7 +54,7 @@ const uploads_posts = multer({
   storage: multerS3({
     s3: s3,
     acl: "public-read",
-    bucket: "uploads-storage/uploads",
+    bucket: "uploads-storage-image/uploads",
     contentType: multerS3.AUTO_CONTENT_TYPE,
     key: function (req, file, cb) {
       console.log(file.mimetype);
@@ -78,7 +78,7 @@ const uploads_posts = multer({
 //!!!! Config Max File Size
 const uploads_posts_delete = (keyname, req, res,delete_to_db) => {
   const params = {
-    Bucket: "uploads-storage",
+    Bucket: "uploads-storage-image",
     Delete: {
       Objects: keyname,
     },
