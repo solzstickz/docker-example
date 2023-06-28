@@ -14,7 +14,7 @@ export default function Poster({ ...props }) {
                 src={`${config.CDN_URL}${props.pages_thumbnail}`}
                 className="mx-auto rounded-tl-md rounded-tr-md"
                 fill
-                size="100vw"
+                sizes="100vw"
                 priority={true}
                 alt={props.pages_title}
               />

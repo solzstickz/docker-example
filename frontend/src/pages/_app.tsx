@@ -49,23 +49,7 @@ const SEOConfig: NextSeoProps = {
 };
 
 export default function App({ Component, pageProps }: AppProps) {
-  useEffect(() => {
-    window.OneSignal = window.OneSignal || [];
-    OneSignal.push(function () {
-      OneSignal.init({
-        appId: "9d2821fc-8989-4c25-86d5-3adbda02a09c",
-        notifyButton: {
-          enable: true,
-        },
 
-        allowLocalhostAsSecureOrigin: true,
-      });
-    });
-
-    return () => {
-      window.OneSignal = undefined;
-    };
-  }, []);
   return (
     <>
       <Head>

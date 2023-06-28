@@ -65,6 +65,8 @@ export default function Layer({ children, ...props }: Props) {
     set_theme();
   }, []);
 
+
+
   return (
     <>
       <Script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" />

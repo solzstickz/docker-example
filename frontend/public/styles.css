@@ -588,12 +588,12 @@ video {
   left: 0px !important;
 }
 
-.left-1 {
-  left: 0.25rem !important;
-}
-
 .left-1\/2 {
   left: 50% !important;
+}
+
+.left-3 {
+  left: 0.75rem !important;
 }
 
 .right-0 {
