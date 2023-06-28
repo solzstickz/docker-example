@@ -155,8 +155,8 @@ export default function Home({ ...props }) {
                         <div className="poppular-item-img h-[150px] w-[110px] md:h-[220px] md:w-[160px] relative shadow-md overflow-hidden">
                           <Image
                             src={`${config.CDN_URL}` + pages.pages_thumbnail}
-                            width={300}
-                            height={300}
+                            fill
+                            size="100vw"
                             className="mx-auto rounded-md shadow-md"
                             alt={pages.pages_title}
                           />

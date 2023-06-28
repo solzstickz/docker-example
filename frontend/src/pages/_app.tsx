@@ -5,6 +5,8 @@ import { DefaultSeo } from "next-seo";
 import { NextSeoProps } from "next-seo/lib/types";
 import Head from "next/head";
 import config from "../../config/config";
+import { useEffect } from "react";
+
 const SEOConfig: NextSeoProps = {
   title: `${config.SITE_NAME} อ่านมังงะแปลไทย เว็บอ่านการ์ตูนออนไลน์ Manhua`,
   description: `${config.SITE_NAME} เว็บอ่านการ์ตูนออนไลน์ อ่านมังงะฟรี มังงะใหม่ เกาหลี จีน มังงะ18+ Manhwa เกาหลี Manga ญี่ปุ่น แปลไทยล่าสุด การ์ตูนอัพเดทใหม่ทุกวัน 24 ชม.`,
@@ -47,6 +49,23 @@ const SEOConfig: NextSeoProps = {
 };
 
 export default function App({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    window.OneSignal = window.OneSignal || [];
+    OneSignal.push(function () {
+      OneSignal.init({
+        appId: "9d2821fc-8989-4c25-86d5-3adbda02a09c",
+        notifyButton: {
+          enable: true,
+        },
+
+        allowLocalhostAsSecureOrigin: true,
+      });
+    });
+
+    return () => {
+      window.OneSignal = undefined;
+    };
+  }, []);
   return (
     <>
       <Head>
