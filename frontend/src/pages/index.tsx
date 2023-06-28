@@ -162,7 +162,7 @@ export default function Home({ ...props }) {
                             alt={pages.pages_title}
                           />
 
-                          <div className="poppular-status absolute w-[30px] h-[40px] top-0 left-5 bg-site_color shadow-2xl rounded-b-md">
+                          <div className="poppular-status absolute w-[30px] h-[40px] top-0 left-3 bg-site_color shadow-2xl rounded-b-md">
                             <p className="text-2xl text-color_white text-center font-bold p-1">
                               {i + 1}
                             </p>
