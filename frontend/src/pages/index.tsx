@@ -155,13 +155,13 @@ export default function Home({ ...props }) {
                         <div className="poppular-item-img h-[150px] w-[110px] md:h-[220px] md:w-[160px] relative shadow-md overflow-hidden">
                           <Image
                             src={`${config.CDN_URL}` + pages.pages_thumbnail}
-                            fill
-                            sizes="100vw"
+                            width={300}
+                            height={300}
                             className="mx-auto rounded-md shadow-md"
                             alt={pages.pages_title}
                           />
 
-                          <div className="poppular-status absolute w-[30px] h-[40px] top-0 left-1 bg-site_color shadow-2xl rounded-b-md">
+                          <div className="poppular-status absolute w-[30px] h-[40px] top-0 left-3 bg-site_color shadow-2xl rounded-b-md">
                             <p className="text-2xl text-color_white text-center font-bold p-1">
                               {i + 1}
                             </p>
