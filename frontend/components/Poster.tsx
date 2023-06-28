@@ -13,7 +13,6 @@ export default function Poster({ ...props }) {
               <Image
                 src={`${config.CDN_URL}${props.pages_thumbnail}`}
                 className="mx-auto rounded-tl-md rounded-tr-md"
-                quality={100}
                 width={300}
                 height={300}
                 priority={true}
