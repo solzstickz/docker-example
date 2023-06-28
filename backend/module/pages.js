@@ -129,54 +129,66 @@ module.exports = {
 
     async delete_pages(req,res){
         let reqbody = await req.body;
-        var data_value  = await reqbody.map(head => head.pages_id)
-          pool.query(`DELETE FROM pages_tags where pages_id in (?)`,[data_value], async (err, result) => {
-            try {
-              if (err) {
-                console.log("Status Delete pages_tags Error",err);
-                res.status(500).json({ message: "Status Delete pages_tags Error" });
-              } else {
-                console.log(result);
-                  pool.query(`DELETE FROM pages where pages_id in (?)`,[data_value], async (err, result_pages) => {
-                    try {
-                      if (err) {
-                        console.log("Status Delete pages Error",err);
-                        res.status(500).json({ message: "Status Delete pages Error" });
-                      } else {
-                        if (result_pages.affectedRows > 0){
-                          pool.query(`UPDATE img_found set type = 0 WHERE fk_pages_posts_id = ? and type = 1`,[data_value], async (err, result_img_found) => {
-                            try {
-                              if (err) {
-                                console.log("Status Mysql Insert Error",err);
-                                res.status(500).json({ message: "Status Mysql Update img_found Error" });
-                              }else{
-                                if (result_img_found.affectedRows > 0){
-                                  // await uploads.uploads_posts_delete(keyname,req,res);
-                                  res.status(200).json({ message : "Status Update img_found Success"});
-                                }else{
-                                  res.status(201).json({ message: "Status Update img_found not found" });
+        var data_value  = await reqbody.map(head => head.pages_id);
+        pool.query(`DELETE FROM posts where pages_id in (?)`,[data_value], async (err, result_delete_post) => {
+          try {
+            if (err) {
+              console.log("Status Mysql Insert Error",err);
+              res.status(500).json({ message: "Status Mysql Update img_found Error" });
+            }else{
+              pool.query(`DELETE FROM pages_tags where pages_id in (?)`,[data_value], async (err, result) => {
+                try {
+                  if (err) {
+                    console.log("Status Delete pages_tags Error",err);
+                    res.status(500).json({ message: "Status Delete pages_tags Error" });
+                  } else {
+                    console.log(result);
+                      pool.query(`DELETE FROM pages where pages_id in (?)`,[data_value], async (err, result_pages) => {
+                        try {
+                          if (err) {
+                            console.log("Status Delete pages Error",err);
+                            res.status(500).json({ message: "Status Delete pages Error" });
+                          } else {
+                            if (result_pages.affectedRows > 0){
+                              pool.query(`UPDATE img_found set type = 0 WHERE fk_pages_posts_id = ? and type = 1`,[data_value], async (err, result_img_found) => {
+                                try {
+                                  if (err) {
+                                    console.log("Status Mysql Insert Error",err);
+                                    res.status(500).json({ message: "Status Mysql Update img_found Error" });
+                                  }else{
+                                    if (result_img_found.affectedRows > 0){
+                                      // await uploads.uploads_posts_delete(keyname,req,res);
+                                      res.status(200).json({ message : "Status Update img_found Success"});
+                                    }else{
+                                      res.status(201).json({ message: "Status Update img_found not found" });
+                                    }
+                                  }
+                                }catch (err) {
+                                  console.log(err);
+                                  res.status(500).json({ message: "Internal Server Error" });
                                 }
-                              }
-                            }catch (err) {
-                              console.log(err);
-                              res.status(500).json({ message: "Internal Server Error" });
+                              })
+                            }else {
+                              res.status(201).json({ message : "Status Delete Pages Not Found"});
                             }
-                          })
-                        }else {
-                          res.status(201).json({ message : "Status Delete Pages Not Found"});
+                          }
+                        } catch (err) {
+                          console.log(err);
+                          res.status(500).json({ message: "Internal Server Pages Error" });
                         }
-                      }
-                    } catch (err) {
-                      console.log(err);
-                      res.status(500).json({ message: "Internal Server Pages Error" });
-                    }
-                  });
-              }
-            } catch (err) {
-              console.log(err);
-              res.status(500).json({ message: "Internal Server pages_tags Error" });
+                      });
+                  }
+                } catch (err) {
+                  console.log(err);
+                  res.status(500).json({ message: "Internal Server pages_tags Error" });
+                }
+              });
             }
-          });
+          }catch (err) {
+            console.log(err);
+            res.status(500).json({ message: "Internal Server Error" });
+          }
+        })
     },
 
     async edit_pages(req,res){
