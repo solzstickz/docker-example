@@ -6,10 +6,10 @@ import DataTable, {
 } from "react-data-table-component";
 import axios_client from "../../../../../config/axios_client";
 import { useEffect } from "react";
-import moment from "moment-timezone";
+import moment from "moment";
 import Link from "next/link";
 import config from "../../../../../config/config";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 const popup = require("../../../../../lib/popup");
 import { FaEdit, FaRecycle, FaTrash } from "react-icons/fa";
 
@@ -143,7 +143,7 @@ export default function pages_post_pages_slug({ ...props }) {
         </div>
 
         <div className="table_pages mt-5">
-          <Table_pages_posts
+          <Table_Pages_Posts
             data_table={pages_posts}
             pages_slug={router.query.pages_slug}
           />
@@ -179,38 +179,16 @@ createTheme(
   "dark"
 );
 
-const handdleDelete = (posts_slug: string) => {
-  popup
-    .confirm("Are you sure you want to delete:", `${posts_slug}?`)
-    .then((res: any) => {
-      if (res) {
-        axios_client
-          .post(`/posts/delete/${posts_slug}`)
-          .then((res) => {
-            if (res.status === 200) {
-              popup.success(`${res.data.message}`);
-              window.location.reload();
-            }
-            if (res.status === 201) {
-              popup.success(`${res.data.message}`);
-            }
-            if (res.status === 400) {
-              popup.error(`${res.data.message}`);
-            }
-          })
-          .catch((err) => {
-            console.log(`pages:edit:index` + err);
-          });
-      }
-    });
-};
-
 const columns = [
   {
     name: "posts_id",
     selector: (row: any) => row.posts_id,
     cell: (row: any, index: number) => (
-      <Link href={`pages/edit/${row.posts_slug}`}>{row.posts_id}</Link>
+      <Link
+        href={`/${config.ADMIN_PATH}/pages/posts/edit/${row.posts_slug}?pages_slug=${row.pages_slug}`}
+      >
+        {row.posts_id}
+      </Link>
     ),
     sortable: true,
   },
@@ -255,33 +233,38 @@ const columns = [
     name: "Edit",
     selector: (row: any) => row.pages_slug,
     cell: (row: any) => (
-      <Link
-        href={`/${config.ADMIN_PATH}/pages/posts/edit/${row.posts_slug}?pages_slug=${row.pages_slug}`}
+      <div
+        onClick={() => {
+          // href={`/${config.ADMIN_PATH}/pages/posts/edit/${row.posts_slug}?pages_slug=${row.pages_slug}`}
+          Router.push(
+            `/${config.ADMIN_PATH}/pages/posts/edit/${row.posts_slug}?pages_slug=${row.pages_slug}`
+          );
+        }}
       >
         <button className="text-orange-500 bg-orange-100 rounded-md dark:text-orange-100 dark:bg-orange-500 p-2">
           <FaEdit className="w-3 h-3 " />
         </button>
-      </Link>
+      </div>
     ),
     ignoreRowClick: true,
     allowOverflow: true,
     button: true,
   },
-  {
-    name: "Delete",
-    selector: (row: any) => row.pages_slug,
-    cell: (row: any) => (
-      <button
-        className="text-red-500 bg-orange-100 rounded-md dark:text-red-100 dark:bg-red-500 p-2"
-        onClick={() => handdleDelete(row.posts_slug as string)}
-      >
-        <FaTrash className="w-3 h-3 " />
-      </button>
-    ),
-    ignoreRowClick: true,
-    allowOverflow: true,
-    button: true,
-  },
+  // {
+  //   name: "Delete",
+  //   selector: (row: any) => row.pages_slug,
+  //   cell: (row: any) => (
+  //     <button
+  //       className="text-red-500 bg-orange-100 rounded-md dark:text-red-100 dark:bg-red-500 p-2"
+  //       onClick={() => handdleDelete(row.posts_slug as string)}
+  //     >
+  //       <FaTrash className="w-3 h-3 " />
+  //     </button>
+  //   ),
+  //   ignoreRowClick: true,
+  //   allowOverflow: true,
+  //   button: true,
+  // },
 ];
 
 const FilterComponent = ({ filterText, onFilter, onClear }: any) => {
@@ -309,7 +292,7 @@ const FilterComponent = ({ filterText, onFilter, onClear }: any) => {
   );
 };
 
-export const Table_pages_posts = ({ data_table, pages_slug }: any) => {
+export const Table_Pages_Posts = ({ data_table, pages_slug }: any) => {
   const [pending, setPending] = React.useState(true);
   useEffect(() => {
     setPending(false);
@@ -323,7 +306,6 @@ export const Table_pages_posts = ({ data_table, pages_slug }: any) => {
       item.posts_slug &&
       item.posts_slug.toLowerCase().includes(filterText.toLowerCase())
   );
-  const [selectedRows, setSelectedRows] = React.useState([]);
 
   const subHeaderComponentMemo = React.useMemo(() => {
     const handleClear = () => {
@@ -364,6 +346,59 @@ export const Table_pages_posts = ({ data_table, pages_slug }: any) => {
     selectAllRowsItemText: "All",
   };
 
+  const [selectedRows, setSelectedRows] = React.useState([]);
+  const [toggleCleared, setToggleCleared] = React.useState(false);
+  const [data, setData] = React.useState();
+
+  const handleRowSelected = React.useCallback((state: any) => {
+    setSelectedRows(state.selectedRows);
+  }, []);
+
+  const contextActions = React.useMemo(() => {
+    const handdleDelete = () => {
+      popup
+        .confirm(
+          "Are you sure you want to delete:",
+          `${selectedRows.map((r: any) => r.posts_slug)}`
+        )
+        .then((res: any) => {
+          if (res) {
+            axios_client
+              .post(`posts/delete_select/posts`, {
+                posts_slug: selectedRows.map((r: any) => r.posts_slug),
+              })
+              .then((res) => {
+                if (res.status === 200) {
+                  popup.success(`${res.data.message}`);
+                  window.location.reload();
+                }
+                if (res.status === 201) {
+                  popup.success(`${res.data.message}`);
+                }
+                if (res.status === 400) {
+                  popup.error(`${res.data.message}`);
+                }
+              })
+              .catch((err) => {
+                console.log(`pages:delete:index` + err);
+              });
+          } else {
+            setToggleCleared(!toggleCleared);
+          }
+        });
+    };
+
+    return (
+      <button
+        key="delete"
+        onClick={handdleDelete}
+        className="text-red-500 bg-orange-100 rounded-md dark:text-red-100 dark:bg-red-500 p-2"
+      >
+        Delete
+      </button>
+    );
+  }, [data, selectedRows, toggleCleared]);
+
   return (
     <>
       <div className="table_pages grid ">
@@ -380,6 +415,10 @@ export const Table_pages_posts = ({ data_table, pages_slug }: any) => {
           theme="solarized"
           expandableRowsComponent={ExpandedComponent}
           paginationComponentOptions={paginationComponentOptions}
+          selectableRows
+          contextActions={contextActions}
+          onSelectedRowsChange={handleRowSelected}
+          clearSelectedRows={toggleCleared}
         />
       </div>
     </>

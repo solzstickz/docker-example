@@ -762,8 +762,8 @@ video {
   height: 10px !important;
 }
 
-.h-\[120px\] {
-  height: 120px !important;
+.h-\[130px\] {
+  height: 130px !important;
 }
 
 .h-\[150px\] {
@@ -1638,8 +1638,8 @@ video {
     display: none !important;
   }
 
-  .md\:h-\[130px\] {
-    height: 130px !important;
+  .md\:h-\[150px\] {
+    height: 150px !important;
   }
 
   .md\:h-\[220px\] {
