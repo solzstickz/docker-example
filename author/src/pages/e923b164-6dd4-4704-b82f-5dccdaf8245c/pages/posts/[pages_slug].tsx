@@ -351,7 +351,6 @@ export const Table_Pages_Posts = ({ data_table, pages_slug }: any) => {
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [toggleCleared, setToggleCleared] = React.useState(false);
 
-
   const handleRowSelected = React.useCallback((state: any) => {
     setSelectedRows(state.selectedRows);
   }, []);
@@ -392,6 +391,7 @@ export const Table_Pages_Posts = ({ data_table, pages_slug }: any) => {
 
     return (
       <>
+        {/* <button className="text-red-500 bg-orange-100 rounded-md dark:text-red-100 dark:bg-red-500 p-2"></button> */}
         <button
           key="delete"
           onClick={handdleDelete}
@@ -401,7 +401,7 @@ export const Table_Pages_Posts = ({ data_table, pages_slug }: any) => {
         </button>
       </>
     );
-  }, [data, selectedRows, toggleCleared]);
+  }, [selectedRows, toggleCleared]);
 
   return (
     <>
