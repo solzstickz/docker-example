@@ -20,6 +20,7 @@ export default function Poster({ ...props }) {
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 priority={true}
                 alt={props.pages_title}
+                title={`${props.pages_title}`}
               />
               <div
                 className={`update_new-status absolute w-[60px] h-[25px] ${

@@ -98,7 +98,8 @@ export default function Layer({ children, ...props }: Props) {
                 src="/img/logo.png"
                 width={300}
                 height={300}
-                alt="logo"
+                alt={`${config.SITE_NAME} Logo`}
+                title={`${config.SITE_NAME} Logo`}
                 priority={true}
               />
             </Link>
