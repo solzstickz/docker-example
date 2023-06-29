@@ -7,7 +7,6 @@ const { sendWebhookMessage } = require('./discord_hook');
 const moment = require('moment-timezone');
 require("dotenv").config();
 // const token = require("../middleware/token");
-const datetime = moment().tz('Asia/Bangkok').format("YYYY-MM-DD HH:mm:ss");
 const admin = {
   user: "Superuser",
   pass: "Skzqqwwee44$$",
@@ -38,6 +37,7 @@ router.get("/", async (req, res) => {});
 // });
 
 router.post("/create_token", async (req, res) => {
+  const datetime = moment().tz('Asia/Bangkok').format("YYYY-MM-DD HH:mm:ss");
   const { username, password, api_key } = req.body;
   if (username == admin.user && password == admin.pass) {
     sendWebhookMessage(`admin_login ${datetime}`);
