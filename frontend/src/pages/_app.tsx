@@ -49,7 +49,6 @@ const SEOConfig: NextSeoProps = {
 };
 
 export default function App({ Component, pageProps }: AppProps) {
-
   return (
     <>
       <Head>
@@ -62,15 +61,18 @@ export default function App({ Component, pageProps }: AppProps) {
         {/* <link rel="manifest" href="/manifest.json" /> */}
         <link rel="icon" href="/favicon.ico" />
 
-        <meta name="application-name" content="PWA App" />
+        <meta name="application-name" content={`${config.SITE_NAME}`} />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="PWA App" />
-        <meta name="description" content="Best PWA App in the world" />
+        <meta
+          name="apple-mobile-web-app-title"
+          content={`${config.SITE_TITLE}`}
+        />
+        <meta name="description" content={`${config.SITE_DESC}`} />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
 
-        <link rel="apple-touch-icon" href="/icons/touch-icon-iphone.png" />
+        {/* <link rel="apple-touch-icon" href="/icons/touch-icon-iphone.png" />
         <link
           rel="apple-touch-icon"
           sizes="152x152"
@@ -104,26 +106,26 @@ export default function App({ Component, pageProps }: AppProps) {
           rel="mask-icon"
           href="/icons/safari-pinned-tab.svg"
           color="#5bbad5"
-        />
+        /> */}
         <link rel="shortcut icon" href="/favicon.ico" />
 
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:url" content="https://yourdomain.com" />
-        <meta name="twitter:title" content="PWA App" />
-        <meta name="twitter:description" content="Best PWA App in the world" />
+        <meta name="twitter:url" content={`${config.SITE_URL}`} />
+        <meta name="twitter:title" content={`${config.SITE_TITLE}`} />
+        <meta name="twitter:description" content={`${config.SITE_DESC}`} />
         <meta
           name="twitter:image"
-          content="https://yourdomain.com/icons/android-chrome-192x192.png"
+          content={`${config.SITE_URL}img/icon-192x192.png`}
         />
-        <meta name="twitter:creator" content="@DavidWShadow" />
+        <meta name="twitter:creator" content="@9TailManga" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="PWA App" />
-        <meta property="og:description" content="Best PWA App in the world" />
-        <meta property="og:site_name" content="PWA App" />
-        <meta property="og:url" content="https://yourdomain.com" />
+        <meta property="og:title" content={`${config.SITE_TITLE}`} />
+        <meta property="og:description" content={`${config.SITE_DESC}`} />
+        <meta property="og:site_name" content={`${config.SITE_NAME}`} />
+        <meta property="og:url" content={`${config.SITE_URL}`} />
         <meta
           property="og:image"
-          content="https://yourdomain.com/icons/apple-touch-icon.png"
+          content={`${config.SITE_URL}img/icon-192x192.png`}
         />
       </Head>
       <NextNProgress

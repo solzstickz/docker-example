@@ -1,9 +1,9 @@
 {
-  "name": "9tallmanga",
-  "short_name": "9tallmanga",
+  "name": "9TailManga",
+  "short_name": "9TailManga",
   "scope": "/",
   "start_url": ".",
-  "description": "9Tall Manga เว็บอ่านการ์ตูนออนไลน์ อ่านมังงะฟรี มังงะใหม่ เกาหลี จีน มังงะ18+ Manhwa เกาหลี Manga ญี่ปุ่น แปลไทยล่าสุด การ์ตูนอัพเดทใหม่ทุกวัน 24 ชม.",
+  "description": "9Tail Manga เว็บอ่านการ์ตูนออนไลน์ อ่านมังงะฟรี มังงะใหม่ เกาหลี จีน มังงะ18+ Manhwa เกาหลี Manga ญี่ปุ่น แปลไทยล่าสุด การ์ตูนอัพเดทใหม่ทุกวัน 24 ชม.",
   "icons": [
     {
       "src": "/img/icon-192x192.png",
