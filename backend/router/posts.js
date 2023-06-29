@@ -129,6 +129,10 @@ router.post("/delete/:slug", async (req, res) => {
   await posts.delete_posts(req, res);
 });
 
+router.post("/deletes/posts", async (req, res) => {
+  await posts.delete_posts(req, res);
+});
+
 router.post("/image/clear", async function (req, res) {
   pool.query(
     `SELECT * FROM img_found WHERE type = 0;`,

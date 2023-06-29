@@ -99,7 +99,7 @@ const uploads_posts_delete = (keyname, req, res,delete_to_db) => {
             res.status(500).json({ message: "Status Mysql Update img_found Error" });
           }else{
             if (result_img_found.affectedRows > 0){
-              res.status(200).json({ message : "Status DELETE img_found Success"});
+              res.status(200).json({ message : `Status DELETE img_found ${delete_to_db.length} files Success`});
             }else{
               res.status(201).json({ message: "Status DELETE img_found Not Found" });
             }
