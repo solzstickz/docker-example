@@ -55,6 +55,7 @@ export default function Create_pages({ ...props }) {
     pages_tags: [],
   });
 
+  
   const handleUpload = async () => {
     if (!uploas_page_thumbnail) {
       return;
@@ -89,6 +90,7 @@ export default function Create_pages({ ...props }) {
     });
 
     console.log(create_pages.pages_tags);
+    
   };
   const handleSubmid = async () => {
     if (

@@ -23,7 +23,7 @@ function MySearchSelect({ onSelectedTagsChange, edit_value }: SearchTagsProps) {
   }, []);
 
   useEffect(() => {
-    setTags(edit_value);
+    // setTags(edit_value);
     setSelectedTags(edit_value || []);
   }, [edit_value]);
 
@@ -102,7 +102,7 @@ function MySearchSelect({ onSelectedTagsChange, edit_value }: SearchTagsProps) {
       />
 
       <ul className="flex my-3">
-        {filteredTags.slice(0, 5).map((tag) => (
+        {filteredTags.slice(0,5).map((tag) => (
           <li
             className="m-1 p-1 cursor-pointer text-sm font-medium leading-5 text-white transition-colors duration-150 bg-gray-600 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-purple"
             key={tag.tags_id} // Use the `tags_id` property as the key
