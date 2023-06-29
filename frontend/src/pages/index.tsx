@@ -152,7 +152,7 @@ export default function Home({ ...props }) {
                       key={i}
                     >
                       <Link href={`/series/${pages.pages_slug}`}>
-                        <div className="poppular-item-img h-[150px] w-[110px] md:h-[220px] md:w-[160px] relative shadow-md overflow-hidden">
+                        <div className="poppular-item-img h-[150px] w-[110px] md:h-[220px] md:w-[160px] relative shadow-md overflow-hidden mx-auto">
                           <Image
                             src={`${config.CDN_URL}` + pages.pages_thumbnail}
                             fill

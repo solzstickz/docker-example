@@ -108,7 +108,7 @@ export default function Layer({ children, ...props }: Props) {
           <div
             className={`${
               nav_status ? "absolute z-[100] w-full h-[400px]" : "hidden"
-            } lg:flex lg:items-center top-[73px] md:top-[60px] dark:bg-header_bg_dark  bg-header_bg_light `}
+            } lg:flex lg:items-center top-[90px] md:top-[60px] dark:bg-header_bg_dark  bg-header_bg_light `}
           >
             <ul>
               <li className="flex flex-col lg:flex-row gap-4 mt-5 md:mt-0">
