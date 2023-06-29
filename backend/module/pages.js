@@ -230,23 +230,35 @@ module.exports = {
                          console.log("Status Mysql Insert Error",err);
                          res.status(500).json({ message: "Status Mysql Insert Pages_tags Error" });
                        }else{
-                         if (result_pages_tags_insert.insertId > 0){
-                          let data_img = { fk_pages_posts_id:pages_id,type:1,description:`slug->>${reqbody_pages.pages_slug}->>pages_thumbnail_date->>${reqbody_pages.pages_last_update}`};
-                          pool.query(`UPDATE img_found set ? WHERE url = ?`,[data_img,reqbody_pages.pages_thumbnail], async (err, result_img_found) => {
+                        if (result_pages_tags_insert.insertId > 0){
+                          pool.query(`UPDATE img_found SET type = 0 WHERE fk_pages_posts_id = ? and type = 1`,[pages_id], async (err, result_img_found_1) => {
                             try {
                               if (err) {
                                 console.log("Status Mysql Insert Error",err);
-                                res.status(500).json({ message: "Status Mysql Update img_found Error" });
+                                res.status(500).json({ message: "Status Mysql Update img_found_to_zero Error" });
                               }else{
-                                if (result_img_found.affectedRows > 0){
-                                  res.status(200).json({ message : "Status Update Success"});
-                                }else{
-                                  res.status(201).json({ message: "Status Update img_found Error" });
-                                }
+                                    let data_img = { fk_pages_posts_id:pages_id,type:1,description:`slug->>${reqbody_pages.pages_slug}->>pages_thumbnail_date->>${reqbody_pages.pages_last_update}`};
+                                    pool.query(`UPDATE img_found set ? WHERE url = ?`,[data_img,reqbody_pages.pages_thumbnail], async (err, result_img_found) => {
+                                      try {
+                                        if (err) {
+                                          console.log("Status Mysql Insert Error",err);
+                                          res.status(500).json({ message: "Status Mysql Update img_found Error" });
+                                        }else{
+                                          if (result_img_found.affectedRows > 0){
+                                            res.status(200).json({ message : "Status Update Success"});
+                                          }else{
+                                            res.status(201).json({ message: "Status Update img_found Error" });
+                                          }
+                                        }
+                                      }catch (err) {
+                                        console.log(err);
+                                        res.status(500).json({ message: "Internal Server Error" });
+                                      }
+                                    })
                               }
                             }catch (err) {
                               console.log(err);
-                              res.status(500).json({ message: "Internal Server Error" });
+                              res.status(500).json({ message: "Internal Server img_found_to_zero Error" });
                             }
                           })
                          }else{
