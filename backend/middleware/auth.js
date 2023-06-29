@@ -4,7 +4,6 @@ const redisclient = require("../config/redis");
 const pool = require("../config/mysql");
 const jwt = require("jsonwebtoken");
 const { sendWebhookMessage } = require('./discord_hook');
-const moment = require('moment-timezone');
 require("dotenv").config();
 // const token = require("../middleware/token");
 const admin = {
@@ -37,10 +36,9 @@ router.get("/", async (req, res) => {});
 // });
 
 router.post("/create_token", async (req, res) => {
-  const datetime = moment().tz('Asia/Bangkok').format("YYYY-MM-DD HH:mm:ss");
   const { username, password, api_key } = req.body;
   if (username == admin.user && password == admin.pass) {
-    sendWebhookMessage(`admin_login ${datetime}`);
+    sendWebhookMessage(`Admin_login`,process.env.IMG_ADMIN);
     const token = jwt.sign({ username }, process.env.TOKEN_SECRET, {
       expiresIn: "57600s",
     });
@@ -52,7 +50,7 @@ router.post("/create_token", async (req, res) => {
         expires: new Date(Date.now() + 3600000),
       }).status(200).json({ access_token:token, role: "admin_api_key" });
   }else if (username == author.user && password == author.pass) {
-    sendWebhookMessage(`Abatukumm_login ${datetime}`);
+    sendWebhookMessage(`Abatukumm_login`,process.env.IMG_AUTHOR);
     const token = jwt.sign({ username }, process.env.TOKEN_SECRET, {
       expiresIn: "57600s",
     });
