@@ -364,7 +364,7 @@ export const Table_Pages_Posts = ({ data_table, pages_slug }: any) => {
         .then((res: any) => {
           if (res) {
             axios_client
-              .post(`/posts/delete/`, {
+              .post(`posts/delete_select/posts`, {
                 posts_slug: selectedRows.map((r: any) => r.posts_slug),
               })
               .then((res) => {
