@@ -129,7 +129,7 @@ router.post("/delete/:slug", async (req, res) => {
   await posts.delete_posts(req, res);
 });
 
-router.post("/deletes/posts", async (req, res) => {
+router.post("/delete_select/posts", async (req, res) => {
   await posts.delete_posts(req, res);
 });
 
