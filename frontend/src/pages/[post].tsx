@@ -184,7 +184,7 @@ export default function Post({ ...props }) {
       const htmlContent = `
       <img src="/img/logo.png" alt="logo" width="100%" height="100%">
       <p className="text-2xl">โปรดติดตามตอนต่อไปที่ ${config.SITE_NAME}</p>
-      <p>สามารถติดตาม ${props.post.pages_en} ได้ทุกวัน ${props.post.pages_status_showing}</p>
+      <p>สามารถติดตาม ${props.post.pages_en} ได้ทุก ${props.post.pages_status_showing}</p>
     `;
       popup.message(htmlContent);
     }
@@ -219,15 +219,19 @@ export default function Post({ ...props }) {
 
   const ep_list = () => {
     let charp_ep = props.list_ep.map((item: any, i: number) => (
-      <Link href={`${item.posts_slug}`} key={item.posts_id}>
-        <li className="nav__item flex items-center  justify-around gap-4 py-2 dark:text-color_white border-dashed border-b-2 border-color_gray">
+      <li className="nav__item  dark:text-color_white border-dashed border-b-2 border-color_gray">
+        <Link
+          href={`${item.posts_slug}`}
+          key={item.posts_id}
+          className="flex items-center justify-around gap-4 py-2"
+        >
           {/* <div className="no w-[50px] border-e-2 border-color_gray">
                             {i + 1}
                           </div> */}
           <div className="ep">ตอนที่ {item.posts_ep}</div>
           <div className="date"> {dayjs(item.posts_create).format("LL")}</div>
-        </li>
-      </Link>
+        </Link>
+      </li>
     ));
     return charp_ep.reverse();
   };
@@ -258,7 +262,7 @@ export default function Post({ ...props }) {
             <div
               className={`${
                 nav_ep ? "fixed" : "hidden"
-              }  nav__ep flex items-start justify-center z-[30] w-screen h-[400px] border-4 border-site_color bg-color_white dark:bg-[#000] md:right-24  bottom-20 right-0 rounded-2xl transition-all duration-300 ease-in-out delay-300 `}
+              }  nav__ep flex items-start justify-center z-[30] w-screen h-[400px] border-4 border-site_color bg-color_white dark:bg-[#000] md:right-18  bottom-20 right-0 rounded-2xl transition-all duration-300 ease-in-out delay-300 `}
             >
               <div className="nav__content flex flex-col w-full">
                 <div className="nav__title py-2 border-b-4 border-site_color dark:text-color_white w-full relative">
@@ -376,17 +380,15 @@ export default function Post({ ...props }) {
               {props.post.posts_detail.map((images: any, i: number) => {
                 return (
                   <div
-                    className="relative mx-auto w-full h-full cursor-pointer"
+                    className="relative mx-auto w-auto h-screen cursor-pointer"
                     key={i}
                     onClick={() => setNav_control(!nav_control)}
                   >
                     <Image
                       src={`${config.CDN_URL}${images.url}`}
                       alt={images.alt}
-                      width={1000}
-                      height={1500}
-                      // priority={true}
-                      quality={100}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   </div>
                 );

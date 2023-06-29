@@ -8,13 +8,16 @@ export default function Poster({ ...props }) {
     <>
       <div className="items px-1">
         <div className="update_new-item flex flex-col relative mx-auto   md:max-w-[200px] hover:animate-pulse transition-all ease-out delay-300  dark:text-text_color text-color_dark_gray hover:text-site_color shadow-2xl rounded-md hover:border-none">
-          <Link href={`/series/${props.pages_slug}`}>
+          <Link
+            href={`/series/${props.pages_slug}`}
+            title={`อ่านการ์ตูน ${props.pages_en}`}
+          >
             <div className="update_new-item-img min-h-[230px] max-h-[230px] overflow-hidden md:w-[200px] md:min-h-[280px] md:max-h-[280px] md:h-[280px] w-full relative">
               <Image
                 src={`${config.CDN_URL}${props.pages_thumbnail}`}
                 className="mx-auto rounded-tl-md rounded-tr-md"
                 fill
-                sizes="100vw"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 priority={true}
                 alt={props.pages_title}
               />
@@ -39,7 +42,7 @@ export default function Poster({ ...props }) {
                 {props.pages_en}
               </p>
               <span className="text-[16px] text-color_gray">
-                {dayjs(props.pages_last_update).toNow()}
+                {dayjs(props.pages_last_update).fromNow()}
                 {/* {dayjs("2023-06-28T07:18:58.000Z").startOf("day").fromNow()} */}
               </span>
             </div>
