@@ -123,7 +123,7 @@ export default function Home({ ...props }) {
 
   return (
     <>
-      <NextSeo />
+      <NextSeo canonical={`${config.SITE_URL}`} />
       <Layer>
         <section>
           <div className="notify w-full bg-site_color">
@@ -160,6 +160,7 @@ export default function Home({ ...props }) {
                             priority={true}
                             className="mx-auto rounded-md shadow-md"
                             alt={pages.pages_title}
+                            title={`${pages.pages_title}`}
                           />
 
                           <div className="poppular-status absolute w-[30px] h-[40px] top-0 left-3 bg-site_color shadow-2xl rounded-b-md">

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Layer from "../../../components/Layer";
 import Poster from "../../../components/Poster";
 import axios_client from "../../../config/axios_client";
+import { NextSeo } from "next-seo";
+import config from "../../../config/config";
 export default function Search_slug({ ...props }) {
   const [currentPage, setCurrentPage] = useState(1); // หน้าปัจจุบัน
   const [itemsPerPage, setItemsPerPage] = useState(10); // จำนวนรายการต่อหน้า
@@ -21,13 +23,11 @@ export default function Search_slug({ ...props }) {
     const endIndex = startIndex + itemsPerPage;
     const pagesToDisplay = props.search.slice(startIndex, endIndex);
     setDisplayedPages(pagesToDisplay);
-
   }, [props.search, currentPage, itemsPerPage]);
 
   // ฟังก์ชันเปลี่ยนหน้า
   const changePage = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-
 
     // เพิ่มโค้ดด้านล่างเพื่อให้หน้าปัจจุบันแสดงตรงตามหน้าที่คลิกเลือก
     setDisplayedPages(
@@ -98,80 +98,87 @@ export default function Search_slug({ ...props }) {
     return pageNumbers;
   };
   return (
-    <Layer>
-      <div className="container mx-auto max-w-[1080px]">
-        <section>
+    <>
+      <NextSeo
+        title={`Search: ${props.keyword}`}
+        description={`Search: ${props.keyword}`}
+        canonical={`${config.SITE_URL}search/${props.keyword}`}
+      />
+      <Layer>
+        <div className="container mx-auto max-w-[1080px]">
           <section>
-            <div className="search w-full ">
-              <div className="search-title">
-                <h2 className="text-3xl text-site_color">
-                  Search:
-                  <span className="text-color_white"> {props.keyword}</span>
-                </h2>
-              </div>
-              <div className="update_new-content grid grid-cols-2  md:grid-cols-3 gap-1  lg:grid-cols-5">
-                {props.search.map((pages: any, i: number) => {
-                  return (
-                    <Poster
-                      key={i}
-                      i={i}
-                      pages_id={pages.pages_id}
-                      pages_slug={pages.pages_slug}
-                      pages_view={pages.pages_view}
-                      pages_last_update={pages.pages_last_update}
-                      pages_status_showing={pages.pages_status_showing}
-                      pages_last_ep={pages.pages_last_ep}
-                      pages_en={pages.pages_en}
-                      pages_th={pages.pages_th}
-                      pages_star={pages.pages_star}
-                      pages_type={pages.pages_type}
-                      pages_follow={pages.pages_follow}
-                      pages_publish={pages.pages_publish}
-                      pages_title={pages.pages_title}
-                      pages_simple={pages.pages_simple}
-                      pages_thumbnail={pages.pages_thumbnail}
-                      pages_description={pages.pages_description}
-                      posts_slug={pages.posts_slug}
-                    />
-                  );
-                })}
-              </div>
-              <div className="pagination">
-                <div className="w-full">
-                  <div className="items-per-page">
-                    <ul className="flex justify-center items-center gap-1 py-5">
-                      {currentPage > 1 ? (
-                        <li className="bg-header_bg_menu m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300">
-                          <button
-                            className="cursor-pointer px-[10px] py-[5px]"
-                            onClick={() => changePage(currentPage - 1)}
-                            disabled={currentPage === 1}
-                          >
-                            Previous
-                          </button>
-                        </li>
-                      ) : null}
-                      {renderPageNumbers()}
-                      {currentPage < totalPages ? (
-                        <li className="bg-header_bg_menu   m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300">
-                          <button
-                            className="cursor-pointer px-[10px] py-[5px]"
-                            onClick={() => changePage(currentPage + 1)}
-                            disabled={currentPage === totalPages}
-                          >
-                            Next
-                          </button>
-                        </li>
-                      ) : null}
-                    </ul>
+            <section>
+              <div className="search w-full ">
+                <div className="search-title">
+                  <h2 className="text-3xl text-site_color">
+                    Search:
+                    <span className="text-color_white"> {props.keyword}</span>
+                  </h2>
+                </div>
+                <div className="update_new-content grid grid-cols-2  md:grid-cols-3 gap-1  lg:grid-cols-5">
+                  {props.search.map((pages: any, i: number) => {
+                    return (
+                      <Poster
+                        key={i}
+                        i={i}
+                        pages_id={pages.pages_id}
+                        pages_slug={pages.pages_slug}
+                        pages_view={pages.pages_view}
+                        pages_last_update={pages.pages_last_update}
+                        pages_status_showing={pages.pages_status_showing}
+                        pages_last_ep={pages.pages_last_ep}
+                        pages_en={pages.pages_en}
+                        pages_th={pages.pages_th}
+                        pages_star={pages.pages_star}
+                        pages_type={pages.pages_type}
+                        pages_follow={pages.pages_follow}
+                        pages_publish={pages.pages_publish}
+                        pages_title={pages.pages_title}
+                        pages_simple={pages.pages_simple}
+                        pages_thumbnail={pages.pages_thumbnail}
+                        pages_description={pages.pages_description}
+                        posts_slug={pages.posts_slug}
+                      />
+                    );
+                  })}
+                </div>
+                <div className="pagination">
+                  <div className="w-full">
+                    <div className="items-per-page">
+                      <ul className="flex justify-center items-center gap-1 py-5">
+                        {currentPage > 1 ? (
+                          <li className="bg-header_bg_menu m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300">
+                            <button
+                              className="cursor-pointer px-[10px] py-[5px]"
+                              onClick={() => changePage(currentPage - 1)}
+                              disabled={currentPage === 1}
+                            >
+                              Previous
+                            </button>
+                          </li>
+                        ) : null}
+                        {renderPageNumbers()}
+                        {currentPage < totalPages ? (
+                          <li className="bg-header_bg_menu   m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300">
+                            <button
+                              className="cursor-pointer px-[10px] py-[5px]"
+                              onClick={() => changePage(currentPage + 1)}
+                              disabled={currentPage === totalPages}
+                            >
+                              Next
+                            </button>
+                          </li>
+                        ) : null}
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </section>
           </section>
-        </section>
-      </div>
-    </Layer>
+        </div>
+      </Layer>
+    </>
   );
 }
 export async function getServerSideProps(context: any) {

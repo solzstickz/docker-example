@@ -243,6 +243,7 @@ export default function Post({ ...props }) {
       <NextSeo
         title={`${props.post.pages_en} ตอนที่ ${props.post.posts_ep} - ${config.SITE_NAME}`}
         description={`อ่านมังงะ มังฮวา การ์ตูนเรื่อง ${props.post.pages_en} ${props.post.pages_th} ตอนที่ ${props.post.posts_ep} at ${config.SITE_NAME} – มังงะแปลไทย`}
+        canonical={`${config.SITE_URL}${props.post.posts_slug}`}
       />
 
       <Layer>
@@ -268,7 +269,7 @@ export default function Post({ ...props }) {
             >
               <div className="nav__content flex flex-col w-full">
                 <div className="nav__title py-2 border-b-4 border-site_color dark:text-color_white w-full relative">
-                  <h2>Charpter List</h2>
+                  <p>Charpter List</p>
                   <FaTimes
                     className="text-site_color text-[20px]  delay-1000 ease-out animate-pulse cursor-pointer absolute right-5 top-3"
                     onClick={() => setNav_ep(!nav_ep)}
@@ -388,9 +389,10 @@ export default function Post({ ...props }) {
                   >
                     <Image
                       src={`${config.CDN_URL}${images.url}`}
-                      alt={images.alt}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      alt={`${images.alt}`}
+                      title={`${images.alt}`}
                     />
                   </div>
                 );
