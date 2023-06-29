@@ -11,6 +11,7 @@ module.exports = {
   theme: {
     colors: {
       site_color: "#6c2bd9",
+      color_pink:'#cc2f86',
       color_white: "#fff",
       color_gray: "#9ca9b9",
       color_dark: "#000",

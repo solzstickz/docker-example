@@ -65,8 +65,6 @@ export default function Layer({ children, ...props }: Props) {
     set_theme();
   }, []);
 
-
-
   return (
     <>
       <Script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" />
@@ -223,28 +221,28 @@ export default function Layer({ children, ...props }: Props) {
         <div className="white_space h-[10px] bg-[#3b3c4c] py-3"></div>
         <div className="container mx-auto tags w-full flex justify-center flex-wrap	">
           <Link
-            href="/"
+            href="/tags/action"
             className="bg-header_bg_menu py-[8px] px-[15px] m-2 rounded-md mx-2 text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300"
           >
-            มังงะที่ถูกใจ
+            ACTION
           </Link>
           <Link
-            href="/"
+            href="/tags/drama"
             className="bg-header_bg_menu py-[8px] px-[15px] m-2 rounded-md mx-2 text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300"
           >
-            มังงะที่ถูกใจ
+            DRAMA
           </Link>
           <Link
-            href="/"
+            href="/tags/fantasy"
             className="bg-header_bg_menu py-[8px] px-[15px] m-2 rounded-md mx-2 text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300"
           >
-            มังงะที่ถูกใจ
+            FANTASY
           </Link>
           <Link
-            href="/"
+            href="/tags/isekai"
             className="bg-header_bg_menu py-[8px] px-[15px] m-2 rounded-md mx-2 text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300"
           >
-            มังงะที่ถูกใจ
+            ISEKAI
           </Link>
         </div>
         <div className="copyright container mx-auto w-5/6 md:max-w-[1080px] flex justify-center flex-col items-center text-center">

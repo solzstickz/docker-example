@@ -193,7 +193,7 @@ export default function Favorite() {
                                 className=" w-5/6  text-color_white justify-between mx-auto px-1 py-2 text-md font-medium leading-5  transition-colors duration-150 bg-site_color rounded-lg active:bg-site_color hover:bg-site_color focus:outline-none focus:shadow-outline-bg-site_color"
                                 href={`/series/${pages.pages_slug}`}
                               >
-                                รับชมได้ทุกวัน {pages.pages_status_showing}
+                                รับชมได้ทุก {pages.pages_status_showing}
                               </Link>
                             </div>
                           </div>
