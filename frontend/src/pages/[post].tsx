@@ -219,10 +219,12 @@ export default function Post({ ...props }) {
 
   const ep_list = () => {
     let charp_ep = props.list_ep.map((item: any, i: number) => (
-      <li className="nav__item  dark:text-color_white border-dashed border-b-2 border-color_gray">
+      <li
+        className="nav__item  dark:text-color_white border-dashed border-b-2 border-color_gray"
+        key={item.posts_id}
+      >
         <Link
           href={`${item.posts_slug}`}
-          key={item.posts_id}
           className="flex items-center justify-around gap-4 py-2"
         >
           {/* <div className="no w-[50px] border-e-2 border-color_gray">
