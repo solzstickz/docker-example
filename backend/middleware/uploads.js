@@ -92,16 +92,16 @@ const uploads_posts_delete = (keyname, req, res,delete_to_db) => {
       console.log("ไม่พบไฟล์ที่ต้องการลบ");
       return res.status(201).json({ message: "Not Found File deleted" });
     } else {
-      pool.query(`UPDATE img_found set type = 0 WHERE url in (?)`,[delete_to_db], async (err, result_img_found) => {
+      pool.query(`DELETE FROM img_found where url in (?)`,[delete_to_db], async (err, result_img_found) => {
         try {
           if (err) {
             console.log("Status Mysql Insert Error",err);
             res.status(500).json({ message: "Status Mysql Update img_found Error" });
           }else{
             if (result_img_found.affectedRows > 0){
-              res.status(200).json({ message : "Status Update Success"});
+              res.status(200).json({ message : "Status DELETE img_found Success"});
             }else{
-              res.status(201).json({ message: "Status Update img_found Error" });
+              res.status(201).json({ message: "Status DELETE img_found Not Found" });
             }
           }
         }catch (err) {
