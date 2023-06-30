@@ -233,18 +233,20 @@ const columns = [
     name: "Edit",
     selector: (row: any) => row.pages_slug,
     cell: (row: any) => (
-      <div
-        onClick={() => {
-          // href={`/${config.ADMIN_PATH}/pages/posts/edit/${row.posts_slug}?pages_slug=${row.pages_slug}`}
-          Router.push(
-            `/${config.ADMIN_PATH}/pages/posts/edit/${row.posts_slug}?pages_slug=${row.pages_slug}`
-          );
-        }}
-      >
-        <button className="text-orange-500 bg-orange-100 rounded-md dark:text-orange-100 dark:bg-orange-500 p-2">
-          <FaEdit className="w-3 h-3 " />
-        </button>
-      </div>
+      <>
+        <div
+          onClick={() => {
+            // href={`/${config.ADMIN_PATH}/pages/posts/edit/${row.posts_slug}?pages_slug=${row.pages_slug}`}
+            Router.push(
+              `/${config.ADMIN_PATH}/pages/posts/edit/${row.posts_slug}?pages_slug=${row.pages_slug}`
+            );
+          }}
+        >
+          <button className="text-orange-500 bg-orange-100 rounded-md dark:text-orange-100 dark:bg-orange-500 p-2">
+            <FaEdit className="w-3 h-3 " />
+          </button>
+        </div>
+      </>
     ),
     ignoreRowClick: true,
     allowOverflow: true,
@@ -348,7 +350,6 @@ export const Table_Pages_Posts = ({ data_table, pages_slug }: any) => {
 
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [toggleCleared, setToggleCleared] = React.useState(false);
-  const [data, setData] = React.useState();
 
   const handleRowSelected = React.useCallback((state: any) => {
     setSelectedRows(state.selectedRows);
@@ -389,15 +390,18 @@ export const Table_Pages_Posts = ({ data_table, pages_slug }: any) => {
     };
 
     return (
-      <button
-        key="delete"
-        onClick={handdleDelete}
-        className="text-red-500 bg-orange-100 rounded-md dark:text-red-100 dark:bg-red-500 p-2"
-      >
-        Delete
-      </button>
+      <>
+        {/* <button className="text-red-500 bg-orange-100 rounded-md dark:text-red-100 dark:bg-red-500 p-2"></button> */}
+        <button
+          key="delete"
+          onClick={handdleDelete}
+          className="text-red-500 bg-orange-100 rounded-md dark:text-red-100 dark:bg-red-500 p-2"
+        >
+          Delete
+        </button>
+      </>
     );
-  }, [data, selectedRows, toggleCleared]);
+  }, [selectedRows, toggleCleared]);
 
   return (
     <>

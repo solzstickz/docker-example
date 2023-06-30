@@ -130,10 +130,7 @@ router.post("/delete/:slug", async (req, res) => {
 });
 
 router.post("/delete_select/posts", async (req, res) => {
-  const data = await req.body.posts_slug;
-  for(i in data){
-    await posts.delete_posts(data[i],res,i,data.length);
-  }
+  await posts.delete_posts(req, res);
 });
 
 router.post("/images/clear", async function (req, res) {
