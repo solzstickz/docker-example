@@ -75,6 +75,7 @@ const uploads_posts = multer({
     },
   }),
 }).array("uploads_posts_images", 300);
+
 //!!!! Config Max File Size
 const uploads_posts_delete = (keyname, req, res,delete_to_db) => {
   const params = {
