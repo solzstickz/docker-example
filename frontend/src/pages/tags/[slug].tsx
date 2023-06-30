@@ -64,9 +64,11 @@ export default function Tags_slug({ ...props }) {
             i === currentPage ? "bg-site_color" : "bg-header_bg_menu"
           }  px-[10px] py-[5px] m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300`}
         >
-          <button className={`cursor-pointer`} onClick={() => changePage(i)}>
-            {i}
-          </button>
+          <a href={`/tags/${router.query.slug}#`}>
+            <button className={`cursor-pointer`} onClick={() => changePage(i)}>
+              {i}
+            </button>
+          </a>
         </li>
       );
     }

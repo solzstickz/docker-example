@@ -64,12 +64,14 @@ export default function Search_slug({ ...props }) {
             i === currentPage ? "bg-site_color" : "bg-header_bg_menu"
           }  m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300`}
         >
-          <button
-            className={`cursor-pointer  px-[10px] py-[5px]`}
-            onClick={() => changePage(i)}
-          >
-            {i}
-          </button>
+          <a href={`/search/${router.query.slug}#`}>
+            <button
+              className={`cursor-pointer  px-[10px] py-[5px]`}
+              onClick={() => changePage(i)}
+            >
+              {i}
+            </button>
+          </a>
         </li>
       );
     }
