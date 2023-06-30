@@ -6,8 +6,7 @@ import Poster from "../../components/Poster";
 import axios_client from "../../config/axios_client";
 import config from "../../config/config";
 import { NextSeo } from "next-seo";
-import dayjs from "../../lib/dayjsUtils";
-
+import { useRouter } from "next/router";
 interface pages_lastupdate {
   pages_id: number;
   pages_slug: string;
@@ -32,7 +31,7 @@ export default function Home({ ...props }) {
   const [itemsPerPage, setItemsPerPage] = useState(20); // จำนวนรายการต่อหน้า
   const [totalPages, setTotalPages] = useState(0); // จำนวนหน้าทั้งหมด
   const [displayedPages, setDisplayedPages] = useState([]); // รายการหน้าที่จะแสดงในหน้าปัจจุบัน
-
+  const router = useRouter();
   useEffect(() => {
     // คำนวณจำนวนหน้าทั้งหมด
     const total = Math.ceil(props.pages_lastep.length / itemsPerPage);
@@ -59,6 +58,7 @@ export default function Home({ ...props }) {
         pageNumber * itemsPerPage
       )
     );
+    router.push(`/?pages=${pageNumber}#`);
   };
 
   const renderPageNumbers = () => {
@@ -135,7 +135,7 @@ export default function Home({ ...props }) {
         </section>
         <section className="container mx-auto md:max-w-[1080px] px-3">
           <section>
-            <div className="poppular w-full my-5">
+            <div className="poppular w-full my-5" id="poppular">
               <div className="poppular-title">
                 <h2 className="text-3xl text-site_color">
                   Poppular{" "}
@@ -182,7 +182,7 @@ export default function Home({ ...props }) {
             </div>
           </section>
           <section>
-            <div className="update_new w-full ">
+            <div className="update_new w-full" id="update">
               <div className="update_new-title">
                 <h3 className="text-3xl text-site_color">
                   {config.SITE_NAME}{" "}

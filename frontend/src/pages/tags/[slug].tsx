@@ -5,12 +5,13 @@ import axios_client from "../../../config/axios_client";
 import { useEffect, useState } from "react";
 import config from "../../../config/config";
 import { NextSeo } from "next-seo";
+import { useRouter } from "next/router";
 export default function Tags_slug({ ...props }) {
   const [currentPage, setCurrentPage] = useState(1); // หน้าปัจจุบัน
-  const [itemsPerPage, setItemsPerPage] = useState(10); // จำนวนรายการต่อหน้า
+  const [itemsPerPage, setItemsPerPage] = useState(20); // จำนวนรายการต่อหน้า
   const [totalPages, setTotalPages] = useState(0); // จำนวนหน้าทั้งหมด
   const [displayedPages, setDisplayedPages] = useState([]); // รายการหน้าที่จะแสดงในหน้าปัจจุบัน
-
+  const router = useRouter();
   useEffect(() => {
     // คำนวณจำนวนหน้าทั้งหมด
     const total = Math.ceil(props.tags.length / itemsPerPage);
@@ -36,6 +37,7 @@ export default function Tags_slug({ ...props }) {
         pageNumber * itemsPerPage
       )
     );
+    router.push(`/tags/${router.query.slug}?pages=${pageNumber}#`);
   };
 
   const renderPageNumbers = () => {
@@ -102,11 +104,11 @@ export default function Tags_slug({ ...props }) {
         canonical={`${config.SITE_URL}tags/${props.keyword}`}
       />
       <Layer>
-        <div className="container mx-auto max-w-[1080px]">
+        <div className="container mx-auto md:max-w-[1080px] px-3">
           <section>
             <section>
               <div className="tags w-full ">
-                <div className="tags-title">
+                <div className="tags-title py-5">
                   <h2 className="text-3xl text-site_color">
                     Tags:
                     <span className="text-color_white"> {props.keyword}</span>

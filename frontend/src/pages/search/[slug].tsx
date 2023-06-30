@@ -4,12 +4,13 @@ import Poster from "../../../components/Poster";
 import axios_client from "../../../config/axios_client";
 import { NextSeo } from "next-seo";
 import config from "../../../config/config";
+import { useRouter } from "next/router";
 export default function Search_slug({ ...props }) {
   const [currentPage, setCurrentPage] = useState(1); // หน้าปัจจุบัน
-  const [itemsPerPage, setItemsPerPage] = useState(10); // จำนวนรายการต่อหน้า
+  const [itemsPerPage, setItemsPerPage] = useState(20); // จำนวนรายการต่อหน้า
   const [totalPages, setTotalPages] = useState(0); // จำนวนหน้าทั้งหมด
   const [displayedPages, setDisplayedPages] = useState([]); // รายการหน้าที่จะแสดงในหน้าปัจจุบัน
-
+  const router = useRouter();
   useEffect(() => {
     // คำนวณจำนวนหน้าทั้งหมด
     const total = Math.ceil(props.search.length / itemsPerPage);
@@ -36,6 +37,7 @@ export default function Search_slug({ ...props }) {
         pageNumber * itemsPerPage
       )
     );
+    router.push(`/search/${[props.keyword]}?pages=${pageNumber}#`);
   };
 
   const renderPageNumbers = () => {
@@ -105,12 +107,12 @@ export default function Search_slug({ ...props }) {
         canonical={`${config.SITE_URL}search/${props.keyword}`}
       />
       <Layer>
-        <div className="container mx-auto max-w-[1080px]">
+        <div className="container mx-auto md:max-w-[1080px] px-3">
           <section>
             <section>
-              <div className="search w-full ">
-                <div className="search-title">
-                  <h2 className="text-3xl text-site_color">
+              <div className="search w-full">
+                <div className="search-title py-5">
+                  <h2 className="text-3xl text-site_color ">
                     Search:
                     <span className="text-color_white"> {props.keyword}</span>
                   </h2>

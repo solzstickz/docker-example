@@ -18,7 +18,7 @@ export default function Poster({ ...props }) {
                 className="mx-auto rounded-tl-md rounded-tr-md"
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                priority={true}
+                priority
                 alt={props.pages_title}
                 title={`${props.pages_title}`}
               />
