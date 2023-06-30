@@ -136,7 +136,7 @@ router.post("/delete_select/posts", async (req, res) => {
   }
 });
 
-router.post("/image/clear", async function (req, res) {
+router.post("/images/clear", async function (req, res) {
   pool.query(
     `SELECT * FROM img_found WHERE type = 0;`,
     async (err, result_img_found) => {
@@ -159,6 +159,35 @@ router.post("/image/clear", async function (req, res) {
             // console.log(keyname);
             // console.log(delete_to_db);
             await uploads.uploads_posts_delete(keyname, req, res, delete_to_db);
+          } else {
+            res
+              .status(201)
+              .json({ message: "Status DELETE img_found Not Found" });
+          }
+        }
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
+      }
+    }
+  );
+});
+
+router.post("/image/notuse", async function (req, res) {
+  pool.query(
+    `SELECT COUNT(img_found_id) as images_count FROM img_found WHERE type = 0;`,
+    async (err, result_img_found) => {
+      try {
+        if (err) {
+          console.log("Status Mysql Insert Error", err);
+          res
+            .status(500)
+            .json({ message: "Status Mysql Insert img_found Error" });
+        } else {
+          if (result_img_found.length > 0) {
+            res
+            .status(201)
+            .json( result_img_found[0] );
           } else {
             res
               .status(201)
