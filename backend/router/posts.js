@@ -130,12 +130,15 @@ router.post("/delete/:slug", async (req, res) => {
 });
 
 router.post("/delete_select/posts", async (req, res) => {
-  await posts.delete_posts(req, res);
+  const data = await req.body.posts_slug;
+  for(i in data){
+    await posts.delete_posts(data[i],res,i,data.length);
+  }
 });
 
 router.post("/images/clear", async function (req, res) {
   pool.query(
-    `SELECT * FROM img_found WHERE type = 0;`,
+    `SELECT * FROM img_found WHERE type = 0 limit 1000;`,
     async (err, result_img_found) => {
       try {
         if (err) {
@@ -170,7 +173,7 @@ router.post("/images/clear", async function (req, res) {
   );
 });
 
-router.post("/image/notuse", async function (req, res) {
+router.post("/images/notuse", async function (req, res) {
   pool.query(
     `SELECT COUNT(img_found_id) as images_count FROM img_found WHERE type = 0;`,
     async (err, result_img_found) => {
@@ -187,8 +190,10 @@ router.post("/image/notuse", async function (req, res) {
             .json( result_img_found[0] );
           } else {
             res
-              .status(201)
-              .json({ message: "Status DELETE img_found Not Found" });
+            .status(201)
+            .json( {
+              "images_count": 0
+            } );
           }
         }
       } catch (err) {

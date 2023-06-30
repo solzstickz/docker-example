@@ -4,8 +4,8 @@ const path = require("path");
 const axios = require("axios");
 
 const start_ep = 1002;
-const end_ep = 1010;
-const url = "https://www.oremanga.net/one-piece/one-piece-";
+const end_ep = 1005;
+const url = "https://reapertrans.com/one-piece-%e0%b8%95%e0%b8%ad%e0%b8%99%e0%b8%97%e0%b8%b5%e0%b9%88-";
 
 const pages_slug = "one-piece";
 
@@ -57,14 +57,14 @@ async function saveToEndpoint(ep, imageUrls) {
     await page.goto(currentUrl);
 
     try {
-      await page.waitForSelector(".reader-area", { timeout: 300000 });
+      await page.waitForSelector("#readerarea", { timeout: 300000 });
     } catch (error) {
       console.error(`Timeout waiting for selector at URL: ${currentUrl}`);
       continue;
     }
 
-    const imageUrls = await page.$$eval(".reader-area img", (images) => {
-      return images.map((img) => img.src);
+    const imageUrls = await page.$$eval("#readerarea img", (images) => {
+      return images.map((img) => img.getAttribute("data-src"));
     });
 
     const episodeDirectory = path.join(downloadDirectory, `ep${episode}`);

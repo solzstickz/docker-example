@@ -83,7 +83,7 @@ const uploads_posts_delete = (keyname, req, res,delete_to_db) => {
       Objects: keyname,
     },
   };
-
+  console.log(delete_to_db);
   s3.deleteObjects(params, (err, data) => {
     if (err) {
       console.log("เกิดข้อผิดพลาดในการลบไฟล์:", err);
@@ -99,9 +99,9 @@ const uploads_posts_delete = (keyname, req, res,delete_to_db) => {
             res.status(500).json({ message: "Status Mysql Update img_found Error" });
           }else{
             if (result_img_found.affectedRows > 0){
-              res.status(200).json({ message : `Status DELETE img_found ${delete_to_db.length} files Success`});
+              res.status(200).json({ message : `Status DELETE img_found ${delete_to_db.length} files Success` , count : delete_to_db.length});
             }else{
-              res.status(201).json({ message: "Status DELETE img_found Not Found" });
+              res.status(201).json({ message: "Status DELETE img_found Not Found" , count : 0});
             }
           }
         }catch (err) {
