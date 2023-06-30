@@ -132,21 +132,21 @@ export default function Post({ ...props }) {
     });
   };
 
-  const handleunfavoriteclick = () => {
-    const favoriteStatus = localStorage.getItem("favorite");
-    if (favoriteStatus) {
-      const favoriteData = JSON.parse(favoriteStatus);
-      const pagesSlug = props.post.pages_slug;
-      const updatedfavoriteData = favoriteData.filter(
-        (favorite: any) => favorite.pages_slug !== pagesSlug
-      );
-      localStorage.setItem("favorite", JSON.stringify(updatedfavoriteData));
-      setInfo({
-        ...info,
-        favorite: false,
-      });
-    }
-  };
+  // const handleunfavoriteclick = () => {
+  //   const favoriteStatus = localStorage.getItem("favorite");
+  //   if (favoriteStatus) {
+  //     const favoriteData = JSON.parse(favoriteStatus);
+  //     const pagesSlug = props.post.pages_slug;
+  //     const updatedfavoriteData = favoriteData.filter(
+  //       (favorite: any) => favorite.pages_slug !== pagesSlug
+  //     );
+  //     localStorage.setItem("favorite", JSON.stringify(updatedfavoriteData));
+  //     setInfo({
+  //       ...info,
+  //       favorite: false,
+  //     });
+  //   }
+  // };
   //!
 
   //! update current post index
@@ -294,7 +294,7 @@ export default function Post({ ...props }) {
                     {info.favorite ? (
                       <FaHeart
                         className="favorite text-site_color text-[20px] delay-1000 ease-out cursor-pointer"
-                        onClick={handleunfavoriteclick}
+                        // onClick={handleunfavoriteclick}
                       />
                     ) : (
                       <FaRegHeart

@@ -183,13 +183,7 @@ const columns = [
   {
     name: "posts_id",
     selector: (row: any) => row.posts_id,
-    cell: (row: any, index: number) => (
-      <Link
-        href={`/${config.ADMIN_PATH}/pages/posts/edit/${row.posts_slug}?pages_slug=${row.pages_slug}`}
-      >
-        {row.posts_id}
-      </Link>
-    ),
+    cell: (row: any, index: number) => <p>{row.posts_id}</p>,
     sortable: true,
   },
   {
@@ -295,10 +289,7 @@ const FilterComponent = ({ filterText, onFilter, onClear }: any) => {
 };
 
 export const Table_Pages_Posts = ({ data_table, pages_slug }: any) => {
-  const [pending, setPending] = React.useState(true);
-  useEffect(() => {
-    setPending(false);
-  }, [data_table]);
+  useEffect(() => {}, [data_table]);
 
   const [filterText, setFilterText] = React.useState("");
   const [resetPaginationToggle, setResetPaginationToggle] =
@@ -329,12 +320,6 @@ export const Table_Pages_Posts = ({ data_table, pages_slug }: any) => {
   }, [filterText, resetPaginationToggle]);
 
   //! set_loading
-  React.useEffect(() => {
-    const timeout = setTimeout(() => {
-      setPending(false);
-    }, 100);
-    return () => clearTimeout(timeout);
-  }, []);
 
   const ExpandedComponent: React.FC<ExpanderComponentProps<Pages_Posts>> = ({
     data,
@@ -410,7 +395,6 @@ export const Table_Pages_Posts = ({ data_table, pages_slug }: any) => {
           title={`Pages: ${pages_slug}`}
           columns={columns.reverse()}
           data={filteredItems}
-          progressPending={pending}
           pagination
           paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
           subHeader

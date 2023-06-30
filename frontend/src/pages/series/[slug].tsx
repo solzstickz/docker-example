@@ -58,21 +58,21 @@ export default function Page({ ...props }: any) {
     });
   };
 
-  const handleunfavoriteclick = () => {
-    const favoriteStatus = localStorage.getItem("favorite");
-    if (favoriteStatus) {
-      const favoriteData = JSON.parse(favoriteStatus);
-      const pagesSlug = props.res_page.pages_slug;
-      const updatedfavoriteData = favoriteData.filter(
-        (favorite: any) => favorite.pages_slug !== pagesSlug
-      );
-      localStorage.setItem("favorite", JSON.stringify(updatedfavoriteData));
-      setInfo({
-        ...info,
-        favorite: false,
-      });
-    }
-  };
+  // const handleunfavoriteclick = () => {
+  //   const favoriteStatus = localStorage.getItem("favorite");
+  //   if (favoriteStatus) {
+  //     const favoriteData = JSON.parse(favoriteStatus);
+  //     const pagesSlug = props.res_page.pages_slug;
+  //     const updatedfavoriteData = favoriteData.filter(
+  //       (favorite: any) => favorite.pages_slug !== pagesSlug
+  //     );
+  //     localStorage.setItem("favorite", JSON.stringify(updatedfavoriteData));
+  //     setInfo({
+  //       ...info,
+  //       favorite: false,
+  //     });
+  //   }
+  // };
   //!
   return (
     <>
@@ -252,11 +252,11 @@ export default function Page({ ...props }: any) {
                   <>
                     <div
                       className="icon w-full flex justify-center items-center gap-3"
-                      onClick={handleunfavoriteclick}
+                      // onClick={handleunfavoriteclick}
                     >
                       <FaHeart className="favorite  text-color_white" />
 
-                      <p className="text-color_white text-left">UnFollow</p>
+                      <p className="text-color_white text-left">Follow</p>
                     </div>
                   </>
                 ) : (
