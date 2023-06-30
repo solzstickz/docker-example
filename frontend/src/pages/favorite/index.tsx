@@ -3,7 +3,7 @@ import Layer from "../../../components/Layer";
 import config from "../../../config/config";
 import Image from "next/image";
 import Link from "next/link";
-import dayjs from "../../../lib/dayjsUtils";
+import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
 
 type PostDetail = {
@@ -49,11 +49,11 @@ type Page = {
 
 export default function Favorite() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
   const [totalPages, setTotalPages] = useState(0);
   const [displayedPages, setDisplayedPages] = useState<Page[]>([]);
   const [favorite, setFavorite] = useState<Page[]>([]);
-
+  const router = useRouter();
   useEffect(() => {
     const favoriteData = JSON.parse(localStorage.getItem("favorite") || "[]");
     setFavorite(favoriteData);
@@ -74,6 +74,7 @@ export default function Favorite() {
     const endIndex = startIndex + itemsPerPage;
     const pagesToDisplay = favorite.slice(startIndex, endIndex);
     setDisplayedPages(pagesToDisplay);
+    router.push(`/favorite?pages=${pageNumber}#`);
   };
 
   const handleUnfavoriteClick = (pagesSlug: string) => {
@@ -147,11 +148,11 @@ export default function Favorite() {
     <>
       <NextSeo canonical={`${config.SITE_URL}favorite`} />
       <Layer>
-        <div className="container mx-auto max-w-[1080px]">
+        <div className="container mx-auto md:max-w-[1080px] px-3">
           <section>
             <section>
-              <div className="tags w-full ">
-                <div className="tags-title">
+              <div className="favorite w-full ">
+                <div className="favorite-title py-5">
                   <h2 className="text-3xl text-site_color">
                     รายการที่ชื่นชอบ:
                   </h2>
