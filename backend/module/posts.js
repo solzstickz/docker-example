@@ -269,9 +269,11 @@ module.exports = {
       );
     }
   },
-  async delete_posts(req, res) {
-    let posts_id = req.params.slug;
+  async delete_posts(slug, res,i,data_length) {
+    let posts_id = slug;
+    i = Number(i)+1;
     console.log(posts_id);
+    console.log(i,data_length);
     pool.query(`SELECT posts.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id WHERE posts_slug = ? ORDER BY posts_ep DESC;`,[posts_id], async (err, result_posts) => {
       try {
         if (err) {
@@ -296,9 +298,13 @@ module.exports = {
                         }else{
                           if (result_img_found.affectedRows > 0){
                             // await uploads.uploads_posts_delete(keyname,req,res);
-                            res.status(200).json({ message : "Status Delete Posts Success"});
+                            if(i == data_length){
+                              res.status(200).json({ message : "Status Delete Posts Success"});
+                            }
                           }else{
-                            res.status(200).json({ message: "Status Update img_found not found" });
+                            if(i == data_length){
+                              res.status(200).json({ message: "Status Update img_found not found" });
+                            }
                           }
                         }
                       }catch (err) {
