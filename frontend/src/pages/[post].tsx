@@ -383,18 +383,22 @@ export default function Post({ ...props }) {
               {props.post.posts_detail.map((images: any, i: number) => {
                 return (
                   <div
-                    className="relative mx-auto w-auto h-screen cursor-pointer"
+                    className="w-full"
                     key={i}
                     onClick={() => setNav_control(!nav_control)}
                   >
                     <Image
                       src={`${config.CDN_URL}${images.url}`}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      width={2000}
+                      height={1000}
                       loading="lazy"
                       quality={100}
                       alt={`${images.alt}`}
                       title={`${images.alt}`}
+                      style={{
+                        width: '100%',
+                        height: 'auto',
+                      }}
                     />
                   </div>
                 );
