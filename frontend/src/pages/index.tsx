@@ -49,8 +49,6 @@ export default function Home({ ...props }) {
 
   // ฟังก์ชันเปลี่ยนหน้า
   const changePage = (pageNumber: number) => {
-    // router.push(`/?pages=${pageNumber}#`);
-
     setCurrentPage(pageNumber);
 
     // เพิ่มโค้ดด้านล่างเพื่อให้หน้าปัจจุบันแสดงตรงตามหน้าที่คลิกเลือก
