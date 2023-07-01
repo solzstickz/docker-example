@@ -2,18 +2,52 @@ const puppeteer = require("puppeteer");
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
+//! set_posts
+const start_ep = "0";
+const end_ep = "5";
+const url = "https://www.oremanga.net/solo-leveling/solo-leveling-";
+const pages_slug = "solo-leveling";
+const el_target = ".reader-area";
+const el_src = `src`;
+//! set_posts
 
-const start_ep = 1;
-const end_ep = 189;
-const url = "https://www.oremanga.net/jujutsu-kaisen/jujutsu-kaisen-";
 
-const pages_slug = "jujutsu-kaise";
 
-const posts_slug = `${pages_slug}-ตอนที่-`;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//! backend setup
 const uploadUrl = "https://load.skz.app/posts/uploads/posts";
 const createUrl = "https://load.skz.app/posts/create/post";
+//! backend setup
+const posts_slug = `${pages_slug}-ตอนที่-`;
+const downloadDirectory = path.join(__dirname, `downloads-${pages_slug}`);
 
-const downloadDirectory = path.join(__dirname, "downloads");
+fs.mkdir(downloadDirectory, { recursive: true }, (err) => {
+  if (err) {
+    console.error("เกิดข้อผิดพลาดในการสร้างโฟลเดอร์ downloads:", err);
+  } else {
+    console.log("โฟลเดอร์ downloads ถูกสร้างขึ้นแล้ว");
+  }
+});
 
 async function saveToEndpoint(ep, imageUrls) {
   try {
@@ -49,15 +83,20 @@ async function saveToEndpoint(ep, imageUrls) {
     await page.goto(currentUrl);
 
     try {
-      await page.waitForSelector(".reader-area", { timeout: 300000 });
+      await page.waitForSelector(`${el_target}`, { timeout: 300000 });
     } catch (error) {
       console.error(`Timeout waiting for selector at URL: ${currentUrl}`);
       continue;
     }
 
-    const imageUrls = await page.$$eval(".reader-area img", (images) => {
-      return images.map((img) => img.src);
-    });
+    const imageUrls = await page.$$eval(
+      `${el_target} img`,
+      (images, el_src) => {
+        // return images.map((img) => img.getAttribute("data-lazy-src"));
+        return images.map((img) => img.getAttribute(el_src));
+      },
+      el_src
+    );
 
     const episodeDirectory = path.join(downloadDirectory, `ep${episode}`);
     if (!fs.existsSync(episodeDirectory)) {
