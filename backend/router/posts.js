@@ -87,6 +87,16 @@ router.post("/uploads/delete", async function (req, res) {
   await uploads.uploads_posts_delete(keyname, req, res, delete_to_db);
 });
 
+router.post("/filter_space/delete", async function (req, res) {
+  const data = await req.body;
+  let delete_to_db = [];
+  for (i in data) {
+    let name = data[i].Key;
+    await delete_to_db.push(name);
+  }
+  await uploads.uploads_posts_delete(data, req, res, delete_to_db);
+});
+
 //! domain.com/pages/create/posts
 router.post("/create/post", async function (req, res) {
   await posts.create_posts(req, res);
