@@ -37,7 +37,6 @@ export default function Tags_slug({ ...props }) {
         pageNumber * itemsPerPage
       )
     );
-    router.push(`/tags/${router.query.slug}?pages=${pageNumber}#`);
   };
 
   const renderPageNumbers = () => {
@@ -65,9 +64,11 @@ export default function Tags_slug({ ...props }) {
             i === currentPage ? "bg-site_color" : "bg-header_bg_menu"
           }  px-[10px] py-[5px] m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300`}
         >
-          <button className={`cursor-pointer`} onClick={() => changePage(i)}>
-            {i}
-          </button>
+          <a href={`/tags/${router.query.slug}#`}>
+            <button className={`cursor-pointer`} onClick={() => changePage(i)}>
+              {i}
+            </button>
+          </a>
         </li>
       );
     }
@@ -147,25 +148,29 @@ export default function Tags_slug({ ...props }) {
                       <ul className="flex justify-center items-center gap-1 py-5">
                         {currentPage > 1 ? (
                           <li className="bg-header_bg_menu m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300">
-                            <button
-                              className="cursor-pointer px-[10px] py-[5px]"
-                              onClick={() => changePage(currentPage - 1)}
-                              disabled={currentPage === 1}
-                            >
-                              Previous
-                            </button>
+                            <a href={`/tags/${router.query.slug}#`}>
+                              <button
+                                className="cursor-pointer px-[10px] py-[5px]"
+                                onClick={() => changePage(currentPage - 1)}
+                                disabled={currentPage === 1}
+                              >
+                                Previous
+                              </button>
+                            </a>
                           </li>
                         ) : null}
                         {renderPageNumbers()}
                         {currentPage < totalPages ? (
                           <li className="bg-header_bg_menu   m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300">
-                            <button
-                              className="cursor-pointer px-[10px] py-[5px]"
-                              onClick={() => changePage(currentPage + 1)}
-                              disabled={currentPage === totalPages}
-                            >
-                              Next
-                            </button>
+                            <a href={`/tags/${router.query.slug}#`}>
+                              <button
+                                className="cursor-pointer px-[10px] py-[5px]"
+                                onClick={() => changePage(currentPage + 1)}
+                                disabled={currentPage === totalPages}
+                              >
+                                Next
+                              </button>
+                            </a>
                           </li>
                         ) : null}
                       </ul>

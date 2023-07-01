@@ -3,11 +3,11 @@ const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
 
-const start_ep = 1002;
-const end_ep = 1005;
+const start_ep = 3;
+const end_ep = 5;
 const url = "https://reapertrans.com/one-piece-%e0%b8%95%e0%b8%ad%e0%b8%99%e0%b8%97%e0%b8%b5%e0%b9%88-";
 
-const pages_slug = "one-piece";
+const pages_slug = "one-piece1";
 
 const posts_slug = `${pages_slug}-ตอนที่-`;
 const uploadUrl = "https://load.skz.app/posts/uploads/posts";
