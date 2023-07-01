@@ -391,13 +391,12 @@ export default function Post({ ...props }) {
                       src={`${config.CDN_URL}${images.url}`}
                       width={2000}
                       height={1000}
-                      loading="lazy"
                       quality={100}
                       alt={`${images.alt}`}
                       title={`${images.alt}`}
                       style={{
-                        width: '100%',
-                        height: 'auto',
+                        width: "100%",
+                        height: "auto",
                       }}
                     />
                   </div>
