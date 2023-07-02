@@ -71,6 +71,7 @@ export default function Layer({ children, ...props }: Props) {
   }, []);
 
   useEffect(() => {
+    setSearch_loading(true);
     const handleSearch = async () => {
       setSearch_loading(true);
       // Perform the fetch using the search value
@@ -93,7 +94,7 @@ export default function Layer({ children, ...props }: Props) {
 
     const timer = setTimeout(() => {
       handleSearch();
-    }, 2000);
+    }, 1000);
 
     setSearch_loading(false);
     return () => clearTimeout(timer);
@@ -282,16 +283,21 @@ export default function Layer({ children, ...props }: Props) {
                         </button>
                       </div>
                     )}
-                  {search &&
-                    search_loading === false &&
-                    visibleSearchResults.length === 0 && (
-                      <div className="flex items-center justify-center text-center">
-                        <p className="text-3xl font-bold text-text-color dark:text-color_white">
-                          Not Found ! <br />
-                          Please Try Again
-                        </p>
+                  {search_loading && (
+                    <>
+                      <div className="flex items-center justify-center">
+                        <div className="border-text-color h-20 w-20 animate-spin rounded-full border-8 border-t-site_color" />
                       </div>
-                    )}
+                    </>
+                  )}
+                  {search !== "" && visibleSearchResults.length === 0 && (
+                    <div className="flex items-center justify-center text-center">
+                      <p className="text-3xl font-bold text-text-color dark:text-color_white">
+                        Not Found ! <br />
+                        Please Try Again
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
