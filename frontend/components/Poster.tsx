@@ -7,7 +7,7 @@ export default function Poster({ ...props }) {
   return (
     <>
       <div className="items px-1">
-        <div className="update_new-item flex flex-col relative mx-auto   md:max-w-[200px] hover:animate-pulse transition-all ease-out delay-300  dark:text-text_color text-color_dark_gray hover:text-site_color shadow-2xl rounded-md hover:border-none">
+        <div className="update_new-item flex flex-col relative mx-auto   md:max-w-[200px] hover:animate-pulse transition-all ease-out delay-300  dark:text-text_color text-color_dark_gray hover:bg-site_color hover:text-site_color shadow-2xl rounded-md hover:border-none">
           <Link
             href={`/series/${props.pages_slug}`}
             title={`อ่านการ์ตูน ${props.pages_en}`}
