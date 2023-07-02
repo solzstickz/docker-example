@@ -76,7 +76,16 @@ export default function Layer({ children, ...props }: Props) {
       setSearch_loading(true);
       // Perform the fetch using the search value
       if (search === "") {
-        setSearchResult([]);
+        try {
+          let fetch_search = await axios.get(
+            `https://load.skz.app/public/tags/popular`
+          );
+          let res = await fetch_search.data;
+          setSearchResult(res);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+          setSearchResult([]);
+        }
       } else {
         try {
           let fetch_search = await axios.get(
@@ -104,7 +113,7 @@ export default function Layer({ children, ...props }: Props) {
 
   useEffect(() => {
     if (searchResult.length > 0) {
-      setVisibleSearchResults(searchResult.slice(0, 10));
+      setVisibleSearchResults(searchResult.slice(0, 3));
     } else {
       setVisibleSearchResults([]);
     }
@@ -113,7 +122,7 @@ export default function Layer({ children, ...props }: Props) {
   const handleLoadMore = () => {
     const nextBatch = searchResult.slice(
       visibleSearchResults.length,
-      visibleSearchResults.length + 10
+      visibleSearchResults.length + 3
     );
     setVisibleSearchResults((prevResults) => [...prevResults, ...nextBatch]);
   };
@@ -222,56 +231,67 @@ export default function Layer({ children, ...props }: Props) {
               </div>
               <div className="search_list h-full">
                 <div
-                  className="flex flex-col gap-2 h-full max-h-[400px] p-1 m-2 rounded-md overflow-x-hidden"
+                  className="flex flex-col gap-2 h-full max-h-[400px] p-1 m-2 rounded-md overflow-x-hidden relative"
                   id="list_search"
                 >
-                  {visibleSearchResults.map((pages: any, i: number) => (
-                    <Link
-                      href={`/series/${pages.pages_slug}`}
-                      key={i}
-                      onClick={() => {
-                        setSearch_status(!search_status);
-                        setSearch("");
-                      }}
-                      className="hover:text-site_color"
-                    >
-                      <div className="container flex min-h-[100px] max-h-[100px] ">
-                        <div className="thumb min-w-[80px] h-auto relative">
-                          <Image
-                            src={`${config.CDN_URL}${pages.pages_thumbnail}`}
-                            fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            alt={`${pages.pages_title}`}
-                            title={`${pages.pages_title}`}
-                            priority={true}
-                          />
-                        </div>
-                        <div className="info flex flex-col px-5">
-                          <div className="pages_title text-md font-bold line-clamp-1">
-                            {pages.pages_title}
-                          </div>
-                          <div className="pages_simple text-sm font-bold line-clamp-2 pl-2">
-                            {pages.pages_simple}
-                          </div>
-                          <div className="pages_type text-sm font-bold line-clamp-1">
-                            <span
-                              className={`${
-                                pages.pages_type === "Manga"
-                                  ? "bg-color_Manga"
-                                  : pages.pages_type === "Manhua"
-                                  ? "bg-color_Manhwa"
-                                  : pages.pages_type === "Novel"
-                                  ? "bg-color_Novel"
-                                  : null
-                              } py-[8px] px-[15px] m-2 rounded-xl mx-2 text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300`}
-                            >
-                              {pages.pages_type}
-                            </span>
-                          </div>
+                  {search_loading && (
+                    <>
+                      <div className="layout absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <div className="flex items-center justify-center">
+                          <div className="border-text-color h-20 w-20 animate-spin rounded-full border-8 border-t-site_color" />
                         </div>
                       </div>
-                    </Link>
-                  ))}
+                    </>
+                  )}
+                  {searchResult.length > 0 &&
+                    visibleSearchResults.map((pages: any, i: number) => (
+                      <Link
+                        href={`/series/${pages.pages_slug}`}
+                        key={i}
+                        onClick={() => {
+                          setSearch_status(!search_status);
+                          setSearch("");
+                        }}
+                        className="hover:text-site_color"
+                      >
+                        <div className="container flex min-h-[100px] max-h-[100px] ">
+                          <div className="thumb min-w-[80px] h-auto relative">
+                            <Image
+                              src={`${config.CDN_URL}${pages.pages_thumbnail}`}
+                              fill
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              alt={`${pages.pages_title}`}
+                              title={`${pages.pages_title}`}
+                              priority={true}
+                            />
+                          </div>
+                          <div className="info flex flex-col px-5">
+                            <div className="pages_title text-md font-bold line-clamp-1">
+                              {pages.pages_title}
+                            </div>
+                            <div className="pages_simple text-sm font-bold line-clamp-2 pl-2">
+                              {pages.pages_simple}
+                            </div>
+                            <div className="pages_type text-sm font-bold line-clamp-1">
+                              <span
+                                className={`${
+                                  pages.pages_type === "Manga"
+                                    ? "bg-color_Manga"
+                                    : pages.pages_type === "Manhua"
+                                    ? "bg-color_Manhwa"
+                                    : pages.pages_type === "Novel"
+                                    ? "bg-color_Novel"
+                                    : null
+                                } py-[8px] px-[15px] m-2 rounded-xl mx-2 text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300`}
+                              >
+                                {pages.pages_type}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+
                   {searchResult.length > 10 &&
                     visibleSearchResults.length < searchResult.length && (
                       <div className="flex items-center justify-center text-center">
@@ -283,13 +303,7 @@ export default function Layer({ children, ...props }: Props) {
                         </button>
                       </div>
                     )}
-                  {search_loading && (
-                    <>
-                      <div className="flex items-center justify-center">
-                        <div className="border-text-color h-20 w-20 animate-spin rounded-full border-8 border-t-site_color" />
-                      </div>
-                    </>
-                  )}
+
                   {search !== "" && visibleSearchResults.length === 0 && (
                     <div className="flex items-center justify-center text-center">
                       <p className="text-3xl font-bold text-text-color dark:text-color_white">
