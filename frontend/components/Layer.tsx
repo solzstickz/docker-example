@@ -19,7 +19,7 @@ export default function Layer({ children, ...props }: Props) {
   const [search_status, setSearch_status] = useState(false);
 
   const router = useRouter();
-  const search_input = useRef<any>(null);
+  const searchInputRef = useRef<any>(null);
   //! scroll
   const [scrollPosition, setScrollPosition] = useState(0);
   const handleScroll = () => {
@@ -202,7 +202,7 @@ export default function Layer({ children, ...props }: Props) {
                   type="text"
                   placeholder="ค้นหา"
                   value={search}
-                  ref={search_input}
+                  ref={searchInputRef}
                   onChange={(e) => {
                     setSearch((e.target as HTMLInputElement).value);
                   }}
@@ -215,7 +215,7 @@ export default function Layer({ children, ...props }: Props) {
                   }`}
                   onClick={() => {
                     setSearch("");
-                    search_input.current;
+                    searchInputRef.current.focus();
                   }} // เรียกใช้ฟังก์ชัน handleSearch เมื่อคลิกที่ปุ่มค้นหา
                 />
               </div>
@@ -314,7 +314,7 @@ export default function Layer({ children, ...props }: Props) {
                   className="text-color_white text-[40px] p-2 shadow-md cursor-pointer"
                   onClick={() => {
                     setSearch_status(!search_status);
-                    search_input.current.focus();
+                    searchInputRef.current.focus();
                   }}
                 />
               )}

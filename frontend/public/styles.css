@@ -838,6 +838,10 @@ video {
   max-height: 230px !important;
 }
 
+.max-h-\[400px\] {
+  max-height: 400px !important;
+}
+
 .max-h-\[500px\] {
   max-height: 500px !important;
 }
@@ -848,6 +852,10 @@ video {
 
 .min-h-\[230px\] {
   min-height: 230px !important;
+}
+
+.min-h-\[500px\] {
+  min-height: 500px !important;
 }
 
 .w-5\/6 {
@@ -1030,6 +1038,10 @@ video {
 
 .overflow-x-auto {
   overflow-x: auto !important;
+}
+
+.overflow-x-hidden {
+  overflow-x: hidden !important;
 }
 
 .overflow-y-scroll {
