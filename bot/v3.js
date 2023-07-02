@@ -1,51 +1,30 @@
+//! set_posts
+const start_ep = 184;
+const end_ep = 361;
+const url =
+  "https://www.oremanga.net/boku-no-hero-academia/boku-no-hero-academia-";
+const pages_slug = "my-hero-academia";
+const el_target = ".reader-area";
+const el_src = "src";
+//! set_posts
+
 const puppeteer = require("puppeteer");
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
-//! set_posts
-const start_ep = "0";
-const end_ep = "5";
-const url = "https://www.oremanga.net/solo-leveling/solo-leveling-";
-const pages_slug = "solo-leveling";
-const el_target = ".reader-area";
-const el_src = `src`;
-//! set_posts
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //! backend setup
 const uploadUrl = "https://load.skz.app/posts/uploads/posts";
 const createUrl = "https://load.skz.app/posts/create/post";
 //! backend setup
 const posts_slug = `${pages_slug}-ตอนที่-`;
-const downloadDirectory = path.join(__dirname, `downloads-${pages_slug}`);
+const downloadDirectory = path.join(__dirname, `downloads/${pages_slug}`);
 
 fs.mkdir(downloadDirectory, { recursive: true }, (err) => {
   if (err) {
     console.error("เกิดข้อผิดพลาดในการสร้างโฟลเดอร์ downloads:", err);
   } else {
-    console.log("โฟลเดอร์ downloads ถูกสร้างขึ้นแล้ว");
+    console.log(`📁📁📁 โฟลเดอร์ downloads/${pages_slug} ถูกสร้างขึ้นแล้ว`);
   }
 });
 
@@ -79,11 +58,12 @@ async function saveToEndpoint(ep, imageUrls) {
 
   for (let episode = start_ep; episode <= end_ep; episode++) {
     const currentUrl = `${url}${episode}/`;
-
+    console.log(`⏳⏳⏳ ${currentUrl} `);
     await page.goto(currentUrl);
 
     try {
       await page.waitForSelector(`${el_target}`, { timeout: 300000 });
+      console.log(`✅✅✅ ${currentUrl} `);
     } catch (error) {
       console.error(`Timeout waiting for selector at URL: ${currentUrl}`);
       continue;
@@ -97,6 +77,12 @@ async function saveToEndpoint(ep, imageUrls) {
       },
       el_src
     );
+    if (imageUrls.length === 0) {
+      console.log(
+        `❗❗❗ เกิดข้อผิดพลาดลองเช็ค el_target และ el_src ของหน้า 👉 : ${currentUrl}`
+      );
+      continue;
+    }
 
     const episodeDirectory = path.join(downloadDirectory, `ep${episode}`);
     if (!fs.existsSync(episodeDirectory)) {
@@ -112,7 +98,7 @@ async function saveToEndpoint(ep, imageUrls) {
       const fileName = `${i + 1}.webp`;
       const filePath = path.join(episodeDirectory, fileName);
       fs.writeFileSync(filePath, buffer);
-      console.log(`Downloaded ${fileName}`);
+      console.log(`🔄🔄🔄 ${fileName}`);
     }
 
     const files = fs.readdirSync(episodeDirectory);
@@ -127,20 +113,20 @@ async function saveToEndpoint(ep, imageUrls) {
     });
 
     for (const file of files) {
-      console.log(file);
+      console.log(`📁📁📁 ${file}`);
       const fileData = fs.readFileSync(path.join(episodeDirectory, file));
       const blob = new Blob([fileData], { type: "image/webp" });
       formData.append("uploads_posts_images", blob, file);
     }
 
     const uploadResponse = await axios.post(uploadUrl, formData);
-    console.log("Upload result:", uploadResponse.data);
-
+    // console.log("Upload 🚀🚀🚀:", uploadResponse.data);
+    console.log(`Upload 🚀🚀🚀 ${uploadResponse.data.length} ✅✅✅`);
     //! ลบไฟล์ที่โหลดมา
     // fs.rmdirSync(episodeDirectory, { recursive: true });
 
     const saveResponse = await saveToEndpoint(episode, uploadResponse.data);
-    console.log("Save result:", saveResponse);
+    console.log(`Save 💾💾💾  ${posts_slug}${episode}  :`, saveResponse);
   }
 
   await browser.close();

@@ -16,11 +16,12 @@ body {
   font-style: normal;
   font-size: 20px;
 }
-#ep_list::-webkit-scrollbar {
+
+* ::-webkit-scrollbar {
   width: 5px;
-  background-color: #343543;
+  background-color: #3b3c4c;
 }
-#ep_list::-webkit-scrollbar-thumb {
+* ::-webkit-scrollbar-thumb {
   background-color: #6c2bd9;
   border-radius: 10px;
   width: 5px;
@@ -42,6 +43,9 @@ body {
 #ep_list ul a:visited {
   color: #6c2bd9;
 } */
+a {
+  color: #999999;
+}
 a:visited {
   color: #cc2f86;
 }
