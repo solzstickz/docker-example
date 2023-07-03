@@ -313,7 +313,7 @@ export default function Layer({ children, ...props }: Props) {
                 </div>
               </div>
             </div>
-            <div className="bg-site_color rounded-xl">
+            <div className="bg-site_color rounded-xl cursor-pointer">
               <FaMoon
                 className="text-color_white text-[40px] p-2 shadow-md  rounded-xl"
                 onClick={change_theme}

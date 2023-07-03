@@ -49,3 +49,8 @@ a {
 a:visited {
   color: #cc2f86;
 }
+.pagination a {
+  color:#fff;
+}
+
+
