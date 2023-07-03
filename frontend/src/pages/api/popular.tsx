@@ -15,7 +15,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const origin = req.headers.host as string; // Use type assertion to ensure origin is of type string
-  console.log(origin);
   // Check if the domain is in the allowlist
   if (allowlist.includes(origin)) {
     res.setHeader("Access-Control-Allow-Origin", origin);

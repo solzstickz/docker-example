@@ -150,7 +150,7 @@ export default async function sitemapXml(
 }
 
 // Create a cron job that calls the updateSitemap function every hour
-cron.schedule("* * * * *", async () => {
+cron.schedule("0 * * * *", async () => {
   try {
     const pagesResponse = await axios.get(
       `${base_url_api}public/sitemap/pages/slug`
