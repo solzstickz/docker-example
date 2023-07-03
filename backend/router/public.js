@@ -192,8 +192,6 @@ router.get("/search/:slug", async (req, res) => {
   }
 });
 
-
-
 //! domain.com/pages/:slug
 router.get("/pages/:slug", async (req, res) => {
   let redis_key = `public:pages/${req.params.slug}`;
