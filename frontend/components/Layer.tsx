@@ -77,9 +77,7 @@ export default function Layer({ children, ...props }: Props) {
       // Perform the fetch using the search value
       if (search === "") {
         try {
-          let fetch_search = await axios.get(
-            `https://load.skz.app/public/tags/popular`
-          );
+          let fetch_search = await axios.get(`${config.API_FRONT}popular`);
           let res = await fetch_search.data;
           setSearchResult(res);
         } catch (error) {
@@ -89,7 +87,7 @@ export default function Layer({ children, ...props }: Props) {
       } else {
         try {
           let fetch_search = await axios.get(
-            `https://load.skz.app/public/search/${search}`
+            `${config.API_FRONT}search/${search}`
           );
           let res = await fetch_search.data;
           setSearchResult(res);

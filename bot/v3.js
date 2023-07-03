@@ -1,9 +1,9 @@
 //! set_posts
-const start_ep = 184;
-const end_ep = 361;
+const start_ep = 1;
+const end_ep = 93;
 const url =
-  "https://www.oremanga.net/boku-no-hero-academia/boku-no-hero-academia-";
-const pages_slug = "my-hero-academia";
+  "https://www.oremanga.net/greatest-sword-immortal/greatest-sword-immortal-";
+const pages_slug = "greatest-sword-immortal";
 const el_target = ".reader-area";
 const el_src = "src";
 //! set_posts
@@ -51,7 +51,7 @@ async function saveToEndpoint(ep, imageUrls) {
 }
 
 (async () => {
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
   page.setDefaultNavigationTimeout(300000);

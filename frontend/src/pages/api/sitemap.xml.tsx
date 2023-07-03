@@ -135,9 +135,13 @@ export default async function sitemapXml(
 
     updateMainSitemap(urls, sitemap_posts);
 
-    console.log(`Sitemaps Build successfully ✅  ${dayjs().toNow(true)}`);
+    console.log(
+      `Sitemaps Build successfully ✅  ${dayjs().format("DD/MM/YYYY HH:mm:ss")}`
+    );
     res.json({
-      message: `Update Sitemap Successfully ✅ at ${dayjs().toNow(true)}`,
+      message: `Update Sitemap Successfully ✅ at ${dayjs().format(
+        "DD/MM/YYYY HH:mm:ss"
+      )}`,
     });
   } catch (error) {
     console.error("Failed to update sitemaps:", error);
@@ -207,7 +211,9 @@ cron.schedule("* * * * *", async () => {
     updateSitemap(pages, SITEMAP_PAGES_PATH);
 
     console.log(
-      `Sitemaps updated CronJob successfully ✅ at ${dayjs().toNow(true)}
+      `Sitemaps updated CronJob successfully ✅ at ${dayjs().format(
+        "DD/MM/YYYY HH:mm:ss"
+      )}
         `
     );
   } catch (error) {
