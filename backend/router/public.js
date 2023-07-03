@@ -68,6 +68,37 @@ router.get("/last_updated", async (req, res) => {
   }
 });
 
+router.get("/search_last_updated", async (req, res) => {
+  let redis_key = "public:search_last_updated"
+  let redis_res = await redisclient.get(redis_key);
+  if (redis_res) {
+    res.status(200).json(JSON.parse(redis_res));
+    console.log('found');
+  } else {
+  pool.query(
+    "SELECT pages.pages_id,pages.pages_slug,pages.pages_view,pages.pages_last_update,pages.pages_last_ep,pages.pages_en,pages.pages_th,pages.pages_type,pages.pages_simple,posts.posts_slug FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id where posts.posts_ep=pages.pages_last_ep ORDER BY pages.pages_en ASC;",
+    async (err, result) => {
+      try {
+        if (err) {
+          console.log(err);
+        } else {
+          if (result.length === 0) {
+            res.status(404).json({ message: "Not Found" });
+        }else{
+          await redis_server.set(redis_key, result);
+        let data = await redisclient.get(redis_key);
+        res.status(200).json(JSON.parse(data));
+        }
+        }
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
+      }
+    }
+  );
+  }
+});
+
 router.get("/sitemap/pages/slug", async (req, res) => {
   let redis_key = "public:/sitemap/pages/slug"
   let redis_res = await redisclient.get(redis_key);
