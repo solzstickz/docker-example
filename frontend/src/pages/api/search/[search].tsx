@@ -1,12 +1,17 @@
 // frontend/src/pages/api/search/[search].tsx
 import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
-
-const allowlist = ["load.skz.app", "localhost:3000", "frontend.skz.app"];
+const allowlist = [
+  "load.skz.app",
+  "localhost:3000",
+  "frontend.skz.app",
+  "https://frontend.skz.app",
+];
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // ตรวจสอบว่าโดเมนของผู้ใช้อยู่ใน allowlist
-  const origin = req.headers.origin as string; // Use type assertion to ensure origin is of type string
+  const origin = req.headers.host as string; // Use type assertion to ensure origin is of type string
+
   // Check if the domain is in the allowlist
   if (allowlist.includes(origin)) {
     res.setHeader("Access-Control-Allow-Origin", origin);
