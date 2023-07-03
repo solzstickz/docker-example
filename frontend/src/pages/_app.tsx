@@ -58,7 +58,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="msapplication-navbutton-color" content="#6c2bd9" />
         <meta name="apple-mobile-web-app-status-bar-style" content="#6c2bd9" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {/* <link rel="manifest" href="/manifest.json" /> */}
+        <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/favicon.ico" />
 
         <meta name="application-name" content={`${config.SITE_NAME}`} />
@@ -71,7 +71,11 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="description" content={`${config.SITE_DESC}`} />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
-
+        <link
+          rel="apple-touch-icon"
+          sizes="192x1192"
+          href="/img/icon-192x192.png"
+        />
         {/* <link rel="apple-touch-icon" href="/icons/touch-icon-iphone.png" />
         <link
           rel="apple-touch-icon"
