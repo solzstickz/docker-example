@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(403).json({ message: "Forbidden" });
   }
 
-  if (req.method === "GET") {
+  if (req.method === "POST") {
     // ดำเนินการเมื่อมีการร้องขอ GET
     // ทำงานเมื่อมีการค้นหา
     const { search } = req.query;
@@ -40,7 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   } else {
     // ดำเนินการเมื่อมีการร้องขออื่นๆ
-    res.status(405).json({ message: "Method Not Allowed" });
+    res.status(405).json({ message: "Not Allowed" });
   }
 };
 
