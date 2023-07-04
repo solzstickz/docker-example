@@ -23,7 +23,7 @@ export default async function handler(
   if (req.method === "POST") {
     try {
       const response = await axios.post(
-        "https://load.9tailmanga.com/public/tags/popular"
+        "https://load.9tailmanga.com/public/search/popular/"
       );
       const data = response.data;
       res.status(200).json(data);
