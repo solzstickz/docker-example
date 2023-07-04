@@ -76,7 +76,7 @@ router.get("/search_last_updated", async (req, res) => {
     console.log('found');
   } else {
   pool.query(
-    "SELECT pages.pages_id,pages.pages_slug,pages.pages_view,pages.pages_last_update,pages.pages_last_ep,pages.pages_en,pages.pages_th,pages.pages_type,pages.pages_simple,posts.posts_slug FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id where posts.posts_ep=pages.pages_last_ep ORDER BY pages.pages_en ASC;",
+    "SELECT pages.pages_slug,pages.pages_thumbnail,pages.pages_title,pages.pages_en,pages.pages_th,pages.pages_simple,pages.pages_last_update,pages.pages_type FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id where posts.posts_ep=pages.pages_last_ep ORDER BY pages.pages_en ASC;",
     async (err, result) => {
       try {
         if (err) {
@@ -333,6 +333,7 @@ router.get("/posts/:slug", async (req, res) => {
 //     });
 //   }
 // });
+
 
 router.get("/tags/:slug", async (req, res) => {
   let redis_key = `public:tags/${req.params.slug}`;
