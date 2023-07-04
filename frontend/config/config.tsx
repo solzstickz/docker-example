@@ -2,7 +2,7 @@ const config = {
   ADMIN_PATH: "e923b164-6dd4-4704-b82f-5dccdaf8245c",
   API_URL: "https://load.skz.app/",
   // API_URL: "http://localhost:7777/",
-  //API_FRONT:"http://localhost:3000/api/"
+  // API_FRONT:"http://localhost:3000/api/",
   API_FRONT: "https://frontend.skz.app/api/",
 
   CDN_URL: "https://sv1.skz.app/",

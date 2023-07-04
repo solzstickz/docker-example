@@ -3,13 +3,18 @@
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 
-const allowlist = ["load.skz.app", "localhost:3000", "frontend.skz.app"];
+const allowlist = [
+  "load.skz.app",
+  "localhost:3000",
+  "frontend.skz.app",
+  "https://frontend.skz.app",
+];
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const origin = req.headers.origin as string; // Use type assertion to ensure origin is of type string
+  const origin = req.headers.host as string; // Use type assertion to ensure origin is of type string
   // Check if the domain is in the allowlist
   if (allowlist.includes(origin)) {
     res.setHeader("Access-Control-Allow-Origin", origin);
