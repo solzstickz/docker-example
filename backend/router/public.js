@@ -200,7 +200,7 @@ router.get("/search/:slug", async (req, res) => {
     console.log('found');
   } else {
   pool.query(
-    `SELECT pages.*,posts.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id where (posts.posts_ep=pages.pages_last_ep AND pages.pages_en LIKE '%${req.params.slug}%') OR (posts.posts_ep=pages.pages_last_ep AND pages.pages_th LIKE '%${req.params.slug}%') ORDER BY pages.pages_id ASC;`,
+    `SELECT pages.pages_slug,pages.pages_thumbnail,pages.pages_title,pages.pages_en,pages.pages_th,pages.pages_simple,pages.pages_last_update,pages.pages_type FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id where (posts.posts_ep=pages.pages_last_ep AND pages.pages_en LIKE '%${req.params.slug}%') OR (posts.posts_ep=pages.pages_last_ep AND pages.pages_th LIKE '%${req.params.slug}%') ORDER BY pages.pages_id ASC;`,
     async (err, result) => {
       try {
         if (err) {
@@ -344,6 +344,38 @@ router.get("/tags/:slug", async (req, res) => {
   } else {
   pool.query(
     "SELECT pages.*,posts.*,tags.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id INNER JOIN pages_tags ON pages.pages_id = pages_tags.pages_id INNER JOIN tags ON pages_tags.tags_id=tags.tags_id  where posts.posts_ep=pages.pages_last_ep and tags.tags_slug=? ORDER BY pages.pages_last_update DESC;",
+    [req.params.slug],
+    async (err, result) => {
+      try {
+        if (err) {
+          console.log(err);
+        } else {
+          if (result.length === 0) {
+            res.status(404).json({ message: "Not Found" });
+          }else{
+            await redis_server.set(redis_key, result);
+          let data = await redisclient.get(redis_key);
+          res.status(200).json(JSON.parse(data));
+          }
+        }
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
+      }
+    }
+  );
+  }
+});
+
+router.get("/search_tags/:slug", async (req, res) => {
+  let redis_key = `public:tags/${req.params.slug}`;
+  let redis_res = await redisclient.get(redis_key);
+  if (redis_res) {
+    res.status(200).json(JSON.parse(redis_res));
+    console.log('found');
+  } else {
+  pool.query(
+    "SELECT pages.pages_slug,pages.pages_thumbnail,pages.pages_title,pages.pages_en,pages.pages_th,pages.pages_simple,pages.pages_last_update,pages.pages_type FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id INNER JOIN pages_tags ON pages.pages_id = pages_tags.pages_id INNER JOIN tags ON pages_tags.tags_id=tags.tags_id  where posts.posts_ep=pages.pages_last_ep and tags.tags_slug=? ORDER BY pages.pages_last_update DESC;",
     [req.params.slug],
     async (err, result) => {
       try {
