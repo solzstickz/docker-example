@@ -5,9 +5,8 @@ const nextConfig = {
     domains: [
       "localhost",
       "rose-manga.com",
-      "backend.skz.app",
-      "load.skz.app",
-      "sv1.skz.app",
+      "load.9tailmanga.com",
+      "sv3.9tailmanga.com",
     ],
     // minimumCacheTTL: 60,
   },

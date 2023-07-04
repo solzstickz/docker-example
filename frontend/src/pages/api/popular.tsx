@@ -2,10 +2,10 @@ import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const allowlist = [
-  "load.skz.app",
+  "load.9tailmanga.com",
   "localhost:3000",
-  "frontend.skz.app",
-  "https://frontend.skz.app",
+  "9tailmanga.com",
+  "https://9tailmanga.com",
 ];
 
 export default async function handler(
