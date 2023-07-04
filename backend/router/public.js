@@ -52,7 +52,7 @@ router.get("/last_updated", async (req, res) => {
           console.log(err);
         } else {
           if (result.length === 0) {
-            res.status(404).json({ message: "Not Found" });
+            res.status(200).json({ message: "Not Found" });
         }else{
           await redis_server.set(redis_key, result);
         let data = await redisclient.get(redis_key);
@@ -83,7 +83,7 @@ router.get("/search_last_updated", async (req, res) => {
           console.log(err);
         } else {
           if (result.length === 0) {
-            res.status(404).json({ message: "Not Found" });
+            res.status(200).json({ message: "Not Found" });
         }else{
           await redis_server.set(redis_key, result);
         let data = await redisclient.get(redis_key);
@@ -114,7 +114,7 @@ router.get("/sitemap/pages/slug", async (req, res) => {
           console.log(err);
         } else {
           if (result.length === 0) {
-            res.status(404).json({ message: "Not Found" });
+            res.status(200).json({ message: "Not Found" });
           }else{
             await redis_server.set(redis_key, result);
           let data = await redisclient.get(redis_key);
@@ -145,7 +145,7 @@ router.get("/sitemap/tags/slug", async (req, res) => {
           console.log(err);
         } else {
           if (result.length === 0) {
-            res.status(404).json({ message: "Not Found" });
+            res.status(200).json({ message: "Not Found" });
           }else{
             await redis_server.set(redis_key, result);
           let data = await redisclient.get(redis_key);
@@ -176,7 +176,7 @@ router.get("/sitemap/posts/slug", async (req, res) => {
           console.log(err);
         } else {
           if (result.length === 0) {
-            res.status(404).json({ message: "Not Found" });
+            res.status(200).json({ message: "Not Found" });
           }else{
             await redis_server.set(redis_key, result);
           let data = await redisclient.get(redis_key);
@@ -200,18 +200,18 @@ router.get("/search/:slug", async (req, res) => {
     console.log('found');
   } else {
   pool.query(
-    `SELECT pages.*,posts.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id where (posts.posts_ep=pages.pages_last_ep AND pages.pages_en LIKE '%${req.params.slug}%') OR (posts.posts_ep=pages.pages_last_ep AND pages.pages_th LIKE '%${req.params.slug}%') ORDER BY pages.pages_id ASC;`,
+    `SELECT pages.pages_slug,pages.pages_thumbnail,pages.pages_title,pages.pages_en,pages.pages_th,pages.pages_simple,pages.pages_last_update,pages.pages_type FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id where (posts.posts_ep=pages.pages_last_ep AND pages.pages_en LIKE '%${req.params.slug}%') OR (posts.posts_ep=pages.pages_last_ep AND pages.pages_th LIKE '%${req.params.slug}%') ORDER BY pages.pages_id ASC;`,
     async (err, result) => {
       try {
         if (err) {
           console.log(err);
         } else {
           if (result.length === 0) {
-            res.status(404).json({ message: "Not Found" });
+            res.status(200).json({ message: "Not Found" });
           }else{
             await redis_server.set(redis_key, result);
-          let data = await redisclient.get(redis_key);
-          res.status(200).json(JSON.parse(data));
+            let data = await redisclient.get(redis_key);
+            res.status(200).json(JSON.parse(data));
           }
         }
       } catch (err) {
@@ -240,7 +240,7 @@ router.get("/pages/:slug", async (req, res) => {
           console.log(`public/pages/` + err);
         } else {
           if (result_pages.length === 0) {
-            res.status(404).json({ message: "Page Url Not Found !" });
+            res.status(200).json({ message: "Page Url Not Found !" });
           } else {
             pool.query(
               `SELECT tags.* FROM pages INNER JOIN pages_tags ON pages_tags.pages_id=pages.pages_id INNER JOIN tags ON tags.tags_id=pages_tags.tags_id where pages.pages_slug=? ORDER BY tags.tags_name ASC;`,
@@ -251,7 +251,7 @@ router.get("/pages/:slug", async (req, res) => {
                     console.log(`public/pages/` + err);
                   } else {
                     if (result_tags.length === 0) {
-                      res.status(404).json({ message: "Page Url Not Found !" });
+                      res.status(200).json({ message: "Page Url Not Found !" });
                     } else {
                       let full_data = ({pages:result_pages,tags:result_tags})
                       await redis_server.set(redis_key, full_data);
@@ -292,7 +292,7 @@ router.get("/posts/:slug", async (req, res) => {
           console.log(`public/result_posts/` + err);
         } else {
           if (result_posts.length === 0) {
-            res.status(404).json({ message: "Page Url Not Found !" });
+            res.status(200).json({ message: "Page Url Not Found !" });
           } else {
                   await redis_server.set(redis_key, result_posts);
                   let data = await redisclient.get(redis_key);
@@ -351,7 +351,39 @@ router.get("/tags/:slug", async (req, res) => {
           console.log(err);
         } else {
           if (result.length === 0) {
-            res.status(404).json({ message: "Not Found" });
+            res.status(200).json({ message: "Not Found" });
+          }else{
+            await redis_server.set(redis_key, result);
+          let data = await redisclient.get(redis_key);
+          res.status(200).json(JSON.parse(data));
+          }
+        }
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
+      }
+    }
+  );
+  }
+});
+
+router.get("/search_tags/:slug", async (req, res) => {
+  let redis_key = `public:tags/${req.params.slug}`;
+  let redis_res = await redisclient.get(redis_key);
+  if (redis_res) {
+    res.status(200).json(JSON.parse(redis_res));
+    console.log('found');
+  } else {
+  pool.query(
+    "SELECT pages.pages_slug,pages.pages_thumbnail,pages.pages_title,pages.pages_en,pages.pages_th,pages.pages_simple,pages.pages_last_update,pages.pages_type FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id INNER JOIN pages_tags ON pages.pages_id = pages_tags.pages_id INNER JOIN tags ON pages_tags.tags_id=tags.tags_id  where posts.posts_ep=pages.pages_last_ep and tags.tags_slug=? ORDER BY pages.pages_last_update DESC;",
+    [req.params.slug],
+    async (err, result) => {
+      try {
+        if (err) {
+          console.log(err);
+        } else {
+          if (result.length === 0) {
+            res.status(200).json({ message: "Not Found" });
           }else{
             await redis_server.set(redis_key, result);
           let data = await redisclient.get(redis_key);
