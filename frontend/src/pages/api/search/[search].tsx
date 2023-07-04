@@ -6,6 +6,7 @@ const allowlist = [
   "localhost:3000",
   "frontend.skz.app",
   "https://frontend.skz.app",
+  "https://9tailmanga.com",
 ];
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

@@ -3,11 +3,11 @@ const config = {
   API_URL: "https://load.skz.app/",
   // API_URL: "http://localhost:7777/",
   // API_FRONT:"http://localhost:3000/api/",
-  API_FRONT: "https://frontend.skz.app/api/",
+  API_FRONT: "https://9TailManga.com/api/",
 
   CDN_URL: "https://sv1.skz.app/",
 
-  SITE_URL: "https://frontend.skz.app/",
+  SITE_URL: "https://9TailManga.com/",
   SITE_NAME: "9Tail Manga",
   SITE_DOMAIN: "9TailManga.com",
   SITE_TITLE: "9TailManga อ่านมังงะแปลไทย เว็บอ่านการ์ตูนออนไลน์ Manhua",
