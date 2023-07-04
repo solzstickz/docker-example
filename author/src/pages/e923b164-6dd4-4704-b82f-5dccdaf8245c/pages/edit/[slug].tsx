@@ -446,7 +446,7 @@ export default function Edit_pages({ ...props }) {
                 <option value={""}></option>
                 <option value={"Manga"}>Manga</option>
                 <option value={"Manhua"}>Manhua</option>
-                <option value={"Novel"}>Novel</option>
+                <option value={"Manhwa"}>Manhwa</option>
               </select>
             </div>
             <div className="mt-4">
