@@ -51,14 +51,14 @@ const SEOConfig: NextSeoProps = {
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-         <Script
-  strategy="lazyOnload"
-  id="google-analytics"
-  src={`https://www.googletagmanager.com/gtag/js?id=G-ECB84G2QBM`}
-/>
+      <Script
+        strategy="lazyOnload"
+        id="google-analytics"
+        src={`https://www.googletagmanager.com/gtag/js?id=G-ECB84G2QBM`}
+      />
 
-<Script strategy="lazyOnload" id="google-analytics-inline">
-  {`
+      <Script strategy="lazyOnload" id="google-analytics-inline">
+        {`
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
@@ -66,9 +66,13 @@ export default function App({ Component, pageProps }: AppProps) {
       page_path: window.location.pathname,
     });
   `}
-</Script>
+      </Script>
+
       <Head>
-        
+        <meta
+          name="google-site-verification"
+          content="gJ4uTfk6Uj9SVGcxwO1cjdKAL2gYzmMqk56lR2YyRe8"
+        />
         <meta charSet="utf-8" />
         <meta name="theme-color" content="#6c2bd9" />
         <meta name="msapplication-TileColor" content="#6c2bd9" />
@@ -148,7 +152,6 @@ export default function App({ Component, pageProps }: AppProps) {
           property="og:image"
           content={`${config.SITE_URL}img/icon-192x192.png`}
         />
-        
       </Head>
       <NextNProgress
         color="#6c2bd9"
