@@ -8,6 +8,7 @@ import Script from "next/script";
 import axios from "axios";
 import { useRef } from "react";
 import dayjs from "../lib/dayjsUtils";
+import Head from "next/head";
 interface Props {
   children?: React.ReactNode;
 }
@@ -152,6 +153,7 @@ export default function Layer({ children, ...props }: Props) {
   return (
     <>
       <Script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" />
+   
       {/* <div className="fixed top-0 left-0 overlay w-screen h-screen bg-color_gray"></div> */}
       <header className="dark:bg-header_bg_dark bg-header_bg_light relative">
         <div className="container mx-auto flex justtify-between relative">

@@ -6,7 +6,7 @@ import { NextSeoProps } from "next-seo/lib/types";
 import Head from "next/head";
 import config from "../../config/config";
 import { useEffect, useState } from "react";
-
+import Script from "next/script";
 const SEOConfig: NextSeoProps = {
   title: `${config.SITE_NAME} อ่านมังงะแปลไทย เว็บอ่านการ์ตูนออนไลน์ Manhua`,
   description: `${config.SITE_NAME} เว็บอ่านการ์ตูนออนไลน์ อ่านมังงะฟรี มังงะใหม่ เกาหลี จีน มังงะ18+ Manhwa เกาหลี Manga ญี่ปุ่น แปลไทยล่าสุด การ์ตูนอัพเดทใหม่ทุกวัน 24 ชม.`,
@@ -51,7 +51,24 @@ const SEOConfig: NextSeoProps = {
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
+         <Script
+  strategy="lazyOnload"
+  id="google-analytics"
+  src={`https://www.googletagmanager.com/gtag/js?id=G-ECB84G2QBM`}
+/>
+
+<Script strategy="lazyOnload" id="google-analytics-inline">
+  {`
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ECB84G2QBM', {
+      page_path: window.location.pathname,
+    });
+  `}
+</Script>
       <Head>
+        
         <meta charSet="utf-8" />
         <meta name="theme-color" content="#6c2bd9" />
         <meta name="msapplication-TileColor" content="#6c2bd9" />
@@ -131,6 +148,7 @@ export default function App({ Component, pageProps }: AppProps) {
           property="og:image"
           content={`${config.SITE_URL}img/icon-192x192.png`}
         />
+        
       </Head>
       <NextNProgress
         color="#6c2bd9"
