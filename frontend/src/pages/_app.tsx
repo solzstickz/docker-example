@@ -5,7 +5,7 @@ import { DefaultSeo } from "next-seo";
 import { NextSeoProps } from "next-seo/lib/types";
 import Head from "next/head";
 import config from "../../config/config";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const SEOConfig: NextSeoProps = {
   title: `${config.SITE_NAME} อ่านมังงะแปลไทย เว็บอ่านการ์ตูนออนไลน์ Manhua`,
@@ -25,8 +25,8 @@ const SEOConfig: NextSeoProps = {
     ],
   },
   twitter: {
-    handle: "@handle",
-    site: "@site",
+    handle: "@9TailManga",
+    site: `${config.SITE_NAME}`,
     cardType: "summary_large_image",
   },
 

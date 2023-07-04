@@ -1,8 +1,9 @@
-import React, { use, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import dayjs from "../lib/dayjsUtils";
 import Image from "next/image";
 import config from "../config/config";
+
 export default function Poster({ ...props }) {
   return (
     <>
@@ -23,19 +24,39 @@ export default function Poster({ ...props }) {
                 title={`${props.pages_title}`}
               />
               <div
-                className={`update_new-status absolute w-[60px] h-[25px] ${
-                  props.pages_type === "Manga"
-                    ? "bg-color_Manga"
-                    : props.pages_type === "Manhua"
-                    ? "bg-color_Manhwa"
-                    : props.pages_type === "Novel"
-                    ? "bg-color_Novel"
-                    : null
-                }  shadow-2xl rounded-tl-md rounded-br-md top-0 left-0`}
+                className={`update_new-status absolute w-[60px] h-[30px] shadow-2xl rounded-tl-md rounded-br-md top-0 left-0`}
               >
-                <p className="text-[16px] text-color_white text-center pt-[2px]">
-                  {props.pages_type}
-                </p>
+                {props.pages_type === "Manga" ? (
+                  <Image
+                    className="rounded-tl-md rounded-br-md"
+                    src="/img/Manga.png"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    alt="Manga"
+                    title="Manga"
+                    priority
+                  />
+                ) : props.pages_type === "Manhwa" ? (
+                  <Image
+                    className="rounded-tl-md rounded-br-md"
+                    src="/img/Manhwa.png"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    alt="Manhwa"
+                    title="Manhwa"
+                    priority
+                  />
+                ) : props.pages_type === "Manhua" ? (
+                  <Image
+                    className="rounded-tl-md rounded-br-md"
+                    src="/img/Manhua.png"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    alt="Manhua"
+                    title="Manhua"
+                    priority
+                  />
+                ) : null}
               </div>
             </div>
             <div className="update_new-item-title text-center h-auto relative md:max-w-[200px] mx-auto">
@@ -44,7 +65,6 @@ export default function Poster({ ...props }) {
               </p>
               <span className="text-[16px] text-color_gray">
                 {dayjs(props.pages_last_update).fromNow()}
-                {/* {dayjs("2023-06-28T07:18:58.000Z").startOf("day").fromNow()} */}
               </span>
             </div>
           </Link>

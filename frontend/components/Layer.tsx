@@ -1,15 +1,23 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { FaMoon, FaSearch, FaBars, FaTimes, FaArrowUp } from "react-icons/fa";
+import { FaMoon, FaSearch, FaBars, FaTimes } from "react-icons/fa";
 import { useRouter } from "next/router";
 import config from "../config/config";
 import Script from "next/script";
 import axios from "axios";
 import { useRef } from "react";
+import dayjs from "../lib/dayjsUtils";
 interface Props {
   children?: React.ReactNode;
 }
+declare global {
+  interface Window {
+    OneSignal: any;
+  }
+}
+declare const OneSignal: any;
+
 export default function Layer({ children, ...props }: Props) {
   const [themes, setThemes] = useState("dark");
   const [nav_status, Setnav_status] = useState(false);
@@ -124,6 +132,23 @@ export default function Layer({ children, ...props }: Props) {
     );
     setVisibleSearchResults((prevResults) => [...prevResults, ...nextBatch]);
   };
+
+  useEffect(() => {
+    window.OneSignal = window.OneSignal || [];
+    OneSignal.push(function () {
+      OneSignal.init({
+        appId: "9d2821fc-8989-4c25-86d5-3adbda02a09c",
+        notifyButton: {
+          enable: true,
+        },
+
+        allowLocalhostAsSecureOrigin: true,
+      });
+    });
+    return () => {
+      window.OneSignal = undefined;
+    };
+  }, []);
   return (
     <>
       <Script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" />
@@ -265,24 +290,51 @@ export default function Layer({ children, ...props }: Props) {
                           </div>
                           <div className="info flex flex-col px-5">
                             <div className="pages_title text-md font-bold line-clamp-1">
-                              {pages.pages_title}
+                              {`${pages.pages_en} | ${pages.pages_th}`}
                             </div>
-                            <div className="pages_simple text-sm font-bold line-clamp-2 pl-2">
+                            <div className="pages_simple text-sm font-bold line-clamp-2 pl-1">
                               {pages.pages_simple}
                             </div>
-                            <div className="pages_type text-sm font-bold line-clamp-1">
-                              <span
-                                className={`${
-                                  pages.pages_type === "Manga"
-                                    ? "bg-color_Manga"
-                                    : pages.pages_type === "Manhua"
-                                    ? "bg-color_Manhwa"
-                                    : pages.pages_type === "Novel"
-                                    ? "bg-color_Novel"
-                                    : null
-                                } py-[8px] px-[15px] m-2 rounded-xl mx-2 text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300`}
+                            <div className="pages_type text-sm font-bold flex items-center justify-start">
+                              <div
+                                className={`update_new-status w-[50px] h-[30px] shadow-2xl relative`}
                               >
-                                {pages.pages_type}
+                                {pages.pages_type === "Manga" ? (
+                                  <Image
+                                    className="rounded-sm"
+                                    src="/img/Manga.png"
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                    alt="Manga"
+                                    title="Manga"
+                                    priority
+                                  />
+                                ) : pages.pages_type === "Manhwa" ? (
+                                  <Image
+                                    className="rounded-sm"
+                                    src="/img/Manhwa.png"
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                    alt="Manhwa"
+                                    title="Manhwa"
+                                    priority
+                                  />
+                                ) : pages.pages_type === "Manhua" ? (
+                                  <Image
+                                    className="rounded-sm"
+                                    src="/img/Manhua.png"
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                    alt="Manhua"
+                                    title="Manhua"
+                                    priority
+                                  />
+                                ) : null}
+                              </div>
+                              <span className="flex gap-2 items-center px-2">
+                                <p className="text-color_gray dark:text-color_white ">
+                                  {dayjs(pages.pages_last_update).fromNow()}
+                                </p>
                               </span>
                             </div>
                           </div>
@@ -313,9 +365,9 @@ export default function Layer({ children, ...props }: Props) {
                 </div>
               </div>
             </div>
-            <div className="bg-site_color rounded-xl cursor-pointer">
+            <div className="bg-site_color rounded-xl">
               <FaMoon
-                className="text-color_white text-[40px] p-2 shadow-md  rounded-xl"
+                className="text-color_white text-[40px] p-2 shadow-md  rounded-xl cursor-pointer"
                 onClick={change_theme}
               />
             </div>
@@ -369,43 +421,44 @@ export default function Layer({ children, ...props }: Props) {
         {children}
       </main>
 
-      <footer className="bg-footer_bg_dark">
-        <div className="white_space h-[10px] bg-[#3b3c4c] py-3"></div>
-        <div className="container mx-auto tags w-full flex justify-center flex-wrap	">
-          <Link
-            href="/tags/action"
-            className="bg-header_bg_menu py-[8px] px-[15px] m-2 rounded-md mx-2 text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300"
-          >
-            ACTION
-          </Link>
-          <Link
-            href="/tags/drama"
-            className="bg-header_bg_menu py-[8px] px-[15px] m-2 rounded-md mx-2 text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300"
-          >
-            DRAMA
-          </Link>
-          <Link
-            href="/tags/fantasy"
-            className="bg-header_bg_menu py-[8px] px-[15px] m-2 rounded-md mx-2 text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300"
-          >
-            FANTASY
-          </Link>
-          <Link
-            href="/tags/isekai"
-            className="bg-header_bg_menu py-[8px] px-[15px] m-2 rounded-md mx-2 text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300"
-          >
-            ISEKAI
-          </Link>
-        </div>
-        <div className="copyright container mx-auto w-5/6 md:max-w-[1080px] flex justify-center flex-col items-center text-center">
-          <p className="text-text_color">
-            เว็บไซต์อ่านการ์ตูนออนไลน์ ที่รวบรวมการ์ตูนและมังงะจากทั่วโลก
-            ไม่ว่าจะเป็นมังงะญี่ปุ่น การ์ตูนเกาหลี มังงะเกาหลี มังฮวา Manhwa
-            มังฮัว และมังงะจีน ซึ่งสามารถอ่านได้ทุกหมวดหมู่ ทุกแนวตั้งแต่
-            ต่างโลก เกิดใหม่ ระบบ แฟนตาซี เวทมนตร์ ดราม่า Yaoi Isekai BL
-            โรแมนติก จอมยุทธ์ มูริม และอื่นๆอีกมากมาย
-          </p>
-          {/* <div className="discord w-auto h-auto">
+      <footer>
+        <div className="bg-footer_dark">
+          <div className="white_space h-[10px] bg-[#3b3c4c] py-3"></div>
+          <div className="container mx-auto tags w-full flex justify-center flex-wrap	">
+            <Link
+              href="/tags/action"
+              className="bg-header_bg_menu py-[8px] px-[15px] m-2 rounded-md mx-2 text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300"
+            >
+              ACTION
+            </Link>
+            <Link
+              href="/tags/drama"
+              className="bg-header_bg_menu py-[8px] px-[15px] m-2 rounded-md mx-2 text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300"
+            >
+              DRAMA
+            </Link>
+            <Link
+              href="/tags/fantasy"
+              className="bg-header_bg_menu py-[8px] px-[15px] m-2 rounded-md mx-2 text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300"
+            >
+              FANTASY
+            </Link>
+            <Link
+              href="/tags/isekai"
+              className="bg-header_bg_menu py-[8px] px-[15px] m-2 rounded-md mx-2 text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300"
+            >
+              ISEKAI
+            </Link>
+          </div>
+          <div className="copyright container mx-auto w-5/6 md:max-w-[1080px] flex justify-center flex-col items-center text-center">
+            <p className="text-text_color">
+              เว็บไซต์อ่านการ์ตูนออนไลน์ ที่รวบรวมการ์ตูนและมังงะจากทั่วโลก
+              ไม่ว่าจะเป็นมังงะญี่ปุ่น การ์ตูนเกาหลี มังงะเกาหลี มังฮวา Manhwa
+              มังฮัว และมังงะจีน ซึ่งสามารถอ่านได้ทุกหมวดหมู่ ทุกแนวตั้งแต่
+              ต่างโลก เกิดใหม่ ระบบ แฟนตาซี เวทมนตร์ ดราม่า Yaoi Isekai BL
+              โรแมนติก จอมยุทธ์ มูริม และอื่นๆอีกมากมาย
+            </p>
+            {/* <div className="discord w-auto h-auto">
               <Image
                 src="/img/discord.webp"
                 width={100}
@@ -414,31 +467,33 @@ export default function Layer({ children, ...props }: Props) {
                 style={{ width: "auto" }}
               />
             </div> */}
-          <h3 className="text-text_color text-2xl font-bold">
-            {config.SITE_NAME} อ่านการ์ตูนแปลไทย
-            ที่มั่นใจได้ว่าคุณภาพดีและอัพเดทตอนใหม่ก่อนใคร
-          </h3>
-          <p className="text-center text-text_color text-xl my-3">
-            {config.SITE_NAME} ยังมีการอัพเดทตอนใหม่ๆก่อนใคร
-            ทำให้ผู้อ่านไม่พลาดเรื่องราวสำคัญได้
-            เนื่องจากไม่ต้องลงแอพพลิเคชั่นหรือซื้อเหรียญ
-            ผู้อ่านสามารถอ่านได้ฟรีตลอด 24 ชั่วโมง
-            ไม่ว่าคุณจะเป็นผู้ชื่นชอบการ์ตูนและมังงะแนวใด ที่ {config.SITE_NAME}
-            จะมีเรื่องราวให้คุณได้อ่านทุกเรื่อง ไม่ว่าจะเป็น Naruto, One Piece,
-            Attack on Titan, Fairy Tail, Bleach, Dragon Ball, My Hero Academia,
-            Demon Slayer: Kimetsu no Yaiba และอีกมากมาย
-          </p>
-          <p className="text-text_color text-2xl font-bold">
-            อ่านการ์ตูนแปลไทย
-            ด้วยเว็บอ่านการ์ตูนยอดนิยมที่มีทีมงานคุณภาพแปลภาษาไทย
-          </p>
-          <p className="text-center text-text_color text-xl my-3">
-            สุดท้ายนี้
-            การ์ตูนทั้งหมดบนเว็บไซต์นี้เป็นเพียงตัวอย่างของการ์ตูนต้นฉบับเท่านั้น
-            อาจมีข้อผิดพลาดด้านภาษา ชื่อตัวละคร และเนื้อเรื่องมากมาย
-            สำหรับเวอร์ชันดั้งเดิม โปรดซื้อการ์ตูนหากมีให้บริการในเมืองของคุณ
-            หรือไม่ก็มาอ่านฟรี
-          </p>
+            <h3 className="text-text_color text-2xl font-bold">
+              {config.SITE_NAME} อ่านการ์ตูนแปลไทย
+              ที่มั่นใจได้ว่าคุณภาพดีและอัพเดทตอนใหม่ก่อนใคร
+            </h3>
+            <p className="text-center text-text_color text-xl my-3">
+              {config.SITE_NAME} ยังมีการอัพเดทตอนใหม่ๆก่อนใคร
+              ทำให้ผู้อ่านไม่พลาดเรื่องราวสำคัญได้
+              เนื่องจากไม่ต้องลงแอพพลิเคชั่นหรือซื้อเหรียญ
+              ผู้อ่านสามารถอ่านได้ฟรีตลอด 24 ชั่วโมง
+              ไม่ว่าคุณจะเป็นผู้ชื่นชอบการ์ตูนและมังงะแนวใด ที่{" "}
+              {config.SITE_NAME}
+              จะมีเรื่องราวให้คุณได้อ่านทุกเรื่อง ไม่ว่าจะเป็น Naruto, One
+              Piece, Attack on Titan, Fairy Tail, Bleach, Dragon Ball, My Hero
+              Academia, Demon Slayer: Kimetsu no Yaiba และอีกมากมาย
+            </p>
+            <p className="text-text_color text-2xl font-bold">
+              อ่านการ์ตูนแปลไทย
+              ด้วยเว็บอ่านการ์ตูนยอดนิยมที่มีทีมงานคุณภาพแปลภาษาไทย
+            </p>
+            <p className="text-center text-text_color text-xl my-3">
+              สุดท้ายนี้
+              การ์ตูนทั้งหมดบนเว็บไซต์นี้เป็นเพียงตัวอย่างของการ์ตูนต้นฉบับเท่านั้น
+              อาจมีข้อผิดพลาดด้านภาษา ชื่อตัวละคร และเนื้อเรื่องมากมาย
+              สำหรับเวอร์ชันดั้งเดิม โปรดซื้อการ์ตูนหากมีให้บริการในเมืองของคุณ
+              หรือไม่ก็มาอ่านฟรี
+            </p>
+          </div>
         </div>
       </footer>
       {scrollPosition > 100 && (

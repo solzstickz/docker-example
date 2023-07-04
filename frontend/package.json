@@ -26,6 +26,7 @@
     "next-seo": "^6.1.0",
     "nextjs-progressbar": "^0.0.16",
     "node-cron": "^3.0.2",
+    "onesignal-sdk": "^0.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",

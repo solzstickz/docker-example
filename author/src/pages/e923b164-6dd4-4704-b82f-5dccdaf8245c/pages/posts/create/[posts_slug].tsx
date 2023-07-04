@@ -219,7 +219,7 @@ export default function create_posts({ ...props }) {
                   {/* <div className="flex flex-warp flex-col relative h-[500px] w-auto">
                     <Image
                       className="w-full h-full block"
-                      src={`https://sv1.skz.app/uploads/499675fd86a1cb32a50ca57b56ad7e.webp`}
+                      src={`https://sv3.9tailmanga.com/uploads/499675fd86a1cb32a50ca57b56ad7e.webp`}
                       alt=""
                       object-fit="cover"
                       width={500}
@@ -236,7 +236,7 @@ export default function create_posts({ ...props }) {
                   >
                     <Image
                       className="w-full h-full block"
-                      src={`https://sv1.skz.app/${item.url}`}
+                      src={`https://sv3.9tailmanga.com/${item.url}`}
                       alt=""
                       object-fit="cover"
                       width={500}
@@ -251,7 +251,7 @@ export default function create_posts({ ...props }) {
                   // <div className="flex flex-warp flex-col" key={index}>
                   //   <img
                   //     className="h-[500px]  object-cover"
-                  //     src={`https://sv1.skz.app/${item.url}`}
+                  //     src={`https://sv3.9tailmanga.com/${item.url}`}
                   //     alt=""
                   //   />
                   //   <span className="text-gray-700 dark:text-gray-400 text-xl text-center">

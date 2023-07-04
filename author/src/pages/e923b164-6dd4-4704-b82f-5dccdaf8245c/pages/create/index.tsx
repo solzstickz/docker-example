@@ -266,7 +266,7 @@ export default function Create_pages({ ...props }) {
                 {create_pages.pages_thumbnail}
                 {create_pages.pages_thumbnail ? (
                   <Image
-                    src={`https://sv1.skz.app/${create_pages.pages_thumbnail}`}
+                    src={`https://sv3.9tailmanga.com/${create_pages.pages_thumbnail}`}
                     width={200}
                     height={200}
                     className="mx-auto my-5"

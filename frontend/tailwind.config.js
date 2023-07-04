@@ -20,7 +20,7 @@ module.exports = {
       header_bg_light: "#eef0f2",
       header_bg_menu: "#45475a",
       main_bg_dark: "#2f303e",
-      footer_bg_dark: "#2f303e",
+      footer_dark: "#2f303e",
       footer_bg_light: "#fff",
       pages_status_type: "#ff5a5a",
       pages_status_showing: "#6cc174",

@@ -149,13 +149,21 @@ export default function Favorite() {
     <>
       <NextSeo canonical={`${config.SITE_URL}favorite`} />
       <Layer>
+        <section>
+          <div className="notify w-full bg-site_color">
+            <h1 className="text-center text-3xl text-color_white">
+              อ่านการ์ตูนแปลไทย ที่ชื่นชอบ เสพความสนุกก่อนใครได้ที่{" "}
+              {config.SITE_NAME}
+            </h1>
+          </div>
+        </section>
         <div className="container mx-auto md:max-w-[1080px] px-3">
           <section>
             <section>
               <div className="favorite w-full ">
                 <div className="favorite-title py-5">
-                  <h2 className="text-3xl text-site_color">
-                    รายการที่ชื่นชอบ:
+                  <h2 className="text-3xl text-site_color font-bold">
+                    FAVORITE LIST
                   </h2>
                 </div>
                 <div className="update_new-content grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-10">

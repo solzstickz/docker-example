@@ -43,14 +43,13 @@ body {
 #ep_list ul a:visited {
   color: #6c2bd9;
 } */
+.pagination a {
+  color: #ffff !important;
+}
+
 a {
   color: #999999;
 }
 a:visited {
   color: #cc2f86;
 }
-.pagination a {
-  color:#fff;
-}
-
-

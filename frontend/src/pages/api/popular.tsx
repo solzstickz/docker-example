@@ -1,5 +1,3 @@
-// pages/api/tags/popular.js
-
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -24,7 +22,7 @@ export default async function handler(
 
   try {
     const response = await axios.get(
-      "https://load.skz.app/public/tags/popular"
+      "https://load.9tailmanga.com/public/tags/popular"
     );
     const data = response.data;
     res.status(200).json(data);

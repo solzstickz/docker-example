@@ -77,6 +77,8 @@ export default function Page({ ...props }: any) {
   return (
     <>
       <NextSeo
+        title={`${props.res_page.pages_title}`}
+        description={` ${props.res_page.pages_description}`}
         canonical={`${config.SITE_URL}series/${props.res_page.pages_slug}`}
       />
 
@@ -99,7 +101,7 @@ export default function Page({ ...props }: any) {
           <div className="pages_detail relative w-full bottom-[100px] container h-100 mx-auto flex  md:col z-10 flex-col-reverse md:flex-row-reverse px-5 md:px-0 md:max-w-[1080px]">
             <div className="pages_deltail_ep w-full md:w-9/12">
               <div className="title w-full mt-10 md:my-0 relative">
-                <h1 className="text-2xl md:text-5xl text-dark_gray text-color_white dark:text-color_white ">
+                <h1 className="text-2xl md:text-5xl text-dark_gray text-color_dark dark:text-color_white ">
                   {props.res_page.pages_title}
                 </h1>
               </div>

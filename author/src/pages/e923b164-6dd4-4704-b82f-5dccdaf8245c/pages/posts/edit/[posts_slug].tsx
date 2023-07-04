@@ -244,7 +244,7 @@ export default function edit_posts({ ...props }) {
                   >
                     <Image
                       className="w-full h-full block"
-                      src={`https://sv1.skz.app/${item.url}`}
+                      src={`https://sv3.9tailmanga.com/${item.url}`}
                       alt=""
                       object-fit="cover"
                       width={500}

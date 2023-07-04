@@ -100,85 +100,94 @@ export default function Tags_slug({ ...props }) {
   return (
     <>
       <NextSeo
-        title={`Tags: ${props.keyword} | ${config.SITE_NAME}`}
-        description={`Tags: ${props.keyword} | ${config.SITE_NAME}`}
+        title={`อ่านมังงะแปลไทย - ${props.keyword} - ${config.SITE_NAME}`}
+        description={`อ่านมังงะแปลไทย manga เว็บมังงะ เว็บอ่านการ์ตูนออนไลน์ - ${props.keyword} - อ่านการ์ตูนฟรี มังงะใหม่ เกาหลี จีน ญี่ปุ่น มังงะ18+ - ${config.SITE_NAME} แปลไทยอัพเดทล่าสุด`}
         canonical={`${config.SITE_URL}tags/${props.keyword}`}
       />
       <Layer>
+        <section>
+          <div className="notify w-full bg-site_color">
+            <h1 className="text-center text-3xl text-color_white">
+              อ่านการ์ตูนแปลไทย {props.keyword.toUpperCase()} อ่านมังงะแปลไทย{" "}
+              เสพความสนุกได้แล้วที่ {config.SITE_NAME}
+            </h1>
+          </div>
+        </section>
         <div className="container mx-auto md:max-w-[1080px] px-3">
           <section>
-            <section>
-              <div className="tags w-full ">
-                <div className="tags-title py-5">
-                  <h2 className="text-3xl text-site_color">
-                    Tags:
-                    <span className="text-color_white"> {props.keyword}</span>
-                  </h2>
-                </div>
-                <div className="update_new-content grid grid-cols-2  md:grid-cols-3 gap-1  lg:grid-cols-5">
-                  {displayedPages.map((pages: any, i: number) => {
-                    return (
-                      <Poster
-                        key={i}
-                        i={i}
-                        pages_id={pages.pages_id}
-                        pages_slug={pages.pages_slug}
-                        pages_view={pages.pages_view}
-                        pages_last_update={pages.pages_last_update}
-                        pages_status_showing={pages.pages_status_showing}
-                        pages_last_ep={pages.pages_last_ep}
-                        pages_en={pages.pages_en}
-                        pages_th={pages.pages_th}
-                        pages_star={pages.pages_star}
-                        pages_type={pages.pages_type}
-                        pages_follow={pages.pages_follow}
-                        pages_publish={pages.pages_publish}
-                        pages_title={pages.pages_title}
-                        pages_simple={pages.pages_simple}
-                        pages_thumbnail={pages.pages_thumbnail}
-                        pages_description={pages.pages_description}
-                        posts_slug={pages.posts_slug}
-                      />
-                    );
-                  })}
-                </div>
-                <div className="pagination">
-                  <div className="w-full">
-                    <div className="items-per-page">
-                      <ul className="flex justify-center items-center gap-1 py-5">
-                        {currentPage > 1 ? (
-                          <li className="bg-header_bg_menu m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300">
-                            <a href={`/tags/${router.query.slug}#`}>
-                              <button
-                                className="cursor-pointer px-[10px] py-[5px]"
-                                onClick={() => changePage(currentPage - 1)}
-                                disabled={currentPage === 1}
-                              >
-                                Previous
-                              </button>
-                            </a>
-                          </li>
-                        ) : null}
-                        {renderPageNumbers()}
-                        {currentPage < totalPages ? (
-                          <li className="bg-header_bg_menu   m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300">
-                            <a href={`/tags/${router.query.slug}#`}>
-                              <button
-                                className="cursor-pointer px-[10px] py-[5px]"
-                                onClick={() => changePage(currentPage + 1)}
-                                disabled={currentPage === totalPages}
-                              >
-                                Next
-                              </button>
-                            </a>
-                          </li>
-                        ) : null}
-                      </ul>
-                    </div>
+            <div className="tags w-full ">
+              <div className="tags-title py-5">
+                <h2 className="text-3xl text-site_color">
+                  อ่านการ์ตูน
+                  <span className="text-color_dark dark:text-color_white">
+                    {" "}
+                    {props.keyword.toUpperCase()} อัพเดทล่าสุด
+                  </span>
+                </h2>
+              </div>
+              <div className="update_new-content grid grid-cols-2  md:grid-cols-3 gap-1  lg:grid-cols-5">
+                {displayedPages.map((pages: any, i: number) => {
+                  return (
+                    <Poster
+                      key={i}
+                      i={i}
+                      pages_id={pages.pages_id}
+                      pages_slug={pages.pages_slug}
+                      pages_view={pages.pages_view}
+                      pages_last_update={pages.pages_last_update}
+                      pages_status_showing={pages.pages_status_showing}
+                      pages_last_ep={pages.pages_last_ep}
+                      pages_en={pages.pages_en}
+                      pages_th={pages.pages_th}
+                      pages_star={pages.pages_star}
+                      pages_type={pages.pages_type}
+                      pages_follow={pages.pages_follow}
+                      pages_publish={pages.pages_publish}
+                      pages_title={pages.pages_title}
+                      pages_simple={pages.pages_simple}
+                      pages_thumbnail={pages.pages_thumbnail}
+                      pages_description={pages.pages_description}
+                      posts_slug={pages.posts_slug}
+                    />
+                  );
+                })}
+              </div>
+              <div className="pagination">
+                <div className="w-full">
+                  <div className="items-per-page">
+                    <ul className="flex justify-center items-center gap-1 py-5">
+                      {currentPage > 1 ? (
+                        <li className="bg-header_bg_menu m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300">
+                          <a href={`/tags/${router.query.slug}#`}>
+                            <button
+                              className="cursor-pointer px-[10px] py-[5px]"
+                              onClick={() => changePage(currentPage - 1)}
+                              disabled={currentPage === 1}
+                            >
+                              Previous
+                            </button>
+                          </a>
+                        </li>
+                      ) : null}
+                      {renderPageNumbers()}
+                      {currentPage < totalPages ? (
+                        <li className="bg-header_bg_menu   m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300">
+                          <a href={`/tags/${router.query.slug}#`}>
+                            <button
+                              className="cursor-pointer px-[10px] py-[5px]"
+                              onClick={() => changePage(currentPage + 1)}
+                              disabled={currentPage === totalPages}
+                            >
+                              Next
+                            </button>
+                          </a>
+                        </li>
+                      ) : null}
+                    </ul>
                   </div>
                 </div>
               </div>
-            </section>
+            </div>
           </section>
         </div>
       </Layer>

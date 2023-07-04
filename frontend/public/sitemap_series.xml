@@ -246,6 +246,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://frontend.skz.app/series/my-mother-got-married-by-contract</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://frontend.skz.app/series/the-symbiotic-relationship-between-a-panther-and-a-rabbit</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -387,6 +392,51 @@
   </url>
   <url>
     <loc>https://frontend.skz.app/series/release-that-witch</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/quest-supremacy</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/high-energy-strikes</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/becoming-the-villains-family</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/the-lady-needs-a-break</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/here-comes-the-silver-spoon</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/villain-is-here</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/taming-spiritual-pets-my-spiritual-pet-is-a-female-zombie</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/my-body-has-been-possessed-by-someone</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://frontend.skz.app/series/the-other-worlds-wizard-does-not-chant</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

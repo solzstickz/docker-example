@@ -1,11 +1,11 @@
 const config = {
   ADMIN_PATH: "e923b164-6dd4-4704-b82f-5dccdaf8245c",
-  API_URL: "https://load.skz.app/",
+  API_URL: "https://load.9tailmanga.com/",
   // API_URL: "http://localhost:7777/",
   // API_FRONT:"http://localhost:3000/api/",
   API_FRONT: "https://9TailManga.com/api/",
 
-  CDN_URL: "https://sv1.skz.app/",
+  CDN_URL: "https://sv3.9tailmanga.com/",
 
   SITE_URL: "https://9TailManga.com/",
   SITE_NAME: "9Tail Manga",

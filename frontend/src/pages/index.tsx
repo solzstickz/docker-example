@@ -158,7 +158,7 @@ export default function Home({ ...props }) {
                             src={`${config.CDN_URL}` + pages.pages_thumbnail}
                             fill
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            priority={true}
+                            priority
                             className="mx-auto rounded-md shadow-md"
                             alt={pages.pages_title}
                             title={`${pages.pages_title}`}
@@ -271,7 +271,7 @@ export async function getServerSideProps() {
     props: {
       pages_lastep,
       poppular,
-      revalidate: 60, // เคลือนย้ายคีย์ revalidate ไปอยู่ภายใต้คีย์ props
+      revalidate: 120, // เคลือนย้ายคีย์ revalidate ไปอยู่ภายใต้คีย์ props
     },
   };
 }

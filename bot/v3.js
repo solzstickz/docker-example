@@ -14,8 +14,8 @@ const path = require("path");
 const axios = require("axios");
 
 //! backend setup
-const uploadUrl = "https://load.skz.app/posts/uploads/posts";
-const createUrl = "https://load.skz.app/posts/create/post";
+const uploadUrl = "https://load.9tailmanga.com/posts/uploads/posts";
+const createUrl = "https://load.9tailmanga.com/posts/create/post";
 //! backend setup
 const posts_slug = `${pages_slug}-ตอนที่-`;
 const downloadDirectory = path.join(__dirname, `downloads/${pages_slug}`);

@@ -6,7 +6,6 @@ const allowlist = [
   "localhost:3000",
   "frontend.skz.app",
   "https://frontend.skz.app",
-  "https://9tailmanga.com",
 ];
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -28,9 +27,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     try {
-      // ดึงข้อมูลจาก https://load.skz.app/public/search/${search}
+      // ดึงข้อมูลจาก https://load.9tailmanga.com/public/search/${search}
       const fetch_search = await axios.get(
-        `https://load.skz.app/public/search/${search}`
+        `https://load.9tailmanga.com/public/search/${search}`
       );
       const searchResult = fetch_search.data;
 
