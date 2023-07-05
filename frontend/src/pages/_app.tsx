@@ -69,10 +69,7 @@ export default function App({ Component, pageProps }: AppProps) {
       </Script>
 
       <Head>
-        <meta
-          name="google-site-verification"
-          content="gJ4uTfk6Uj9SVGcxwO1cjdKAL2gYzmMqk56lR2YyRe8"
-        />
+        <meta name="google-site-verification" content="T8Uj2elgTwxDBtQ1BABCfFJYkDdCW1djmm5vQsKgcXY" />
         <meta charSet="utf-8" />
         <meta name="theme-color" content="#6c2bd9" />
         <meta name="msapplication-TileColor" content="#6c2bd9" />
