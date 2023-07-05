@@ -41,16 +41,6 @@ function updateMainSitemap(urls: string[], count: number) {
 
   xml += `
     <url>
-      <loc>${base_url}</loc>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-    </url>
-     <url>
-      <loc>${base_url}favorite</loc>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-    </url>
-    <url>
       <loc>${base_url}sitemap_series.xml</loc>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
