@@ -38,6 +38,8 @@ app.use("/public", public);
 
 app.use("/auth", auth);
 
+app.disable('x-powered-by')
+
 //! setting up the express app
 
 //! Routes index

@@ -308,33 +308,6 @@ router.get("/posts/:slug", async (req, res) => {
   }
 });
 
-// router.get("/pages/sitemap", async (req, res) => {
-//   let redis_res = await redisclient.get("pages:res");
-//   if (redis_res) {
-//     res.status(200).json(JSON.parse(redis_res));
-//   } else {
-//     pool.query("SELECT * FROM `pages`;", async (err, result) => {
-//       try {
-//         if (err) {
-//           console.log(err);
-//         } else {
-//           // push result.length to result
-//           let total_pages = result.length;
-//           let total = { posts_total: { total_pages } };
-//           value = result.push(total);
-//           await redisclient.set("pages:res", JSON.stringify(result), "EX", 60);
-//           let data = await redisclient.get("pages:res");
-//           res.status(200).json(JSON.parse(data));
-//         }
-//       } catch (err) {
-//         console.log(err);
-//         res.status(500).json({ message: "Internal Server Error" });
-//       }
-//     });
-//   }
-// });
-
-
 router.get("/tags/:slug", async (req, res) => {
   let redis_key = `public:tags/${req.params.slug}`;
   let redis_res = await redisclient.get(redis_key);
