@@ -341,7 +341,7 @@ router.get("/tags/:slug", async (req, res) => {
 });
 
 router.get("/search_tags/:slug", async (req, res) => {
-  let redis_key = `public:tags/${req.params.slug}`;
+  let redis_key = `public:search_tags/${req.params.slug}`;
   let redis_res = await redisclient.get(redis_key);
   if (redis_res) {
     res.status(200).json(JSON.parse(redis_res));

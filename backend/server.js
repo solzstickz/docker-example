@@ -16,8 +16,8 @@ app.use(
     optionsSuccessStatus: 204
   })
 );
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({limit: '300mb'}));
+app.use(bodyParser.urlencoded({limit: '300mb', extended: true}));
 require("dotenv").config();
 
 //! Routes
