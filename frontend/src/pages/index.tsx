@@ -7,6 +7,8 @@ import axios_client from "../../config/axios_client";
 import config from "../../config/config";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
+
+
 interface pages_lastupdate {
   pages_id: number;
   pages_slug: string;
@@ -193,7 +195,8 @@ export default function Home({ ...props }) {
                 </h3>
               </div>
               <div className="update_new-content grid grid-cols-2  md:grid-cols-3 gap-1  lg:grid-cols-5">
-                {displayedPages.map((pages: any, i: number) => {
+
+                {/* {displayedPages.map((pages: any, i: number) => {
                   return (
                     <Poster
                       key={i}
@@ -217,7 +220,7 @@ export default function Home({ ...props }) {
                       posts_slug={pages.posts_slug}
                     />
                   );
-                })}
+                })} */}
               </div>
               <div className="pagination">
                 <div className="w-full">
