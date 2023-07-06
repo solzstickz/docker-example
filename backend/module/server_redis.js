@@ -1,6 +1,6 @@
 const express = require("express");
 const redisclient = require("../config/redis");
-const redis_time_expire = '10';
+const redis_time_expire = '300';
 require("dotenv").config();
 
 
