@@ -144,6 +144,19 @@ export default function Layer({ children, ...props }: Props) {
         },
 
         allowLocalhostAsSecureOrigin: true,
+        workerPath: "/OneSignalSDKWorker.js",
+        requiresUserPrivacyConsent: true,
+        autoRegister: true,
+        autoResubscribe: true,
+        promptOptions: {
+          /* actionMessage limited to 90 characters */
+          actionMessage:
+            "รับการแจ้งเตือน ตอนใหม่ล่าสุด อัพเดทใหม่ก่อนใครได้ที่ 9tailmanga.com",
+          /* acceptButtonText limited to 15 characters */
+          acceptButtonText: "ติดตาม",
+          /* cancelButtonText limited to 15 characters */
+          cancelButtonText: "ยกเลิก",
+        },
       });
     });
     return () => {
@@ -153,7 +166,7 @@ export default function Layer({ children, ...props }: Props) {
   return (
     <>
       <Script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" />
-   
+
       {/* <div className="fixed top-0 left-0 overlay w-screen h-screen bg-color_gray"></div> */}
       <header className="dark:bg-header_bg_dark bg-header_bg_light relative">
         <div className="container mx-auto flex justtify-between relative">
@@ -299,7 +312,7 @@ export default function Layer({ children, ...props }: Props) {
                             </div>
                             <div className="pages_type text-sm font-bold flex items-center justify-start">
                               <div
-                                className={`update_new-status w-[50px] h-[30px] shadow-2xl relative`}
+                                className={`update_new-status w-[25px] h-[17px] shadow-2xl relative`}
                               >
                                 {pages.pages_type === "Manga" ? (
                                   <Image

@@ -24,7 +24,7 @@ export default function Poster({ ...props }) {
                 title={`${props.pages_title}`}
               />
               <div
-                className={`update_new-status absolute w-[60px] h-[30px] shadow-2xl rounded-tl-md rounded-br-md top-0 left-0`}
+                className={`update_new-status absolute w-[25px] h-[17px] shadow-2xl rounded-tl-md rounded-br-md top-0 left-0`}
               >
                 {props.pages_type === "Manga" ? (
                   <Image

@@ -426,7 +426,6 @@ export async function getServerSideProps(context: any) {
       (item: any) => item.posts_slug === context.query.post
     );
 
-    console.log(current_post);
     return {
       props: {
         post: data[0],
