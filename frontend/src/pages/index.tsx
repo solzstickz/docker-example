@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import Layer from "../../components/Layer";
 import Poster from "../../components/Poster";
@@ -7,8 +7,7 @@ import axios_client from "../../config/axios_client";
 import config from "../../config/config";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
-
-
+import Loading from "../../components/Loading";
 interface pages_lastupdate {
   pages_id: number;
   pages_slug: string;
@@ -148,39 +147,41 @@ export default function Home({ ...props }) {
                 </h2>
               </div>
               <div className="poppular-content grid grid-cols-3 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
-                {props.poppular.map((pages: any, i: number) => {
-                  return (
-                    <div
-                      className="poppular-item mx-auto flex col relative ] max-w-[160px] hover:animate-pulse"
-                      key={i}
-                    >
-                      <Link href={`/series/${pages.pages_slug}`}>
-                        <div className="poppular-item-img h-[150px] w-[110px] md:h-[220px] md:w-[160px] relative shadow-md overflow-hidden mx-auto">
-                          <Image
-                            src={`${config.CDN_URL}` + pages.pages_thumbnail}
-                            fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            priority
-                            className="mx-auto rounded-md shadow-md"
-                            alt={pages.pages_title}
-                            title={`${pages.pages_title}`}
-                          />
+                <Suspense fallback={<Loading />}>
+                  {props.poppular.map((pages: any, i: number) => {
+                    return (
+                      <div
+                        className="poppular-item mx-auto flex col relative ] max-w-[160px] hover:animate-pulse"
+                        key={i}
+                      >
+                        <Link href={`/series/${pages.pages_slug}`}>
+                          <div className="poppular-item-img h-[150px] w-[110px] md:h-[220px] md:w-[160px] relative shadow-md overflow-hidden mx-auto">
+                            <Image
+                              src={`${config.CDN_URL}` + pages.pages_thumbnail}
+                              fill
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              priority
+                              className="mx-auto rounded-md shadow-md"
+                              alt={pages.pages_title}
+                              title={`${pages.pages_title}`}
+                            />
 
-                          <div className="poppular-status absolute w-[30px] h-[40px] top-0 left-3 bg-site_color shadow-2xl rounded-b-md">
-                            <p className="text-2xl text-color_white text-center font-bold p-1">
-                              {i + 1}
-                            </p>
+                            <div className="poppular-status absolute w-[30px] h-[40px] top-0 left-3 bg-site_color shadow-2xl rounded-b-md">
+                              <p className="text-2xl text-color_white text-center font-bold p-1">
+                                {i + 1}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                        <div className="poppular-item-title text-center h-auto relative">
-                          <h3 className="text-2xl dark:text-text_color text-dark_gray line-clamp-1 font-bold">
-                            {pages.pages_en}
-                          </h3>
-                        </div>
-                      </Link>
-                    </div>
-                  );
-                })}
+                          <div className="poppular-item-title text-center h-auto relative">
+                            <h3 className="text-2xl dark:text-text_color text-dark_gray line-clamp-1 font-bold">
+                              {pages.pages_en}
+                            </h3>
+                          </div>
+                        </Link>
+                      </div>
+                    );
+                  })}
+                </Suspense>
               </div>
             </div>
           </section>
@@ -195,32 +196,33 @@ export default function Home({ ...props }) {
                 </h3>
               </div>
               <div className="update_new-content grid grid-cols-2  md:grid-cols-3 gap-1  lg:grid-cols-5">
-
-                {/* {displayedPages.map((pages: any, i: number) => {
-                  return (
-                    <Poster
-                      key={i}
-                      i={i}
-                      pages_id={pages.pages_id}
-                      pages_slug={pages.pages_slug}
-                      pages_view={pages.pages_view}
-                      pages_last_update={pages.pages_last_update}
-                      pages_status_showing={pages.pages_status_showing}
-                      pages_last_ep={pages.pages_last_ep}
-                      pages_en={pages.pages_en}
-                      pages_th={pages.pages_th}
-                      pages_star={pages.pages_star}
-                      pages_type={pages.pages_type}
-                      pages_follow={pages.pages_follow}
-                      pages_publish={pages.pages_publish}
-                      pages_title={pages.pages_title}
-                      pages_simple={pages.pages_simple}
-                      pages_thumbnail={pages.pages_thumbnail}
-                      pages_description={pages.pages_description}
-                      posts_slug={pages.posts_slug}
-                    />
-                  );
-                })} */}
+                <Suspense fallback={<Loading />}>
+                  {displayedPages.map((pages: any, i: number) => {
+                    return (
+                      <Poster
+                        key={i}
+                        i={i}
+                        pages_id={pages.pages_id}
+                        pages_slug={pages.pages_slug}
+                        pages_view={pages.pages_view}
+                        pages_last_update={pages.pages_last_update}
+                        pages_status_showing={pages.pages_status_showing}
+                        pages_last_ep={pages.pages_last_ep}
+                        pages_en={pages.pages_en}
+                        pages_th={pages.pages_th}
+                        pages_star={pages.pages_star}
+                        pages_type={pages.pages_type}
+                        pages_follow={pages.pages_follow}
+                        pages_publish={pages.pages_publish}
+                        pages_title={pages.pages_title}
+                        pages_simple={pages.pages_simple}
+                        pages_thumbnail={pages.pages_thumbnail}
+                        pages_description={pages.pages_description}
+                        posts_slug={pages.posts_slug}
+                      />
+                    );
+                  })}
+                </Suspense>
               </div>
               <div className="pagination">
                 <div className="w-full">
