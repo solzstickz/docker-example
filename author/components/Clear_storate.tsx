@@ -66,7 +66,11 @@ export default function Clear_storate({ ...props }) {
         }}
         options={{
           responsive: true,
-          borderWidth: 0,
+          elements: {
+            arc: {
+              borderWidth: 0, // ตั้งค่าความกว้างของเส้นขอบ (border width)
+            },
+          },
         }}
       />
       <p className="mx-auto text-md my-5">รูปที่ไม่ได้ใช้ {img_value} ไฟล์</p>

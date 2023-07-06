@@ -8,6 +8,7 @@ import config from "../../config/config";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import Loading from "../../components/Loading";
+import React from "react";
 interface pages_lastupdate {
   pages_id: number;
   pages_slug: string;
@@ -28,6 +29,8 @@ interface pages_lastupdate {
 }
 
 export default function Home({ ...props }) {
+  const Poster = React.lazy(() => import("../../components/Poster"));
+
   const [currentPage, setCurrentPage] = useState(1); // หน้าปัจจุบัน
   const [itemsPerPage, setItemsPerPage] = useState(20); // จำนวนรายการต่อหน้า
   const [totalPages, setTotalPages] = useState(0); // จำนวนหน้าทั้งหมด
