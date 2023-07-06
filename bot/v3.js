@@ -1,9 +1,9 @@
 //! set_posts
 const start_ep = 1;
-const end_ep = 93;
+const end_ep = 5;
 const url =
-  "https://www.oremanga.net/greatest-sword-immortal/greatest-sword-immortal-";
-const pages_slug = "greatest-sword-immortal";
+  "https://god-manga.com/academys-undercover-professor-%E0%B8%95%E0%B8%AD%E0%B8%99%E0%B8%97%E0%B8%B5%E0%B9%88-";
+const pages_slug = "naaa";
 const el_target = ".reader-area";
 const el_src = "src";
 //! set_posts
@@ -45,7 +45,7 @@ async function saveToEndpoint(ep, imageUrls) {
     const response = await axios.post(createUrl, body);
     return response.data;
   } catch (error) {
-    console.error("Error saving to endpoint:", error);
+    console.error("Error saving to endpoint:");
     throw error;
   }
 }
