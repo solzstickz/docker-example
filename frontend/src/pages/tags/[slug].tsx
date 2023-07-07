@@ -2,15 +2,17 @@ import React from "react";
 import Layer from "../../../components/Layer";
 import Poster from "../../../components/Poster";
 import axios_client from "../../../config/axios_client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import config from "../../../config/config";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
+import Loading from "../../../components/Loading";
 export default function Tags_slug({ ...props }) {
   const [currentPage, setCurrentPage] = useState(1); // หน้าปัจจุบัน
   const [itemsPerPage, setItemsPerPage] = useState(20); // จำนวนรายการต่อหน้า
   const [totalPages, setTotalPages] = useState(0); // จำนวนหน้าทั้งหมด
   const [displayedPages, setDisplayedPages] = useState([]); // รายการหน้าที่จะแสดงในหน้าปัจจุบัน
+  const Poster = React.lazy(() => import("../../../components/Poster"));
   const router = useRouter();
   useEffect(() => {
     // คำนวณจำนวนหน้าทั้งหมด
@@ -125,33 +127,36 @@ export default function Tags_slug({ ...props }) {
                   </span>
                 </h2>
               </div>
-              <div className="update_new-content grid grid-cols-2  md:grid-cols-3 gap-1  lg:grid-cols-5">
-                {displayedPages.map((pages: any, i: number) => {
-                  return (
-                    <Poster
-                      key={i}
-                      i={i}
-                      pages_id={pages.pages_id}
-                      pages_slug={pages.pages_slug}
-                      pages_view={pages.pages_view}
-                      pages_last_update={pages.pages_last_update}
-                      pages_status_showing={pages.pages_status_showing}
-                      pages_last_ep={pages.pages_last_ep}
-                      pages_en={pages.pages_en}
-                      pages_th={pages.pages_th}
-                      pages_star={pages.pages_star}
-                      pages_type={pages.pages_type}
-                      pages_follow={pages.pages_follow}
-                      pages_publish={pages.pages_publish}
-                      pages_title={pages.pages_title}
-                      pages_simple={pages.pages_simple}
-                      pages_thumbnail={pages.pages_thumbnail}
-                      pages_description={pages.pages_description}
-                      posts_slug={pages.posts_slug}
-                    />
-                  );
-                })}
+              <div className="update_new-content grid grid-cols-2  md:grid-cols-3 gap-1  lg:grid-cols-5 relative min-h-[200px]">
+                <Suspense fallback={<Loading />}>
+                  {displayedPages.map((pages: any, i: number) => {
+                    return (
+                      <Poster
+                        key={i}
+                        i={i}
+                        pages_id={pages.pages_id}
+                        pages_slug={pages.pages_slug}
+                        pages_view={pages.pages_view}
+                        pages_last_update={pages.pages_last_update}
+                        pages_status_showing={pages.pages_status_showing}
+                        pages_last_ep={pages.pages_last_ep}
+                        pages_en={pages.pages_en}
+                        pages_th={pages.pages_th}
+                        pages_star={pages.pages_star}
+                        pages_type={pages.pages_type}
+                        pages_follow={pages.pages_follow}
+                        pages_publish={pages.pages_publish}
+                        pages_title={pages.pages_title}
+                        pages_simple={pages.pages_simple}
+                        pages_thumbnail={pages.pages_thumbnail}
+                        pages_description={pages.pages_description}
+                        posts_slug={pages.posts_slug}
+                      />
+                    );
+                  })}
+                </Suspense>
               </div>
+
               <div className="pagination">
                 <div className="w-full">
                   <div className="items-per-page">
