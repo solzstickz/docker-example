@@ -109,7 +109,7 @@ export default function Favorite() {
             i === currentPage ? "bg-site_color" : "bg-header_bg_menu"
           }  m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300`}
         >
-          <a href={`/favorite#`}>
+          <a>
             <button
               className={`cursor-pointer  px-[10px] py-[5px]`}
               onClick={() => changePage(i)}
@@ -133,12 +133,14 @@ export default function Favorite() {
           key={totalPages}
           className="bg-header_bg_menu  px-[10px] py-[5px] m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300"
         >
-          <button
-            className="cursor-pointer"
-            onClick={() => changePage(totalPages)}
-          >
-            {totalPages}
-          </button>
+          <a>
+            <button
+              className="cursor-pointer"
+              onClick={() => changePage(totalPages)}
+            >
+              {totalPages}
+            </button>
+          </a>
         </li>
       );
     }
@@ -170,39 +172,61 @@ export default function Favorite() {
                   {favorite.length > 0 ? (
                     displayedPages.map((pages: any, i: number) => (
                       <div className="relative" key={pages.pages_slug}>
-                        <div className="items px-1">
-                          <Link href={`/series/${pages.pages_slug}`}>
-                            <div className="update_new-item flex flex-col relative mx-auto min-w-[160px] md:max-w-[200px] hover:animate-pulse transition-all ease-out delay-300  dark:text-text_color text-color_dark_gray hover:text-site_color shadow-2xl rounded-md hover:border-none">
-                              <div className="update_new-item-img min-h-[230px] max-h-[230px] overflow-hidden md:w-[200px] md:h-[280px] w-full relative">
-                                <Image
-                                  src={`${config.CDN_URL}${pages.pages_thumbnail}`}
-                                  className="mx-auto rounded-tl-md rounded-tr-md"
-                                  fill
-                                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                  alt={pages.pages_title}
-                                  title={pages.pages_title}
-                                />
-                                <div
-                                  className={`update_new-status absolute w-[60px] h-[25px] ${
-                                    pages.pages_type === "Manga"
-                                      ? "bg-color_Manga"
-                                      : pages.pages_type === "Manhua"
-                                      ? "bg-color_Manhwa"
-                                      : pages.pages_type === "Novel"
-                                      ? "bg-color_Novel"
-                                      : null
-                                  }  shadow-2xl rounded-tl-md rounded-br-md top-0 left-0`}
-                                >
-                                  <p className="text-[16px] text-color_white text-center pt-[2px]">
-                                    {pages.pages_type}
-                                  </p>
-                                </div>
+                        <div className="update_new-item flex flex-col relative mx-auto   md:max-w-[200px] hover:animate-pulse transition-all ease-out delay-300  dark:text-text_color text-color_dark_gray hover:bg-site_color hover:text-site_color shadow-2xl rounded-md hover:border-none">
+                          <Link
+                            href={`/series/${pages.pages_slug}`}
+                            title={`อ่านการ์ตูน ${pages.pages_en}`}
+                          >
+                            <div className="update_new-item-img min-h-[230px] max-h-[230px] overflow-hidden md:w-[200px] md:min-h-[280px] md:max-h-[280px] md:h-[280px] w-full relative">
+                              <Image
+                                src={`${config.CDN_URL}${pages.pages_thumbnail}`}
+                                className="mx-auto rounded-tl-md rounded-tr-md"
+                                fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                priority
+                                alt={pages.pages_title}
+                                title={`${pages.pages_title}`}
+                              />
+                              <div
+                                className={`update_new-status absolute w-[25px] h-[17px] shadow-2xl rounded-tl-md rounded-br-md top-0 left-0`}
+                              >
+                                {pages.pages_type === "Manga" ? (
+                                  <Image
+                                    className="rounded-tl-md rounded-br-md"
+                                    src="/img/Manga.png"
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                    alt="Manga"
+                                    title="Manga"
+                                    priority
+                                  />
+                                ) : pages.pages_type === "Manhwa" ? (
+                                  <Image
+                                    className="rounded-tl-md rounded-br-md"
+                                    src="/img/Manhwa.png"
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                    alt="Manhwa"
+                                    title="Manhwa"
+                                    priority
+                                  />
+                                ) : pages.pages_type === "Manhua" ? (
+                                  <Image
+                                    className="rounded-tl-md rounded-br-md"
+                                    src="/img/Manhua.png"
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                    alt="Manhua"
+                                    title="Manhua"
+                                    priority
+                                  />
+                                ) : null}
                               </div>
-                              <div className="update_new-item-title text-center h-auto relative md:max-w-[200px] mx-auto">
-                                <h3 className="text-2xl font-bold line-clamp-1">
-                                  {pages.pages_en}
-                                </h3>
-                              </div>
+                            </div>
+                            <div className="update_new-item-title text-center h-auto relative md:max-w-[200px] mx-auto">
+                              <p className="text-2xl font-bold line-clamp-1">
+                                {pages.pages_en}
+                              </p>
                               <div className="last_ep flex justify-center items-center text-center w-full mb-4">
                                 <Link
                                   className=" w-5/6  text-color_white justify-between mx-auto px-1 py-2 text-md font-medium leading-5  transition-colors duration-150 bg-site_color rounded-lg active:bg-site_color hover:bg-site_color focus:outline-none focus:shadow-outline-bg-site_color"

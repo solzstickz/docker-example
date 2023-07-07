@@ -31,7 +31,7 @@ interface pages_lastupdate {
 
 export default function Home({ ...props }) {
   const Poster = React.lazy(() => import("../../components/Poster"));
-  const Popular = React.lazy(() => import("../../components/Popular"));
+  // const Popular = React.lazy(() => import("../../components/Popular"));
 
   const [currentPage, setCurrentPage] = useState(1); // หน้าปัจจุบัน
   const [itemsPerPage, setItemsPerPage] = useState(20); // จำนวนรายการต่อหน้า
@@ -55,15 +55,25 @@ export default function Home({ ...props }) {
 
   // ฟังก์ชันเปลี่ยนหน้า
   const changePage = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-
     // เพิ่มโค้ดด้านล่างเพื่อให้หน้าปัจจุบันแสดงตรงตามหน้าที่คลิกเลือก
-    setDisplayedPages(
-      props.pages_lastep.slice(
-        (pageNumber - 1) * itemsPerPage,
-        pageNumber * itemsPerPage
-      )
-    );
+
+    // ใช้ setTimeout เพื่อให้มีเวลาในการโหลดข้อมูล
+    let change_scroll = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        setCurrentPage(pageNumber);
+        resolve(
+          setDisplayedPages(
+            props.pages_lastep.slice(
+              (pageNumber - 1) * itemsPerPage,
+              pageNumber * itemsPerPage
+            )
+          )
+        );
+      }, 100);
+    });
+    change_scroll.then(() => {
+      window.scrollTo(0, 0);
+    });
   };
 
   const renderPageNumbers = () => {
@@ -91,14 +101,12 @@ export default function Home({ ...props }) {
             i === currentPage ? "bg-site_color" : "bg-header_bg_menu"
           }  m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300`}
         >
-          <a href={`#`}>
-            <button
-              className={`cursor-pointer  px-[10px] py-[5px]`}
-              onClick={() => changePage(i)}
-            >
-              {i}
-            </button>
-          </a>
+          <button
+            className={`cursor-pointer  px-[10px] py-[5px]`}
+            onClick={() => changePage(i)}
+          >
+            {i}
+          </button>
         </li>
       );
     }
@@ -152,9 +160,8 @@ export default function Home({ ...props }) {
                 </h2>
               </div>
               <div className="poppular-content grid grid-cols-3 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 relative min-h-[200px]">
-                <Suspense fallback={<Loading />}>
-                  <Popular poppular={props.poppular} />
-                </Suspense>
+                {/* <Suspense fallback={<Loading />}></Suspense> */}
+                <Popular poppular={props.poppular} />
               </div>
             </div>
           </section>
@@ -203,29 +210,25 @@ export default function Home({ ...props }) {
                     <ul className="flex justify-center items-center gap-1 py-5">
                       {currentPage > 1 ? (
                         <li className="bg-header_bg_menu m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300">
-                          <a href="#">
-                            <button
-                              className="cursor-pointer px-[10px] py-[5px]"
-                              onClick={() => changePage(currentPage - 1)}
-                              disabled={currentPage === 1}
-                            >
-                              Previous
-                            </button>
-                          </a>
+                          <button
+                            className="cursor-pointer px-[10px] py-[5px]"
+                            onClick={() => changePage(currentPage - 1)}
+                            disabled={currentPage === 1}
+                          >
+                            Previous
+                          </button>
                         </li>
                       ) : null}
                       {renderPageNumbers()}
                       {currentPage < totalPages ? (
                         <li className="bg-header_bg_menu   m-2 rounded-md  text-color_white hover:bg-site_color hover:text-color_white ease-out duration-300">
-                          <a href="#">
-                            <button
-                              className="cursor-pointer px-[10px] py-[5px]"
-                              onClick={() => changePage(currentPage + 1)}
-                              disabled={currentPage === totalPages}
-                            >
-                              Next
-                            </button>
-                          </a>
+                          <button
+                            className="cursor-pointer px-[10px] py-[5px]"
+                            onClick={() => changePage(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                          >
+                            Next
+                          </button>
                         </li>
                       ) : null}
                     </ul>
