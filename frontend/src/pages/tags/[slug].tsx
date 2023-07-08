@@ -51,6 +51,7 @@ export default function Tags_slug({ ...props }) {
   const changePage = (pageNumber: number) => {
     // เพิ่มโค้ดด้านล่างเพื่อให้หน้าปัจจุบันแสดงตรงตามหน้าที่คลิกเลือก
     // ใช้ setTimeout เพื่อให้มีเวลาในการโหลดข้อมูล
+    window.scrollTo(0, 0);
     let change_scroll = new Promise((resolve, reject) => {
       setTimeout(() => {
         setCurrentPage(pageNumber);
@@ -62,10 +63,7 @@ export default function Tags_slug({ ...props }) {
             )
           )
         );
-      }, 0);
-    });
-    change_scroll.then(() => {
-      window.scrollTo(0, 0);
+      }, 800);
     });
   };
 

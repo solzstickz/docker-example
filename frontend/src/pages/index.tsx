@@ -30,7 +30,7 @@ interface pages_lastupdate {
 }
 
 export default function Home({ ...props }) {
-  const Poster = React.lazy(() => import("../../components/Poster"));
+  // const Poster = React.lazy(() => import("../../components/Poster"));
   // const Popular = React.lazy(() => import("../../components/Popular"));
 
   const [currentPage, setCurrentPage] = useState(1); // หน้าปัจจุบัน
@@ -76,6 +76,7 @@ export default function Home({ ...props }) {
   const changePage = (pageNumber: number) => {
     // เพิ่มโค้ดด้านล่างเพื่อให้หน้าปัจจุบันแสดงตรงตามหน้าที่คลิกเลือก
     // ใช้ setTimeout เพื่อให้มีเวลาในการโหลดข้อมูล
+    window.scrollTo(0, 400);
     let change_scroll = new Promise((resolve, reject) => {
       setTimeout(() => {
         setCurrentPage(pageNumber);
@@ -87,10 +88,7 @@ export default function Home({ ...props }) {
             )
           )
         );
-      }, 0);
-    });
-    change_scroll.then(() => {
-      window.scrollTo(0, 0);
+      }, 800);
     });
   };
 
@@ -194,33 +192,32 @@ export default function Home({ ...props }) {
                 </h3>
               </div>
               <div className="update_new-content grid grid-cols-2  md:grid-cols-3 gap-1  lg:grid-cols-5 relative min-h-[200px]">
-                <Suspense fallback={<Loading />}>
-                  {displayedPages.map((pages: any, i: number) => {
-                    return (
-                      <Poster
-                        key={i}
-                        i={i}
-                        pages_id={pages.pages_id}
-                        pages_slug={pages.pages_slug}
-                        pages_view={pages.pages_view}
-                        pages_last_update={pages.pages_last_update}
-                        pages_status_showing={pages.pages_status_showing}
-                        pages_last_ep={pages.pages_last_ep}
-                        pages_en={pages.pages_en}
-                        pages_th={pages.pages_th}
-                        pages_star={pages.pages_star}
-                        pages_type={pages.pages_type}
-                        pages_follow={pages.pages_follow}
-                        pages_publish={pages.pages_publish}
-                        pages_title={pages.pages_title}
-                        pages_simple={pages.pages_simple}
-                        pages_thumbnail={pages.pages_thumbnail}
-                        pages_description={pages.pages_description}
-                        posts_slug={pages.posts_slug}
-                      />
-                    );
-                  })}
-                </Suspense>
+                {/* <Suspense fallback={<Loading />}></Suspense> */}
+                {displayedPages.map((pages: any, i: number) => {
+                  return (
+                    <Poster
+                      key={i}
+                      i={i}
+                      pages_id={pages.pages_id}
+                      pages_slug={pages.pages_slug}
+                      pages_view={pages.pages_view}
+                      pages_last_update={pages.pages_last_update}
+                      pages_status_showing={pages.pages_status_showing}
+                      pages_last_ep={pages.pages_last_ep}
+                      pages_en={pages.pages_en}
+                      pages_th={pages.pages_th}
+                      pages_star={pages.pages_star}
+                      pages_type={pages.pages_type}
+                      pages_follow={pages.pages_follow}
+                      pages_publish={pages.pages_publish}
+                      pages_title={pages.pages_title}
+                      pages_simple={pages.pages_simple}
+                      pages_thumbnail={pages.pages_thumbnail}
+                      pages_description={pages.pages_description}
+                      posts_slug={pages.posts_slug}
+                    />
+                  );
+                })}
               </div>
               <div className="pagination">
                 <div className="w-full">
