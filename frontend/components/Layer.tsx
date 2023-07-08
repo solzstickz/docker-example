@@ -29,6 +29,7 @@ export default function Layer({ children, ...props }: Props) {
 
   const router = useRouter();
   const searchInputRef = useRef<any>(null);
+
   //! scroll
   const [scrollPosition, setScrollPosition] = useState(0);
   const handleScroll = () => {
@@ -136,13 +137,12 @@ export default function Layer({ children, ...props }: Props) {
 
   useEffect(() => {
     window.OneSignal = window.OneSignal || [];
-    OneSignal.push(function () {
+    OneSignal.push(async function () {
       OneSignal.init({
         appId: "9d2821fc-8989-4c25-86d5-3adbda02a09c",
         notifyButton: {
           enable: true,
         },
-
         allowLocalhostAsSecureOrigin: true,
         workerPath: "/OneSignalSDKWorker.js",
         requiresUserPrivacyConsent: true,
@@ -158,18 +158,38 @@ export default function Layer({ children, ...props }: Props) {
           cancelButtonText: "ยกเลิก",
         },
       });
+
+      try {
+        const isSubscribed = await OneSignal.isPushNotificationsEnabled();
+
+        if (isSubscribed) {
+          // The user is subscribed
+        } else {
+          // The user is not subscribed
+          OneSignal.showNativePrompt();
+        }
+      } catch (error) {
+        console.error(error);
+      }
     });
+
     return () => {
       window.OneSignal = undefined;
     };
   }, []);
+
+  // //! remove nextjs script serversiteprops
+  // useEffect(() => {
+  //   document.querySelector("#__NEXT_DATA__")?.remove();
+  // }, []);
+
   return (
     <>
       <Script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" />
 
       {/* <div className="fixed top-0 left-0 overlay w-screen h-screen bg-color_gray"></div> */}
       <header className="dark:bg-header_bg_dark bg-header_bg_light relative">
-        <div className="container mx-auto flex justtify-between relative">
+        <div className="container mx-auto flex justify-center relative">
           <div className="md:w-1/4 flex items-center justify-center">
             <div className="nav__bar bg-header_bg_menu rounded-xl mx-2 md:block lg:hidden">
               {nav_status ? (

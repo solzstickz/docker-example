@@ -12,13 +12,14 @@ export default function Tags_slug({ ...props }) {
   const [itemsPerPage, setItemsPerPage] = useState(20); // จำนวนรายการต่อหน้า
   const [totalPages, setTotalPages] = useState(0); // จำนวนหน้าทั้งหมด
   const [displayedPages, setDisplayedPages] = useState([]); // รายการหน้าที่จะแสดงในหน้าปัจจุบัน
-  const Poster = React.lazy(() => import("../../../components/Poster"));
+
   const router = useRouter();
+
   useEffect(() => {
     // คำนวณจำนวนหน้าทั้งหมด
     const total = Math.ceil(props.tags.length / itemsPerPage);
     setTotalPages(total);
-  }, [props.tags, itemsPerPage]);
+  }, [props.keyword, itemsPerPage, router.query.slug, props.tags]);
 
   useEffect(() => {
     // กำหนดรายการหน้าที่จะแสดงในหน้าปัจจุบัน
@@ -26,7 +27,7 @@ export default function Tags_slug({ ...props }) {
     const endIndex = startIndex + itemsPerPage;
     const pagesToDisplay = props.tags.slice(startIndex, endIndex);
     setDisplayedPages(pagesToDisplay);
-  }, [props.tags, currentPage, itemsPerPage]);
+  }, [props.keyword, currentPage, itemsPerPage, router.query.slug, props.tags]);
 
   // ฟังก์ชันเปลี่ยนหน้า
   const changePage = (pageNumber: number) => {
@@ -166,6 +167,39 @@ export default function Tags_slug({ ...props }) {
                     );
                   })}
                 </Suspense>
+                {/* {props.tags.length ? (
+                  displayedPages.map((pages: any, i: number) => {
+                    return (
+                      <Poster
+                        key={i}
+                        i={i}
+                        pages_id={pages.pages_id}
+                        pages_slug={pages.pages_slug}
+                        pages_view={pages.pages_view}
+                        pages_last_update={pages.pages_last_update}
+                        pages_status_showing={pages.pages_status_showing}
+                        pages_last_ep={pages.pages_last_ep}
+                        pages_en={pages.pages_en}
+                        pages_th={pages.pages_th}
+                        pages_star={pages.pages_star}
+                        pages_type={pages.pages_type}
+                        pages_follow={pages.pages_follow}
+                        pages_publish={pages.pages_publish}
+                        pages_title={pages.pages_title}
+                        pages_simple={pages.pages_simple}
+                        pages_thumbnail={pages.pages_thumbnail}
+                        pages_description={pages.pages_description}
+                        posts_slug={pages.posts_slug}
+                      />
+                    );
+                  })
+                ) : (
+                  <div className="flex justify-center items-center w-full h-full">
+                    <h1 className="text-2xl text-color_dark dark:text-color_white">
+                      ไม่พบข้อมูล
+                    </h1>
+                  </div>
+                )} */}
               </div>
 
               <div className="pagination">
@@ -208,9 +242,21 @@ export default function Tags_slug({ ...props }) {
 }
 export async function getServerSideProps(context: any) {
   let keyword = context.params.slug;
-  let fetch_tags = await axios_client.get(`public/tags/${context.params.slug}`);
-  let res = await fetch_tags;
-  let tags = res.data;
+  try {
+    let fetch_tags = await axios_client.get(
+      `public/tags/${context.params.slug}`
+    );
+    let res = await fetch_tags;
+    let tags = res.data;
 
-  return { props: { tags, keyword } };
+    // ตรวจสอบว่ามีข้อมูลใน tags หรือไม่
+    if (!tags) {
+      console.error(`No data for slug: ${context.params.slug}`);
+      tags = []; // กำหนดค่าเริ่มต้นเป็น array ว่างถ้าไม่มีข้อมูล
+    }
+    return { props: { tags, keyword } };
+  } catch (error) {
+    console.error(`Error fetching data for slug: ${context.params.slug}`);
+    return { props: { tags: [], keyword } }; // ถ้ามีข้อผิดพลาดในการเรียกข้อมูล ก็คืนค่า array ว่าง
+  }
 }
