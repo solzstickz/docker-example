@@ -75,7 +75,6 @@ export default function Home({ ...props }) {
   // ฟังก์ชันเปลี่ยนหน้า
   const changePage = (pageNumber: number) => {
     // เพิ่มโค้ดด้านล่างเพื่อให้หน้าปัจจุบันแสดงตรงตามหน้าที่คลิกเลือก
-
     // ใช้ setTimeout เพื่อให้มีเวลาในการโหลดข้อมูล
     let change_scroll = new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -88,7 +87,7 @@ export default function Home({ ...props }) {
             )
           )
         );
-      }, 100);
+      }, 500);
     });
     change_scroll.then(() => {
       window.scrollTo(0, 0);

@@ -63,7 +63,7 @@ export default function Tags_slug({ ...props }) {
             )
           )
         );
-      }, 300);
+      }, 500);
     });
     change_scroll.then(() => {
       window.scrollTo(0, 0);
