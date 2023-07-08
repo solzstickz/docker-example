@@ -16,9 +16,9 @@ const SEOConfig: NextSeoProps = {
     site_name: `${config.SITE_NAME}`,
     images: [
       {
-        url: `${config.SITE_URL}img/logo_sqare.png`,
-        width: 800,
-        height: 600,
+        url: `${config.SITE_URL}img/icon512.png`,
+        width: 512,
+        height: 512,
         alt: `${config.SITE_NAME}`,
       },
     ],
@@ -26,7 +26,7 @@ const SEOConfig: NextSeoProps = {
   twitter: {
     handle: "@9TailManga",
     site: `${config.SITE_NAME}`,
-    cardType: "summary_large_image",
+    cardType: `${config.SITE_URL}img/icon512.png`,
   },
 
   additionalMetaTags: [
@@ -68,7 +68,10 @@ export default function App({ Component, pageProps }: AppProps) {
       </Script>
 
       <Head>
-        <meta name="google-site-verification" content="T8Uj2elgTwxDBtQ1BABCfFJYkDdCW1djmm5vQsKgcXY" />
+        <meta
+          name="google-site-verification"
+          content="T8Uj2elgTwxDBtQ1BABCfFJYkDdCW1djmm5vQsKgcXY"
+        />
         <meta charSet="utf-8" />
         <meta name="theme-color" content="#6c2bd9" />
         <meta name="msapplication-TileColor" content="#6c2bd9" />

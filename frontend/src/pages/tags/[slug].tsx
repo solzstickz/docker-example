@@ -12,8 +12,26 @@ export default function Tags_slug({ ...props }) {
   const [itemsPerPage, setItemsPerPage] = useState(20); // จำนวนรายการต่อหน้า
   const [totalPages, setTotalPages] = useState(0); // จำนวนหน้าทั้งหมด
   const [displayedPages, setDisplayedPages] = useState([]); // รายการหน้าที่จะแสดงในหน้าปัจจุบัน
-
+  // const Poster = React.lazy(() => import("../../../components/Poster"));
   const router = useRouter();
+
+  //! is mobile ? show 10 : show 20
+  useEffect(() => {
+    const updateItemsPerPage = () => {
+      const isMobile = window.innerWidth <= 768; // เช็คว่าเป็นโมบายหรือไม่ (ตัวอย่างใช้ขนาดหน้าจอ <= 768px)
+      const perPage = isMobile ? 10 : 20; // กำหนดจำนวนรายการต่อหน้าใหม่ตามเงื่อนไข
+      setItemsPerPage(perPage); // อัปเดตจำนวนรายการต่อหน้า
+    };
+
+    // เรียกฟังก์ชันอัปเดตเมื่อหน้าจอเปลี่ยนขนาด
+    window.addEventListener("resize", updateItemsPerPage);
+    updateItemsPerPage(); // เรียกฟังก์ชันเมื่อคอมโพเนนต์ถูกโหลด
+
+    // คืนค่าฟังก์ชันเพื่อทำความสะอาดเมื่อคอมโพเนนต์ถูกยกเลิก
+    return () => {
+      window.removeEventListener("resize", updateItemsPerPage);
+    };
+  }, []);
 
   useEffect(() => {
     // คำนวณจำนวนหน้าทั้งหมด
@@ -140,66 +158,31 @@ export default function Tags_slug({ ...props }) {
                 </h2>
               </div>
               <div className="update_new-content grid grid-cols-2  md:grid-cols-3 gap-1  lg:grid-cols-5 relative min-h-[200px]">
-                <Suspense fallback={<Loading />}>
-                  {displayedPages.map((pages: any, i: number) => {
-                    return (
-                      <Poster
-                        key={i}
-                        i={i}
-                        pages_id={pages.pages_id}
-                        pages_slug={pages.pages_slug}
-                        pages_view={pages.pages_view}
-                        pages_last_update={pages.pages_last_update}
-                        pages_status_showing={pages.pages_status_showing}
-                        pages_last_ep={pages.pages_last_ep}
-                        pages_en={pages.pages_en}
-                        pages_th={pages.pages_th}
-                        pages_star={pages.pages_star}
-                        pages_type={pages.pages_type}
-                        pages_follow={pages.pages_follow}
-                        pages_publish={pages.pages_publish}
-                        pages_title={pages.pages_title}
-                        pages_simple={pages.pages_simple}
-                        pages_thumbnail={pages.pages_thumbnail}
-                        pages_description={pages.pages_description}
-                        posts_slug={pages.posts_slug}
-                      />
-                    );
-                  })}
-                </Suspense>
-                {/* {props.tags.length ? (
-                  displayedPages.map((pages: any, i: number) => {
-                    return (
-                      <Poster
-                        key={i}
-                        i={i}
-                        pages_id={pages.pages_id}
-                        pages_slug={pages.pages_slug}
-                        pages_view={pages.pages_view}
-                        pages_last_update={pages.pages_last_update}
-                        pages_status_showing={pages.pages_status_showing}
-                        pages_last_ep={pages.pages_last_ep}
-                        pages_en={pages.pages_en}
-                        pages_th={pages.pages_th}
-                        pages_star={pages.pages_star}
-                        pages_type={pages.pages_type}
-                        pages_follow={pages.pages_follow}
-                        pages_publish={pages.pages_publish}
-                        pages_title={pages.pages_title}
-                        pages_simple={pages.pages_simple}
-                        pages_thumbnail={pages.pages_thumbnail}
-                        pages_description={pages.pages_description}
-                        posts_slug={pages.posts_slug}
-                      />
-                    );
-                  })
-                ) : (
-                  <div className="flex justify-center items-center w-full h-full">
-                    <h1 className="text-2xl text-color_dark dark:text-color_white">
-                      ไม่พบข้อมูล
-                    </h1>
-                  </div>
-                )} */}
+                {displayedPages.map((pages: any, i: number) => {
+                  return (
+                    <Poster
+                      key={i}
+                      i={i}
+                      pages_id={pages.pages_id}
+                      pages_slug={pages.pages_slug}
+                      pages_view={pages.pages_view}
+                      pages_last_update={pages.pages_last_update}
+                      pages_status_showing={pages.pages_status_showing}
+                      pages_last_ep={pages.pages_last_ep}
+                      pages_en={pages.pages_en}
+                      pages_th={pages.pages_th}
+                      pages_star={pages.pages_star}
+                      pages_type={pages.pages_type}
+                      pages_follow={pages.pages_follow}
+                      pages_publish={pages.pages_publish}
+                      pages_title={pages.pages_title}
+                      pages_simple={pages.pages_simple}
+                      pages_thumbnail={pages.pages_thumbnail}
+                      pages_description={pages.pages_description}
+                      posts_slug={pages.posts_slug}
+                    />
+                  );
+                })}
               </div>
 
               <div className="pagination">
@@ -251,12 +234,14 @@ export async function getServerSideProps(context: any) {
 
     // ตรวจสอบว่ามีข้อมูลใน tags หรือไม่
     if (!tags) {
-      console.error(`No data for slug: ${context.params.slug}`);
-      tags = []; // กำหนดค่าเริ่มต้นเป็น array ว่างถ้าไม่มีข้อมูล
+      return {
+        notFound: true,
+      };
     }
     return { props: { tags, keyword } };
   } catch (error) {
-    console.error(`Error fetching data for slug: ${context.params.slug}`);
-    return { props: { tags: [], keyword } }; // ถ้ามีข้อผิดพลาดในการเรียกข้อมูล ก็คืนค่า array ว่าง
+    return {
+      notFound: true,
+    };
   }
 }

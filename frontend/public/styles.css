@@ -972,6 +972,10 @@ video {
   cursor: pointer !important;
 }
 
+.resize {
+  resize: both !important;
+}
+
 .list-none {
   list-style-type: none !important;
 }

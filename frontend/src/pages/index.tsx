@@ -34,10 +34,29 @@ export default function Home({ ...props }) {
   // const Popular = React.lazy(() => import("../../components/Popular"));
 
   const [currentPage, setCurrentPage] = useState(1); // หน้าปัจจุบัน
-  const [itemsPerPage, setItemsPerPage] = useState(20); // จำนวนรายการต่อหน้า
+  const [itemsPerPage, setItemsPerPage] = useState(10); // จำนวนรายการต่อหน้า
   const [totalPages, setTotalPages] = useState(0); // จำนวนหน้าทั้งหมด
   const [displayedPages, setDisplayedPages] = useState([]); // รายการหน้าที่จะแสดงในหน้าปัจจุบัน
   const router = useRouter();
+
+  //! is mobile ? show 10 : show 20
+  useEffect(() => {
+    const updateItemsPerPage = () => {
+      const isMobile = window.innerWidth <= 768; // เช็คว่าเป็นโมบายหรือไม่ (ตัวอย่างใช้ขนาดหน้าจอ <= 768px)
+      const perPage = isMobile ? 10 : 20; // กำหนดจำนวนรายการต่อหน้าใหม่ตามเงื่อนไข
+      setItemsPerPage(perPage); // อัปเดตจำนวนรายการต่อหน้า
+    };
+
+    // เรียกฟังก์ชันอัปเดตเมื่อหน้าจอเปลี่ยนขนาด
+    window.addEventListener("resize", updateItemsPerPage);
+    updateItemsPerPage(); // เรียกฟังก์ชันเมื่อคอมโพเนนต์ถูกโหลด
+
+    // คืนค่าฟังก์ชันเพื่อทำความสะอาดเมื่อคอมโพเนนต์ถูกยกเลิก
+    return () => {
+      window.removeEventListener("resize", updateItemsPerPage);
+    };
+  }, []);
+
   useEffect(() => {
     // คำนวณจำนวนหน้าทั้งหมด
     const total = Math.ceil(props.pages_lastep.length / itemsPerPage);
@@ -244,15 +263,24 @@ export default function Home({ ...props }) {
 }
 
 export async function getServerSideProps() {
-  let res_lastep = await axios_client.get(`public/last_updated`);
-  let fetch_poppular = await axios_client.get(`public/tags/popular`);
-  let pages_lastep = await res_lastep.data;
-  let poppular = await fetch_poppular.data;
-  return {
-    props: {
-      pages_lastep,
-      poppular,
-      revalidate: 120, // เคลือนย้ายคีย์ revalidate ไปอยู่ภายใต้คีย์ props
-    },
-  };
+  try {
+    let res_lastep = await axios_client.get(`public/last_updated`);
+    let fetch_poppular = await axios_client.get(`public/tags/popular`);
+    let pages_lastep = await res_lastep.data;
+    let poppular = await fetch_poppular.data;
+    return {
+      props: {
+        pages_lastep,
+        poppular,
+        revalidate: 120, // เคลือนย้ายคีย์ revalidate ไปอยู่ภายใต้คีย์ props
+      },
+    };
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
 }
+// return {
+//   notFound: true,
+// };

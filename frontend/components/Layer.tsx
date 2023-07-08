@@ -140,37 +140,10 @@ export default function Layer({ children, ...props }: Props) {
     OneSignal.push(async function () {
       OneSignal.init({
         appId: "9d2821fc-8989-4c25-86d5-3adbda02a09c",
-        notifyButton: {
-          enable: true,
-        },
-        allowLocalhostAsSecureOrigin: true,
-        workerPath: "/OneSignalSDKWorker.js",
-        requiresUserPrivacyConsent: true,
+
         autoRegister: true,
         autoResubscribe: true,
-        promptOptions: {
-          /* actionMessage limited to 90 characters */
-          actionMessage:
-            "รับการแจ้งเตือน ตอนใหม่ล่าสุด อัพเดทใหม่ก่อนใครได้ที่ 9tailmanga.com",
-          /* acceptButtonText limited to 15 characters */
-          acceptButtonText: "ติดตาม",
-          /* cancelButtonText limited to 15 characters */
-          cancelButtonText: "ยกเลิก",
-        },
       });
-
-      try {
-        const isSubscribed = await OneSignal.isPushNotificationsEnabled();
-
-        if (isSubscribed) {
-          // The user is subscribed
-        } else {
-          // The user is not subscribed
-          OneSignal.showNativePrompt();
-        }
-      } catch (error) {
-        console.error(error);
-      }
     });
 
     return () => {
