@@ -87,7 +87,7 @@ export default function Home({ ...props }) {
             )
           )
         );
-      }, 500);
+      }, 0);
     });
     change_scroll.then(() => {
       window.scrollTo(0, 0);
