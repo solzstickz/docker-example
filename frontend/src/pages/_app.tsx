@@ -6,6 +6,8 @@ import { NextSeoProps } from "next-seo/lib/types";
 import Head from "next/head";
 import config from "../../config/config";
 import Script from "next/script";
+import { useEffect } from "react";
+
 const SEOConfig: NextSeoProps = {
   title: `${config.SITE_NAME} อ่านมังงะแปลไทย เว็บอ่านการ์ตูนออนไลน์ Manhua`,
   description: `${config.SITE_NAME} เว็บอ่านการ์ตูนออนไลน์ อ่านมังงะฟรี มังงะใหม่ เกาหลี จีน มังงะ18+ Manhwa เกาหลี Manga ญี่ปุ่น แปลไทยล่าสุด การ์ตูนอัพเดทใหม่ทุกวัน 24 ชม.`,
@@ -46,10 +48,51 @@ const SEOConfig: NextSeoProps = {
     appId: "1234567890",
   },
 };
+declare global {
+  interface Window {
+    OneSignal: any;
+  }
+}
 
 export default function App({ Component, pageProps }: AppProps) {
+  // useEffect(() => {
+  //   window.OneSignal = window.OneSignal || [];
+  //   if (!window.OneSignal.push) return;
+
+  //   window.OneSignal.push(async function () {
+  //     await window.OneSignal.init({
+  //       appId: "9d2821fc-8989-4c25-86d5-3adbda02a09c",
+  //     });
+  //   });
+
+  //   return () => {
+  //     window.OneSignal = undefined;
+  //   };
+  // }, []);
+
   return (
     <>
+      <Script
+        id="onesignal-script"
+        strategy="lazyOnload"
+        src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"
+        defer
+      />
+      <Script
+        id="onesignal-custom-script"
+        strategy="lazyOnload"
+        dangerouslySetInnerHTML={{
+          __html: `
+          var OneSignal = window.OneSignal || [];
+          OneSignal.push(function() {
+            OneSignal.init({
+              appId: "9d2821fc-8989-4c25-86d5-3adbda02a09c",
+            });
+            OneSignal.showNativePrompt();
+          });
+          `,
+        }}
+      />
       <Script
         strategy="lazyOnload"
         id="google-analytics"
@@ -96,6 +139,7 @@ export default function App({ Component, pageProps }: AppProps) {
           sizes="192x1192"
           href="/img/icon-192x192.png"
         />
+
         {/* <link rel="apple-touch-icon" href="/icons/touch-icon-iphone.png" />
         <link
           rel="apple-touch-icon"
@@ -152,6 +196,7 @@ export default function App({ Component, pageProps }: AppProps) {
           content={`${config.SITE_URL}img/icon-192x192.png`}
         />
       </Head>
+
       <NextNProgress
         color="#6c2bd9"
         startPosition={0.3}

@@ -135,21 +135,7 @@ export default function Layer({ children, ...props }: Props) {
     setVisibleSearchResults((prevResults) => [...prevResults, ...nextBatch]);
   };
 
-  useEffect(() => {
-    window.OneSignal = window.OneSignal || [];
-    OneSignal.push(async function () {
-      OneSignal.init({
-        appId: "9d2821fc-8989-4c25-86d5-3adbda02a09c",
-
-        autoRegister: true,
-        autoResubscribe: true,
-      });
-    });
-
-    return () => {
-      window.OneSignal = undefined;
-    };
-  }, []);
+  
 
   // //! remove nextjs script serversiteprops
   // useEffect(() => {
@@ -158,7 +144,6 @@ export default function Layer({ children, ...props }: Props) {
 
   return (
     <>
-      <Script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" />
 
       {/* <div className="fixed top-0 left-0 overlay w-screen h-screen bg-color_gray"></div> */}
       <header className="dark:bg-header_bg_dark bg-header_bg_light relative">
