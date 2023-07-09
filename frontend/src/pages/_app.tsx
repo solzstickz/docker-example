@@ -78,21 +78,7 @@ export default function App({ Component, pageProps }: AppProps) {
         src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"
         defer
       />
-      <Script
-        id="onesignal-custom-script"
-        strategy="lazyOnload"
-        dangerouslySetInnerHTML={{
-          __html: `
-          var OneSignal = window.OneSignal || [];
-          OneSignal.push(function() {
-            OneSignal.init({
-              appId: "9d2821fc-8989-4c25-86d5-3adbda02a09c",
-            });
-            OneSignal.showNativePrompt();
-          });
-          `,
-        }}
-      />
+
       <Script
         strategy="lazyOnload"
         id="google-analytics"
@@ -101,15 +87,26 @@ export default function App({ Component, pageProps }: AppProps) {
 
       <Script strategy="lazyOnload" id="google-analytics-inline">
         {`
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-ECB84G2QBM', {
-      page_path: window.location.pathname,
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-ECB84G2QBM', {
+            page_path: window.location.pathname,
     });
   `}
       </Script>
 
+      <Script id="onesignal-custom-script" strategy="lazyOnload">
+        {`
+          var OneSignal = window.OneSignal || [];
+          OneSignal.push(function() {
+            OneSignal.init({
+              appId: "9d2821fc-8989-4c25-86d5-3adbda02a09c",
+            });
+             OneSignal.showNativePrompt();
+          });
+        `}
+      </Script>
       <Head>
         <meta
           name="google-site-verification"
