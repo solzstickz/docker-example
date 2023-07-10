@@ -9,6 +9,7 @@ const uploads = require("../middleware/uploads");
 const moment = require("moment");
 const axios = require("axios");
 const redis_server = require("../module/server_redis");
+const { sendWebhookMessageServer } = require('../middleware/discord_hook');
 
 //! domain.com/pages/
 router.get("/pages/", async (req, res) => {
@@ -333,6 +334,7 @@ router.get("/tags/:slug", async (req, res) => {
   getTagsPopular();
   setInterval(getLastUpdatedReload, 2000);
   setInterval(getTagsPopular, 2000);
+  // setInterval(sendWebhookMessageServer, 6000);
 })();
 
 async function getLastUpdatedReload() {
