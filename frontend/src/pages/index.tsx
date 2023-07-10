@@ -241,7 +241,7 @@ export async function getServerSideProps() {
       props: {
         pages_lastep,
         poppular,
-        revalidate: 120, // เคลือนย้ายคีย์ revalidate ไปอยู่ภายใต้คีย์ props
+        revalidate: 1800, // เคลือนย้ายคีย์ revalidate ไปอยู่ภายใต้คีย์ props
       },
     };
   } catch (error) {

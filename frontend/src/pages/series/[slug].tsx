@@ -324,10 +324,9 @@ export default function Page({ ...props }: any) {
 export async function getServerSideProps(context: any) {
   try {
     let res = await axios_client.get(`public/pages/${context.query.slug}`);
-    let res_ep = await res.data.pages;
+    let res_ep = await res.data.posts;
     let res_page = await res.data.pages[0];
     let res_tags = await res.data.tags;
-    // let res_ep = await res_data[1];
     return { props: { res_page, res_tags, res_ep } };
   } catch (error) {
     console.log(error);
