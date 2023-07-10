@@ -10,24 +10,6 @@ import { useRouter } from "next/router";
 import Loading from "../../components/Loading";
 import React from "react";
 import Popular from "../../components/Popular";
-interface pages_lastupdate {
-  pages_id: number;
-  pages_slug: string;
-  pages_view: number;
-  pages_last_update: string;
-  pages_status_showing: string;
-  pages_last_ep: number;
-  pages_en: string;
-  pages_th: string;
-  pages_star: number;
-  pages_type: string;
-  pages_follow: number;
-  pages_publish: number;
-  pages_title: string;
-  pages_simple: string;
-  pages_thumbnail: string;
-  pages_description: string;
-}
 
 export default function Home({ ...props }) {
   // const Poster = React.lazy(() => import("../../components/Poster"));
@@ -198,22 +180,13 @@ export default function Home({ ...props }) {
                     <Poster
                       key={i}
                       i={i}
-                      pages_id={pages.pages_id}
                       pages_slug={pages.pages_slug}
-                      pages_view={pages.pages_view}
                       pages_last_update={pages.pages_last_update}
-                      pages_status_showing={pages.pages_status_showing}
                       pages_last_ep={pages.pages_last_ep}
                       pages_en={pages.pages_en}
-                      pages_th={pages.pages_th}
-                      pages_star={pages.pages_star}
                       pages_type={pages.pages_type}
-                      pages_follow={pages.pages_follow}
-                      pages_publish={pages.pages_publish}
                       pages_title={pages.pages_title}
-                      pages_simple={pages.pages_simple}
                       pages_thumbnail={pages.pages_thumbnail}
-                      pages_description={pages.pages_description}
                       posts_slug={pages.posts_slug}
                     />
                   );
