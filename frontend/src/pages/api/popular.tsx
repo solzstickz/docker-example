@@ -1,5 +1,6 @@
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
+require("dotenv").config();
 
 const allowlist = [
   "load.9tailmanga.com",
@@ -22,9 +23,7 @@ export default async function handler(
   }
   if (req.method === "POST") {
     try {
-      const response = await axios.get(
-        "https://load.9tailmanga.com/public/search_tags/popular/"
-      );
+      const response = await axios.get( `${process.env.API_URL}public/tags/popular/`);
       const data = response.data;
       res.status(200).json(data);
     } catch (error) {

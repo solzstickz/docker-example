@@ -49,64 +49,6 @@ app.get("/", (req, res) => {
 
 
 
-
-
-
-app.post("/poppular", async (req, res) => {
-  let redis_res = await redisclient.get("pages:res");
-
-  if (redis_res) {
-    res.status(200).json(JSON.parse(redis_res));
-  } else {
-    pool.query("SELECT * FROM `pages`;", async (err, result) => {
-      try {
-        if (err) {
-          console.log(err);
-        } else {
-          await redisclient.set("pages:res", JSON.stringify(result), "EX", 60);
-          let data = await redisclient.get("pages:res");
-          res.status(200).json(JSON.parse(data));
-        }
-      } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
-      }
-    });
-  }
-});
-app.post("/last_updated", async (req, res) => {
-  let redis_res = await redisclient.get(`/last_updated`);
-  if (redis_res) {
-    res.status(200).json(JSON.parse(redis_res));
-  } else {
-    pool.query(
-      "SELECT pages.*,posts.* FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id where posts_ep>pages.pages_last_ep-1 ORDER BY pages.pages_last_update ASC;",
-      async (err, result) => {
-        try {
-          if (err) {
-            console.log(err);
-          } else {
-            if (result.length === 0) {
-              res.status(404).json({ message: "Not Found" });
-            }
-            await redisclient.set(
-              `/last_updated`,
-              JSON.stringify(result),
-              "EX",
-              60
-            );
-            let data = await redisclient.get(`/last_updated`);
-            res.status(200).json(JSON.parse(data));
-          }
-        } catch (err) {
-          console.log(err);
-          res.status(500).json({ message: "Internal Server Error" });
-        }
-      }
-    );
-  }
-});
-
 //! Server Running
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
