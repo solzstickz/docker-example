@@ -415,7 +415,7 @@ export async function getServerSideProps(context: any) {
     const { data } = await axios_client.get(
       `public/posts/${context.query.post}`
     );
-
+      
     const fetch_list_ep = await axios_client.get(
       `public/pages/${data[0].pages_slug}`
     );

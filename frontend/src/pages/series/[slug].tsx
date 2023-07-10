@@ -327,7 +327,6 @@ export async function getServerSideProps(context: any) {
     let res_ep = await res.data.pages;
     let res_page = await res.data.pages[0];
     let res_tags = await res.data.tags;
-
     // let res_ep = await res_data[1];
     return { props: { res_page, res_tags, res_ep } };
   } catch (error) {
