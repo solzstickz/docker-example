@@ -419,9 +419,9 @@ export async function getServerSideProps(context: any) {
     const fetch_list_ep = await axios_client.get(
       `public/pages/${data[0].pages_slug}`
     );
-    const list_ep = fetch_list_ep.data.pages;
+    const list_ep = fetch_list_ep.data.posts;
 
-    const current_reverse = fetch_list_ep.data.pages.reverse();
+    const current_reverse = fetch_list_ep.data.posts.reverse();
     const current_post = current_reverse.findIndex(
       (item: any) => item.posts_slug === context.query.post
     );
