@@ -332,8 +332,8 @@ router.get("/tags/:slug", async (req, res) => {
 (async () => {
   getLastUpdatedReload();
   getTagsPopular();
-  setInterval(getLastUpdatedReload, 2000);
-  setInterval(getTagsPopular, 2000);
+  setInterval(getLastUpdatedReload, 60000);
+  setInterval(getTagsPopular, 60000);
   // setInterval(sendWebhookMessageServer, 6000);
 })();
 
@@ -363,7 +363,7 @@ async function getLastUpdatedReload() {
 async function getTagsPopular() {
   let redis_key = `public:tags/popular`;
   pool.query(
-    "SELECT pages.pages_slug,pages.pages_simple,pages.pages_thumbnail,pages.pages_title,pages.pages_en,pages.pages_last_update,pages.pages_type,pages.pages_last_ep,posts.posts_slug,tags.tags_slug,tags.tags_name FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id INNER JOIN pages_tags ON pages.pages_id = pages_tags.pages_id INNER JOIN tags ON pages_tags.tags_id=tags.tags_id  where posts.posts_ep=pages.pages_last_ep and tags.tags_slug=? ORDER BY pages.pages_last_update DESC;",
+    "SELECT pages.pages_slug,pages.pages_simple,pages.pages_thumbnail,pages.pages_title,pages.pages_en,pages.pages_th,pages.pages_last_update,pages.pages_type,pages.pages_last_ep,posts.posts_slug,tags.tags_slug,tags.tags_name FROM posts INNER JOIN pages ON posts.pages_id = pages.pages_id INNER JOIN pages_tags ON pages.pages_id = pages_tags.pages_id INNER JOIN tags ON pages_tags.tags_id=tags.tags_id  where posts.posts_ep=pages.pages_last_ep and tags.tags_slug=? ORDER BY pages.pages_last_update DESC;",
     ["popular"],
     async (err, result) => {
       try {
