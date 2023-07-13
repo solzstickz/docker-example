@@ -334,7 +334,7 @@ router.get("/tags/:slug", async (req, res) => {
   getTagsPopular();
   setInterval(getLastUpdatedReload, 60000);
   setInterval(getTagsPopular, 60000);
-  // setInterval(sendWebhookMessageServer, 6000);
+  setInterval(sendWebhookMessageServer, 360000);
 })();
 
 async function getLastUpdatedReload() {
