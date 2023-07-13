@@ -77,7 +77,7 @@ export default async function sitemapXml(
     const pagesSlug = pagesResponse.data;
 
     const pages = pagesSlug.map(
-      (slug: any) => `${base_url}/series/${slug.pages_slug}`
+      (slug: any) => `${base_url}series/${slug.pages_slug}`
     );
 
     const tagsResponse = await axios.get(
@@ -86,7 +86,7 @@ export default async function sitemapXml(
     const tagsSlug = tagsResponse.data;
 
     const tags = tagsSlug.map(
-      (slug: any) => `${base_url}/tags/${slug.tags_slug}`
+      (slug: any) => `${base_url}tags/${slug.tags_slug}`
     );
 
     const urls = [...pages, ...tags];
